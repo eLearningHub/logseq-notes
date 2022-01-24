@@ -10,7 +10,8 @@
 		- https://github.com/Xuanwo/Xuanwo/issues/6
 -
 -
--
 - 参考资料
 	- [Async/Await](https://os.phil-opp.com/async-await/)
 	- [Async Calcellation-1](https://blog.yoshuawuyts.com/async-cancellation-1/)
+	- [Rust 的 async/await 语法是怎样工作的](https://ipotato.me/article/70)
+	- [Rust Async & Await RFC](https://github.com/rust-lang/rfcs/blob/master/text/2394-async_await.md)
