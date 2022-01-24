@@ -13,6 +13,8 @@
 		- 写 [[sqlite]]，然后创建 snapshot？
 			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
 				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
+		- 可能直接写 k-v 来的更简单一些？
+			-
 - v1
 	- 怎么样给文件的图表加角标来标记状态呢？
 		- 感觉是完全没有接触过的领域
