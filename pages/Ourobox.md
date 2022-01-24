@@ -8,12 +8,16 @@
 	- 维护内存索引？
 	- 需要拆分 block 吗？
 		- 计算 sha256 吗？
-	-
+		- 可以先不拆分，直接写整个文件
+	- 索引怎么维护？
+		- 写 [[sqlite]]，然后创建 snapshot？
+			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
+				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
 - v1
 	- 怎么样给文件的图表加角标来标记状态呢？
 		- 感觉是完全没有接触过的领域
 			- 需要实现 [[dolphin]] 的插件？
--
+- Random Ideas
 - 如果把 backup 的思路加进来会怎么样？
 	- self-contained fuse？
 		- 使用 [[litestream]]?
@@ -26,6 +30,7 @@
 			- 这就是 [[JuiceFS]]
 				- 哎，不对，实际上这个功能是有意义的
 				- 比如说只分发 index，实际的数据从 ipfs 读取等等
+-
 - 可能的应用场景
 	- 增量备份 / 实时备份 / 指定时间戳恢复？
 		- 可能需要调研一下 [[restic]] 的设计
