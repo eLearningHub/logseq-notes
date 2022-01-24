@@ -1,5 +1,6 @@
 - 对标 [[Dropbox]] 的 Smart Sync？
 	- IntelliSync 名字好像不太 match
+	- 改成 Ourobox -> 衔尾蛇
 -
 - v0
 	- Fuse？
