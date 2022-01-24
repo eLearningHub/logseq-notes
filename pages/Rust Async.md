@@ -6,9 +6,9 @@
 		- https://github.com/Xuanwo/Xuanwo/issues/10
 	- Async 和 Await 分别是做什么用的
 		- https://github.com/Xuanwo/Xuanwo/issues/16
-	- Pin 是做什么用的？
-		- https://github.com/Xuanwo/Xuanwo/issues/6
 -
+- Pin: [[Rust/std Pin]]
+- Future: [[Rust/std Future]]
 -
 - 参考资料
 	- [Async/Await](https://os.phil-opp.com/async-await/)

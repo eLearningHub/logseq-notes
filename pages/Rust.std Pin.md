@@ -1,11 +1,6 @@
-- Rust 中的大部分类型都可以安全的 move，标准库默认为他们实现了 `Unpin`，只有一种情况例外：自引用类型。
-- 最常见的自引用类型是实现了 [[Rust/std Future]] 的对象
-	- ```rust
-	  pub trait Future {
-	      type Output;
-	      fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output>;
-	  }
-	  ```
+- Rust 中的大部分类型都可以安全的 move，标准库默认为他们实现了 `Unpin`。
+- 只有一种情况例外：自引用类型。
+	- 最常见的自引用类型是实现了 [[Rust/std Future]] 的对象
 -
 - Pin 是什么？
 	- > Pin exists to solve a very specific problem: self-referential datatypes, i.e. data structures which have pointers into themselves.
