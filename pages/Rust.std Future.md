@@ -80,46 +80,126 @@
 			  }
 			  ```
 	- 更常见的用法是我们会构造出一个状态机，不断的去推进这个 Future 的状态，直到最终返回了 Ready
+		- 形如这样的代码就会陷入不断 Pending 的死循环
+			- 来自 [dal2: Implement SeekableReader](https://github.com/datafuselabs/databend/pull/3934)
+			- ```rust
+			  impl<S> AsyncRead for SeekableReader<'_, S>
+			  where S: super::Read<S>
+			  {
+			      fn poll_read(
+			          mut self: Pin<&mut Self>,
+			          cx: &mut Context<'_>,
+			          buf: &mut [u8],
+			      ) -> Poll<io::Result<usize>> {
+			          let key = self.key.clone();
+			          let da = self.da.clone();
+			          let pos = self.pos;
+			  
+			          let n = async {
+			              let mut builder = da.read(key.as_str());
+			              let r = builder
+			                  .offset(pos)
+			                  .size(buf.len() as u64)
+			                  .run()
+			                  .await
+			                  .map_err(io::Error::other)?;
+			  
+			              Pin::new(r).read(buf).await
+			          };
+			  
+			          pin_mut!(n);
+			  
+			          let n = ready!(n.poll(cx))?;
+			  
+			          self.pos += n as u64;
+			          Poll::Ready(Ok(n))
+			      }
+			  }
+			  ```
+		- 因为 Executor 每次来 `poll` 的时候，我们都会生成一个全新的 Future 返回，每次 resolve 得到的状态都是 `Pending`
+		- 所以我们需要在这个 Reader 内部维护它的 State，不断的推进状态
+			- ```rust
+			  enum State<'d> {
+			      Idle,
+			      Starting(Pin<Box<dyn Future<Output = Result<Reader>> + Send + 'd>>),
+			      Reading(Reader),
+			  }
+			  
+			  impl<'d, S> AsyncRead for SeekableReader<'d, S>
+			  where S: super::Read<S> + 'd
+			  {
+			      fn poll_read(
+			          mut self: Pin<&mut Self>,
+			          cx: &mut Context<'_>,
+			          buf: &mut [u8],
+			      ) -> Poll<io::Result<usize>> {
+			          loop {
+			              match self.state {
+			                  SeekableReaderState::Idle => {
+			                      // build future, bala, bala
+			                      self.state = SeekableReaderState::Starting(f.boxed());
+			                  }
+			                  SeekableReaderState::Starting(ref mut fut) => {
+			                      let r = ready!(fut.as_mut().poll(cx)).map_err(io::Error::other)?;
+			  
+			                      self.state = SeekableReaderState::Reading(r);
+			                  }
+			                  SeekableReaderState::Reading(ref mut r) => {
+			                      pin_mut!(r);
+			  
+			                      let n = ready!(r.poll_read(cx, buf))?;
+			                      self.pos += n as u64;
+			                      return Poll::Ready(Ok(n));
+			                  }
+			              }
+			          }
+			      }
+			  }
+			  ```
 	- 实际上 `await` 做的事情就是生成了一个 Generators 来维护 Future 的状态
-		- 来自 []
-		- ```rust
-		  struct GeneratorY {
-		      state: i32,
-		      task_context: Context<'static>,
-		      future: dyn Future<Output = Vec<i32>>,
-		  }
-		  
-		  impl Generator for GeneratorY {
-		      type Yield = ();
-		      type Return = i32;
-		  
-		      fn resume(mut self: Pin<&mut Self>, resume: ()) -> GeneratorState<Self::Yield, Self::Return> {
-		          match self.state {
-		              0 => {
-		                  self.task_context = Context::new();
-		                  self.future = into_future(x());
-		                  self.state = 1;
-		                  self.resume(resume)
-		              }
-		              1 => {
-		                  let result = loop {
-		                      if let Poll::Ready(result) =
-		                          Pin::new_unchecked(self.future.get_mut()).poll(self.task_context)
-		                      {
-		                          break result;
-		                      }
-		                      return GeneratorState::Yielded(());
-		                  };
-		                  self.state = 2;
-		                  GeneratorState::Complete(result)
-		              }
-		              _ => panic!("GeneratorY polled with an invalid state"),
-		          }
-		      }
-		  }
-		  ```
+		- 参考伪代码，*来自 [Rust 的 async/await 语法是怎样工作的](https://ipotato.me/article/70)*
+			- ```rust
+			  struct GeneratorY {
+			      state: i32,
+			      task_context: Context<'static>,
+			      future: dyn Future<Output = Vec<i32>>,
+			  }
+			  
+			  impl Generator for GeneratorY {
+			      type Yield = ();
+			      type Return = i32;
+			  
+			      fn resume(mut self: Pin<&mut Self>, resume: ()) -> GeneratorState<Self::Yield, Self::Return> {
+			          match self.state {
+			              0 => {
+			                  self.task_context = Context::new();
+			                  self.future = into_future(x());
+			                  self.state = 1;
+			                  self.resume(resume)
+			              }
+			              1 => {
+			                  let result = loop {
+			                      if let Poll::Ready(result) =
+			                          Pin::new_unchecked(self.future.get_mut()).poll(self.task_context)
+			                      {
+			                          break result;
+			                      }
+			                      return GeneratorState::Yielded(());
+			                  };
+			                  self.state = 2;
+			                  GeneratorState::Complete(result)
+			              }
+			              _ => panic!("GeneratorY polled with an invalid state"),
+			          }
+			      }
+			  }
+			  ```
+-
+- 常见的技巧
+	- 如果需要将 Future 存储起来的话，我们通常会需要 `Pin<Box<dyn Future<Output = T> + Send>>`
+		- 特别的，我们有时候还需要附加上生命周期以满足要求 `Pin<Box<dyn Future<Output = T> + Send + 'xxx>>`
 -
 - 参考资料
+	- [Rust futures RFC](https://github.com/rust-lang/rfcs/blob/master/text/2592-futures.md)
 	- [Rust Async & Await RFC](https://github.com/rust-lang/rfcs/blob/master/text/2394-async_await.md)
 	- [Rust 的 async/await 语法是怎样工作的](https://ipotato.me/article/70) *推荐*
--
