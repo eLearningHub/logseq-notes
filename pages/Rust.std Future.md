@@ -203,3 +203,4 @@
 	- [Rust futures RFC](https://github.com/rust-lang/rfcs/blob/master/text/2592-futures.md)
 	- [Rust Async & Await RFC](https://github.com/rust-lang/rfcs/blob/master/text/2394-async_await.md)
 	- [Rust 的 async/await 语法是怎样工作的](https://ipotato.me/article/70) *推荐*
+	- [Generators and async/await](https://cfsamson.github.io/books-futures-explained/4_generators_async_await.html#generators-and-asyncawait)
