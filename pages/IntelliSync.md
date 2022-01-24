@@ -1,4 +1,5 @@
 - 对标 [[Dropbox]] 的 Smart Sync？
+	- IntelliSync 名字好像不太 match
 -
 - v0
 	- Fuse？
@@ -11,16 +12,21 @@
 -
 - 如果把 backup 的思路加进来会怎么样？
 	- self-contained fuse？
-	- 使用 [[litestream]]?
+		- 使用 [[litestream]]?
 	- 效果是怎么样？
 	- 先同步 index，然后根据 index 来获取相应的文件？
 		- 本地有写入怎么办？
-		- 创建新的 snapshot？
-		- 好像有点用哎
+			- 创建新的 snapshot？
+				- 好像有点用哎
+		- 更进一步的，remote index？
+			- 这就是 [[JuiceFS]]
+				- 哎，不对，实际上这个功能是有意义的
+				- 比如说只分发 index，实际的数据从 ipfs 读取等等
 - 可能的应用场景
 	- 增量备份 / 实时备份 / 指定时间戳恢复？
 		- 可能需要调研一下 [[restic]] 的设计
 	- 朴素的 fuse 功能
+	- 双向同步？
 -
 - 可能会用到的库
 	- rust fuse support
