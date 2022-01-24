@@ -1,0 +1,4 @@
+- https://doc.rust-lang.org/nomicon/hrtb.html
+-
+- 参考资料
+	- [数据库表达式执行的黑魔法：用 Rust 做类型体操 (Part 2)](https://zhuanlan.zhihu.com/p/461405621)
