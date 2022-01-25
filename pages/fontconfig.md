@@ -6,3 +6,5 @@
 	- 原因是自己画蛇添足的增加了 `noto-color-emoji-fontconfig` 的配置，导致选中了错误的字体
 		- ![image.png](../assets/image_1643084430646_0.png)
 	- 把额外的 fontconfig 删掉之后就恢复正常了
+	- 聊天记录: https://t.me/archlinuxcn_group/2232748
+-
