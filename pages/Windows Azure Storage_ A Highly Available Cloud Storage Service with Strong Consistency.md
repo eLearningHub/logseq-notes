@@ -6,7 +6,9 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 - 论文链接
 	- [SIGOPS](https://sigops.org/s/conferences/sosp/2011/current/2011-Cascais/printable/11-calder.pdf)
 	- [IPFS](https://cloudflare-ipfs.com/ipfs/bafybeieewxuxmbvkn2xhkpxczsgkhk5phs24fd25rtunnq43w4oeikl4ky)
--
+	- [Video of talk](https://www.youtube.com/watch?v=QnYdbQO0yj4)
+	- [Slide of talk](https://sigops.org/sosp/sosp11/current/2011-Cascais/11-calder.pptx)
+	-
 - [[Azure Blobs]]，[[Azure Disks]], [[Azure Files]] 等存储服务都是基于同一套架构搭建的
 - 除了传统的存储服务之外，这套架构还支持了
 	- [[Azure Queues]]
