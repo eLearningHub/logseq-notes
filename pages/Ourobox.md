@@ -14,7 +14,11 @@
 			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
 				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
 		- 可能直接写 k-v 来的更简单一些？
-			-
+			- 依赖 db 的 snapshot 功能？
+			- 还是直接 close db 之后导出数据？
+				- 这样可能就要分成两部分
+					- 一个是 config
+					- 另一个是 db
 - v1
 	- 怎么样给文件的图表加角标来标记状态呢？
 		- 感觉是完全没有接触过的领域
