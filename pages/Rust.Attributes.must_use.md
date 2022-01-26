@@ -19,9 +19,10 @@
 	      Err(E),
 	  }
 	  ```
-- 实现原理
-	-
+-
 - 参考资料
 	- [Must Use Functions](https://rust-lang.github.io/rfcs/1940-must-use-functions.html)
 	- [The must_use attribute](https://doc.rust-lang.org/reference/attributes/diagnostics.html#the-must_use-attribute)
 	- [When to add #[must_use]](https://std-dev-guide.rust-lang.org/code-considerations/design/must-use.html)
+	- 对 Function 的实现可以参见 [#[must_use] for functions](https://github.com/rust-lang/rust/pull/43728)
+	- `unused_must_use` lint 的实现参见 [rust/compiler/rustc_lint/src/unused.rs](https://github.com/rust-lang/rust/blob/master/compiler/rustc_lint/src/unused.rs)
