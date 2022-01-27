@@ -1,6 +1,9 @@
 - Fast, secure, efficient backup program
 - https://github.com/restic/restic
-	-
+-
+- 设计文档参考
+	- https://restic.readthedocs.io/en/latest/100_references.html#design
+-
 - Repository Layout 设计
 	- ```text
 	  /tmp/restic-repo
@@ -25,3 +28,50 @@
 	  │   └── 22a5af1bdc6e616f8a29579458c49627e01b32210d09adb288d1ecda7c5711ec
 	  └── tmp
 	  ```
+- Pack Struct
+	- ```text
+	  EncryptedBlob1 || ... || EncryptedBlobN || EncryptedHeader || Header_Length
+	  ```
+	- Pack header
+		- ```text
+		  Type_Blob1 || Length(EncryptedBlob1) || Hash(Plaintext_Blob1) ||
+		  [...]
+		  Type_BlobN || Length(EncryptedBlobN) || Hash(Plaintext_Blobn) ||
+		  ```
+- Index
+	- > When the local cached index is not accessible any more, the index files can be downloaded and used to reconstruct the index.
+	- Format
+		- ```JSON
+		  {
+		    "supersedes": [
+		      "ed54ae36197f4745ebc4b54d10e0f623eaaaedd03013eb7ae90df881b7781452"
+		    ],
+		    "packs": [
+		      {
+		        "id": "73d04e6125cf3c28a299cc2f3cca3b78ceac396e4fcf9575e34536b26782413c",
+		        "blobs": [
+		          {
+		            "id": "3ec79977ef0cf5de7b08cd12b874cd0f62bbaf7f07f3497a5b1bbcc8cb39b1ce",
+		            "type": "data",
+		            "offset": 0,
+		            "length": 25
+		          },{
+		            "id": "9ccb846e60d90d4eb915848add7aa7ea1e4bbabfc60e573db9f7bfb2789afbae",
+		            "type": "tree",
+		            "offset": 38,
+		            "length": 100
+		          },
+		          {
+		            "id": "d3dc577b4ffd38cc4b32122cabf8655a0223ed22edfd93b353dc0c3f2b0fdf66",
+		            "type": "data",
+		            "offset": 150,
+		            "length": 123
+		          }
+		        ]
+		      }, [...]
+		    ]
+		  }
+		  ```
+- Snapshots
+	- > All content within a restic repository is referenced according to its SHA-256 hash
+	-
