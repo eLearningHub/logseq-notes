@@ -5,3 +5,6 @@
   query-sort-desc:: true
 - Done
 - {{query (and ((page-property type Paper) (page-property status done)))}}
+-
+- 可参考的资料
+	- [Distributed Consensus Reading List](https://github.com/heidihoward/distributed-consensus-reading-list)
