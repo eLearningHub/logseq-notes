@@ -1,0 +1,49 @@
+- 对标 [[Dropbox]] 的 Smart Sync？
+	- IntelliSync 名字好像不太 match
+	- 改成 Ourobox -> 衔尾蛇
+-
+- v0
+	- Fuse？
+	- 区分文件状态？
+	- 维护内存索引？
+	- 需要拆分 block 吗？
+		- 计算 sha256 吗？
+		- 可以先不拆分，直接写整个文件
+	- 索引怎么维护？
+		- 写 [[sqlite]]，然后创建 snapshot？
+			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
+				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
+		- 可能直接写 k-v 来的更简单一些？
+			- 依赖 db 的 snapshot 功能？
+			- 还是直接 close db 之后导出数据？
+				- 这样可能就要分成两部分
+					- 一个是 config
+					- 另一个是 db
+- v1
+	- 怎么样给文件的图表加角标来标记状态呢？
+		- 感觉是完全没有接触过的领域
+			- 需要实现 [[dolphin]] 的插件？
+- Random Ideas
+- 如果把 backup 的思路加进来会怎么样？
+	- self-contained fuse？
+		- 使用 [[litestream]]?
+	- 效果是怎么样？
+	- 先同步 index，然后根据 index 来获取相应的文件？
+		- 本地有写入怎么办？
+			- 创建新的 snapshot？
+				- 好像有点用哎
+		- 更进一步的，remote index？
+			- 这就是 [[JuiceFS]]
+				- 哎，不对，实际上这个功能是有意义的
+				- 比如说只分发 index，实际的数据从 ipfs 读取等等
+-
+- 可能的应用场景
+	- 增量备份 / 实时备份 / 指定时间戳恢复？
+		- 可能需要调研一下 [[restic]] 的设计
+	- 朴素的 fuse 功能
+	- 双向同步？
+-
+- 可能会用到的库
+	- rust fuse support
+		- https://github.com/zargony/fuse-rs
+	-
