@@ -1,0 +1,5 @@
+- 传统上我们知道 `/dev/random` 是 block 的，`/dev/urandom` 是 non-block 的
+	- 但是从 Linux 5.6 开始，这个行为已经发生变化了：
+		- [random: make /dev/random be almost like /dev/urandom](https://github.com/torvalds/linux/commit/30c08efec8884fb106b8e57094baa51bb4c44e32)
+		- [Removing the Linux /dev/random blocking pool](https://lwn.net/Articles/808575/)
+-
