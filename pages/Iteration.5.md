@@ -51,7 +51,19 @@ date:: 2022-01-17 - 2022-01-30
 		- 这个 Iteration 工作进展不少，DAL2 的接口基本成型，部分模块切换成了 DAL2，已有的测试用例全部通过。
 		- 得益于 DAL2 的优秀抽象，我们能够增加一个通用的 Interceptor / Layer 层来运行用户对 DAL2 的行为做一些装饰，增加回调的处理。 这样就能进一步满足业务对 DAL2 的要求，比如说 Metric 等等。
 		- 等到所有的模块都切换成 DAL2 之后，就能让社区一起参与进来，去实现更多的存储后端。
-	- 除了 DAL 之外，我还做一些简单的
+	- 除了 DAL 之外，我还做一些简单的工程效率工作，处理了一些跟 CI 相关的问题，包括为 Databend 引入了 peotry 来管理 Python 依赖，修复 CI 使用错误的 Rust 版本等。
+		- CI 使用错误的 CI 版本是个很有意思的问题
+		- 我们经常会使用这样的 action 来初始化 Rust 构建环境：
+		- ```toml
+		  - uses: actions-rs/toolchain@v1
+		    with:
+		    toolchain: stable
+		  - uses: actions-rs/cargo@v1
+		    with:
+		    command: build
+		    args: --release --all-features
+		  ```
+		- [[rustup]] 的实现决定了 cargo 在第一次运行的时候会自动选择合适的 toolchain，并不需要额外的 action 来指定。所以直接将 toolchain 这一步去掉就行
 - Xuanwo
 	- 这个 Iteration 突击学了不少跟 Async Rust 相关的概念和知识，包括
 		- Pin: [[Rust/std/Pin]]
@@ -60,5 +72,6 @@ date:: 2022-01-17 - 2022-01-30
 	- 感觉收获不少，从这个 Iteration 开始我试着在 Twitter 每天分享今天学到了什么。
 	- 最让我开心的是 关于 Futures 的分享甚至还启发了原作者，帮助他把自己的文章补充更加完整。形成了一个完整的正向循环，这种互相连接的感觉真的很棒。
 		- ![image.png](../assets/image_1643361629991_0.png)
+- 总的来说这个 Iteration 过的比较充实，我们年后再见~
 -
 - {{query (between [[2022-01-17]] [[2022-01-30]])}}
