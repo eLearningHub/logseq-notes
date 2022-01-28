@@ -3,6 +3,8 @@ date:: 2022-01-17 - 2022-01-30
 
 - [Done](https://github.com/users/Xuanwo/projects/2/views/1?filterQuery=iteration%3A%22Iteration+5%22)
 -
+- 周期总结已经发布于 https://xuanwo.io/reports/2022-04/
+-
 - Rust
 	- PR [std: Implement try_reserve and try_reserve_exact on PathBuf](https://github.com/rust-lang/rust/pull/92513) 已经成功 merge 了，将会在 1.60 中 release
 	- 至此 feature `try_reserve_2` 需要的工作已经全部完成，接下来就是推进 Stabilization 的事宜了
