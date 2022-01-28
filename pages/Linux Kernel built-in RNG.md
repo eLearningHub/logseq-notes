@@ -1,13 +1,19 @@
 - `/dev/{random, urandom}` 是 Linux 提供的内置随机数生成器
 -
 - 工作原理
-	- 利用当前系统下的环境噪音生成随机数据
-		- 包括内存使用，文件使用，键盘/鼠标的数据等等
+	- 利用当前系统下的环境噪音生成随机数据，包括内存使用，文件使用，键盘/鼠标的数据等等
 -
 - 传统上我们知道 `/dev/random` 是 block 的，`/dev/urandom` 是 non-block 的
-- 但是从 Linux 5.6 开始，这个行为已经发生变化了：
-	- [random: make /dev/random be almost like /dev/urandom](https://github.com/torvalds/linux/commit/30c08efec8884fb106b8e57094baa51bb4c44e32)
-	- [Removing the Linux /dev/random blocking pool](https://lwn.net/Articles/808575/)
+	- 但是从 Linux 5.6 开始，这个行为已经发生变化了：
+		- [random: make /dev/random be almost like /dev/urandom](https://github.com/torvalds/linux/commit/30c08efec8884fb106b8e57094baa51bb4c44e32)
+		- [Removing the Linux /dev/random blocking pool](https://lwn.net/Articles/808575/)
+			- > I believe that Linux's blocking pool has outlived its usefulness. Linux's CRNG generates output that is good enough to use even for key generation. The blocking pool is not stronger in any material way, and keeping it around requires a lot of infrastructure of dubious value.
+		- #question `/dev/random` 生成的随机数还可靠吗？
+- 熵池耗尽导致部分依赖随机数生成的应用无法启动
+	- 很多应用依赖 `/dev/random` 生成的随机数来构造加密串，在熵池耗尽后会无法启动
+	- 解决方案
+		- 修改熵池为 `/dev/urandom`
+		- 使用生成熵的应用： `haveged` 或者 `rng-tools`
 -
 - 参考资料
 	- Archwiki: [Random number generation](https://wiki.archlinux.org/title/Random_number_generation)
