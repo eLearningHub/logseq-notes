@@ -118,6 +118,7 @@
 			  ```
 		- 因为 Executor 每次来 `poll` 的时候，我们都会生成一个全新的 Future 返回，每次 resolve 得到的状态都是 `Pending`
 		- 所以我们需要在这个 Reader 内部维护它的 State，不断的推进状态
+			- #question 如果我们在实现 `poll_read` 的时候使用 loop，跟直接 block_on 有什么区别呢？
 			- ```rust
 			  enum State<'d> {
 			      Idle,
@@ -206,4 +207,5 @@
 	- [Generators and async/await](https://cfsamson.github.io/books-futures-explained/4_generators_async_await.html#generators-and-asyncawait)
 	- [Inside Rust's Async Transform](https://blag.nemo157.com/2018/12/09/inside-rusts-async-transform.html)
 	- [@sticnarf 关于 Rust Async 的分享](https://docs.google.com/presentation/d/1UYGAAm60-FCudvEmXPV0Ca6REo-nvN_L73ddWIDBuik/edit)
+	- [Pin and suffering](https://fasterthanli.me/articles/pin-and-suffering) *妙趣横生的文章，跟 Cool bear 一起讨论 Async Rust 会很有趣*
 	-
