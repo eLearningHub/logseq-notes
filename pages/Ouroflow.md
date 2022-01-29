@@ -3,6 +3,10 @@
 - 可以先从比较简单的 kv-db 开始
 	- 需要完整的事务能力，最好是自带 snapshot export 的支持
 -
+- [[Ourobox]] 的需求
+	- 支持 replicate & restore sqlite
+	-
+-
 - sled
 	- https://docs.rs/sled/latest/sled/struct.Db.html#method.export
 	- ```rust
