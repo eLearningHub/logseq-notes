@@ -1,6 +1,5 @@
 - 这里是我的 Reading List
 -
-- https://www.ncameron.org/blog/rust-in-2022-2/
 - http://smallcultfollowing.com/babysteps/blog/2022/01/27/panics-vs-cancellation-part-1/
 - http://ksat.me/a-plain-english-introduction-to-cap-theorem
 - https://www.scylladb.com/2016/02/09/qualifying-filesystems/
