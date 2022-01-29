@@ -34,7 +34,7 @@
 - 如果把 backup 的思路加进来会怎么样？
 	- self-contained fuse？
 		- 使用 [[litestream]]?
-		- 可能需要一个 [[Ouroset]] ?
+		- 可能需要一个 [[Ouroflow]] ?
 	- 效果是怎么样？
 	- 先同步 index，然后根据 index 来获取相应的文件？
 		- 本地有写入怎么办？

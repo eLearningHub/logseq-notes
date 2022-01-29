@@ -1,2 +1,0 @@
-- 感觉可以借鉴 [[litestream]] & [[Rockset]] 的思路，设计一个将 embedb 传输到 s3 的服务？
--
