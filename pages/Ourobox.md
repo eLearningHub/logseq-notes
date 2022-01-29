@@ -2,12 +2,28 @@
 	- IntelliSync 名字好像不太 match
 	- 改成 Ourobox -> 衔尾蛇
 -
+- 核心思路
+	- 在远端维护可增量更新的 IndexDB 作为文件索引
+-
 - 特性
-	- [[Dropbox]] alike Smart Sync
+	- 高效的 Metadata 操作：
+-
+- 功能
+	- [[Dropbox]] alike Smart Sync (FUSE 挂载或者客户端访问)
 		- 一种模式是文件一一对应
 		- 另一种模式是文件被分块，会做去重等处理
-	-
--
+			- 可能有一个附加的服务是 share
+			- 文件分块的痛点往往是文件没法直接读取了
+				- 考虑到索引直接落盘，我们可以生成一个共享链接，直接生成这个文件的 block list
+	- 从远端创建 snapshot，支持浏览任意时间点的数据
+		- git alike merge？
+		- 允许用户从某个 snapshot 开始写入数据，然后最后允许 merge？
+	- 海量数据分发
+		- 只需要分发 Index 文件，用户可按需获取
+	- 支持多个远端聚合？
+		- 允许用户指定多个 remote，然后可以挂载为同一个目录？
+	- 支持多个用户并发写入数据？
+	- Expose as s3 service？
 - v0
 	- Fuse？
 	- 区分文件状态？
