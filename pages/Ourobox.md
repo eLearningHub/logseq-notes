@@ -2,6 +2,12 @@
 	- IntelliSync 名字好像不太 match
 	- 改成 Ourobox -> 衔尾蛇
 -
+- 特性
+	- [[Dropbox]] alike Smart Sync
+		- 一种模式是文件一一对应
+		- 另一种模式是文件被分块，会做去重等处理
+	-
+-
 - v0
 	- Fuse？
 	- 区分文件状态？
