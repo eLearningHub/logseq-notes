@@ -1,6 +1,4 @@
 title:: Professional maintainers: a wake-up call
-type:: [[Article]]
-status:: [[DONE]]
 link:: https://blog.filippo.io/professional-maintainers/
 
 - 本文实际上在讨论 [[Sustainability of Open Source Projects]]

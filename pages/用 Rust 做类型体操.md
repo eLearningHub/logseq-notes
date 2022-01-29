@@ -1,6 +1,3 @@
-type:: [[Article]]
-link:: https://www.skyzh.dev/posts/articles/2022-01-22-rust-type-exercise-in-database-executors/
-
 - 原文
 	- [Day 0 ~ Day 2](https://www.skyzh.dev/posts/articles/2022-01-22-rust-type-exercise-in-database-executors/)
 	- [Day 3 ~ Day 6](https://www.skyzh.dev/posts/articles/2022-01-24-rust-type-exercise-in-database-executors-middle/)
@@ -14,3 +11,4 @@ link:: https://www.skyzh.dev/posts/articles/2022-01-22-rust-type-exercise-in-dat
 - Day 4
 - Day 5
 - Day 6
+-
