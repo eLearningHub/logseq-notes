@@ -5,7 +5,8 @@
 -
 - [[Ourobox]] 的需求
 	- 支持 replicate & restore sqlite
-	-
+		- https://www.sqlite.org/c3ref/wal_checkpoint_v2.html
+		-
 -
 - sled
 	- https://docs.rs/sled/latest/sled/struct.Db.html#method.export
