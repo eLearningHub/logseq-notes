@@ -1,7 +1,3 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
 - http://ksat.me/a-plain-english-introduction-to-cap-theorem
-- https://www.scylladb.com/2016/02/09/qualifying-filesystems/
-- https://www.cockroachlabs.com/blog/message-queuing-database-kafka/
-- https://www.skyzh.dev/posts/articles/2022-01-15-store-of-streaming-states/
--
