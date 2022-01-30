@@ -1,3 +1,2 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- http://ksat.me/a-plain-english-introduction-to-cap-theorem
