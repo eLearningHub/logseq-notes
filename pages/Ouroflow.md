@@ -25,3 +25,10 @@
 - rocksdb？
 	- https://github.com/tikv/rust-rocksdb
 - sqlite？
+-
+- Ideas
+	- 如果对性能要求不高的话，能否每次都 export？
+		- 感觉还是需要一个真正的 CDC 支持
+		- [Change Data Capture in Embedded Databases](https://www.embeddedcomputing.com/technology/software-and-os/os-filesystems-libraries/change-data-capture-in-embedded-databases)
+		- [Data Change Notification Callbacks](https://www.sqlite.org/c3ref/update_hook.html)
+		- [Change Data Capture: What It Is and How to Use It](https://rockset.com/blog/change-data-capture-what-it-is-and-how-to-use-it/)
