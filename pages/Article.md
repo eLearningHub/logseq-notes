@@ -1,6 +1,5 @@
 - 这里是我的 Reading List
 -
-- http://smallcultfollowing.com/babysteps/blog/2022/01/27/panics-vs-cancellation-part-1/
 - http://ksat.me/a-plain-english-introduction-to-cap-theorem
 - https://www.scylladb.com/2016/02/09/qualifying-filesystems/
 - https://www.cockroachlabs.com/blog/message-queuing-database-kafka/
