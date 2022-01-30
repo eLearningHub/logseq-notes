@@ -8,8 +8,6 @@
 	- 发现错误请在 [Issues](https://github.com/Xuanwo/Xuanwo/issues) 提交反馈
 	- 探讨问题请在 [Discussions](https://github.com/Xuanwo/Xuanwo/discussions) 开启讨论
 -
-- {{embed [[Journals]]}}
--
 - Projects
 	- Reading [[Windows Azure Storage: A Highly Available Cloud Storage Service with Strong Consistency]]
 	- [[Databend 测试重构]]
