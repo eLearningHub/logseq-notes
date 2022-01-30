@@ -32,3 +32,8 @@
 		- [Change Data Capture in Embedded Databases](https://www.embeddedcomputing.com/technology/software-and-os/os-filesystems-libraries/change-data-capture-in-embedded-databases)
 		- [Data Change Notification Callbacks](https://www.sqlite.org/c3ref/update_hook.html)
 		- [Change Data Capture: What It Is and How to Use It](https://rockset.com/blog/change-data-capture-what-it-is-and-how-to-use-it/)
+	- Rust Sqlite [rusqlite](https://docs.rs/rusqlite/latest/rusqlite/struct.Connection.html)
+		- > A Backup handle exposes three methods: step will attempt to back up a specified number of pages, progress gets the current progress of the backup as of the last call to step, and run_to_completion will attempt to back up the entire source database, allowing you to specify how many pages are backed up at a time and how long the thread should sleep between chunks of pages.
+	- [Using the SQLite Online Backup API](https://www.sqlite.org/backup.html)
+		- 传统方法需要锁全表
+		-
