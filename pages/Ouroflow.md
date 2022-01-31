@@ -50,4 +50,9 @@
 		- 这要求用户必须使用跟 ouroflow 同一个 connection，实际上不太可能
 		-
 		-
-	- 或者我们可以先不考虑那么多，先朴素的把整个
+	- 或者我们可以先不考虑那么多，先朴素的把整个目录/文件都上传上去
+		- 这样就不需要 Ouroflow 了，直接在应用内部处理就行
+		- 还有一个思路是不要基于现成的 db 做，直接造一个简单的 k-v 存储轮子？
+			- [AnnaBellaDB: Key-Value Store Made Cloud Native](https://dl.ifip.org/db/conf/cnsm/cnsm2020/1570657795.pdf)
+			- 这个太不靠谱了，非常不现实
+		-
