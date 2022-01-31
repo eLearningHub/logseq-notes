@@ -6,7 +6,6 @@
 - [[Ourobox]] 的需求
 	- 支持 replicate & restore sqlite
 		- https://www.sqlite.org/c3ref/wal_checkpoint_v2.html
-		-
 -
 - sled
 	- https://docs.rs/sled/latest/sled/struct.Db.html#method.export
@@ -48,4 +47,7 @@
 			- 还是要看情况
 				- 如果是不同的线程修改了，那 backup 会自动重新开始
 				- 如果是同一个线程，backup 会自动同步这个变更
+		- 这要求用户必须使用跟 ouroflow 同一个 connection，实际上不太可能
 		-
+		-
+	- 或者我们可以先不考虑那么多，先朴素的把整个
