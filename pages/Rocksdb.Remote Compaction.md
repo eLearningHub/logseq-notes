@@ -1,7 +1,7 @@
-- ![image.png](../assets/image_1643654453294_0.png){:height 418, :width 776}
+- ![image.png](../assets/image_1643656300417_0.png){:height 445, :width 776}
 -
 - Rockset 的实现
-	- ![image.png](../assets/image_1643654480564_0.png)
+	- ![image.png](../assets/image_1643656319895_0.png)
 -
 - 参考资料
 	- fackbook/rocksdb: [Remote Compaction (Experimental)](https://github.com/facebook/rocksdb/wiki/Remote-Compaction-%28Experimental%29)
