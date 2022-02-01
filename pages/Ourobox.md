@@ -1,45 +1,37 @@
 - 核心思路
-	- Keep data organized
--
+	-
 - 优势
 	- 还没想到(
 -
 - 用户故事
 	- 首次配置远端同步(远端没有任何数据)
-		- ourobox init
-			- 初始化 ourobox
-		- ourobox fuse
-			- 将 ourobox 挂载到指定目录
-			- 任何向这个目录的写入都会首先更新本地索引，然后落盘
-			- 然后本地的数据会同步到远端，索引定时更新
+		- ourobox init 以初始化 ourobox
+		- ourobox add 能够将本地的数据添加到 staging
+		- ourobox commit 能够 commit staging 中所有的 metadata？
+		- ourobox remote add 能够添加一个 remote
+		- ourobox push 能够将数据上传到指定 remote？
 	- 配置已有的目录双向同步到远端
+		- ourobox init 以初始化 ourobox
+		- ourobox remote add 能够添加一个 remote
+		- ourobox pull 能够从远端拉取 metadata？
+	- 导出/接收共享
+		- ourobox export
+		- ourobox import
+	- 自动增量同步
+		- ourobox sync
+	- 从远端拉取 metadata 并挂载为 fs
+		- `ourobox mount <commit-id>`
+- 索引设计
+	-
 - Random Ideas
 	- 外部更新目录？
 		- 好像不太好搞，未来再看怎么处理吧
 	- 需要拆分 block 吗？
 		- 计算 sha256 吗？
 		- 可以先不拆分，直接写整个文件
-	- 索引怎么维护？
-		- 写 [[sqlite]]，然后创建 snapshot？
-			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
-				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
-		- 可能直接写 k-v 来的更简单一些？
-			- 依赖 db 的 snapshot 功能？
-			- 还是直接 close db 之后导出数据？
-				- 这样可能就要分成两部分
-					- 一个是 config
-					- 另一个是 db
-	- 支持集群吗？
-	- 要有任务的概念吗？
-		- 或者叫做 connection？
-		- 如何支持增量更新？
-			- 索引本身可以增量更新吗？
-				- 本来的设计是要支持多种 db 作为索引，现在看起来好像意义不是很大
-					- 毕竟是一个直接面向用户的应用？
 	- 可能会用到的库
 		- rust fuse support
 			- https://github.com/zargony/fuse-rs
-		-
 	- 可能的功能列表
 		- [[Dropbox]] alike Smart Sync (FUSE 挂载或者客户端访问)
 			- 一种模式是文件一一对应
@@ -60,6 +52,18 @@
 				- 如果我们可以支持多点并发写入数据的话就容易了
 					- 好像也不用并发？主要是冲突如何处理。
 		- Expose as s3 service？
+	- 维护一组 commit？
+		- 可以借鉴 [[LakeFS]]
+	- 维护两个状态，一个叫做 uncommited，一个叫做 commited
+		- 所有 commited 都会在远端？
+	- 然后 commites 可以做一些 retention
+	- 冲突需要手动处理
+	- 需要拆分成两个项目吗？
+		- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
+		- 一个专门提供 git alike utils
+		- 一个负责执行自动 commi 之类的逻辑？
+		- 好像不是很有必要
+- 归档
 	- 如果把 backup 的思路加进来会怎么样？
 		- self-contained fuse？
 			- 使用 [[litestream]]?
@@ -79,22 +83,27 @@
 				- 感觉在备份 / 安全这一块干不过 restic 啊- -
 		- 朴素的 fuse 功能
 		- 双向同步？
-		- 对标 [[Dropbox]] 的 Smart Sync？
-			- 改成 Ourobox -> 衔尾蛇
+	- 对标 [[Dropbox]] 的 Smart Sync？
+		- 改成 Ourobox -> 衔尾蛇
 	- 模仿 [[IPFS]] 来构建索引？
 		- 这个索引感觉不好扩展
 		- 而且也不 self contain
-		- 维护一组 commit？
-			- 可以借鉴 [[LakeFS]]
-		- 维护两个状态，一个叫做 uncommited，一个叫做 commited
-			- 所有 commited 都会在远端？
-		- 然后 commites 可以做一些 retention
-		- 冲突需要手动处理
-		- 需要拆分成两个项目吗？
-			- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
-			- 一个专门提供 git alike utils
-			- 一个负责执行自动 commi 之类的逻辑？
-			- 好像不是很有必要
-- 归档
+	- 支持集群吗？
+	- 索引怎么维护？
+		- 写 [[sqlite]]，然后创建 snapshot？
+			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
+				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
+		- 可能直接写 k-v 来的更简单一些？
+			- 依赖 db 的 snapshot 功能？
+			- 还是直接 close db 之后导出数据？
+				- 这样可能就要分成两部分
+					- 一个是 config
+					- 另一个是 db
+	- 要有任务的概念吗？
+		- 或者叫做 connection？
+		- 如何支持增量更新？
+			- 索引本身可以增量更新吗？
+				- 本来的设计是要支持多种 db 作为索引，现在看起来好像意义不是很大
+					- 毕竟是一个直接面向用户的应用？
 - 参考资料
 	- [When to use a CRDT-based database](https://www.infoworld.com/article/3305321/when-to-use-a-crdt-based-database.html)
