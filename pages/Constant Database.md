@@ -1,0 +1,11 @@
+- 常见实现
+	- https://cr.yp.to/cdb.html
+	- [TinyCDB - a Constant DataBase](http://www.corpit.ru/mjt/tinycdb.html)
+	- SSTable format 也可以被作用 constant database (write-once sorted map files)
+		- 比如 [mtbl](https://github.com/farsightsec/mtbl)
+			- > An SSTable is a file containing an immutable mapping of keys to values. Keys are stored in sorted order, with an index at the end of the file allowing keys to be located quickly.
+		-
+-
+- 参考资料
+	- [Constant Database (cdb) Internals](https://www.unixuser.org/~euske/doc/cdbinternals/index.html)
+		- ![image.png](../assets/image_1643722144580_0.png)
