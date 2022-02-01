@@ -90,4 +90,5 @@
 				- 感觉在备份 / 安全这一块干不过 restic 啊- -
 		- 朴素的 fuse 功能
 		- 双向同步？
-	-
+- 参考资料
+	- [When to use a CRDT-based database](https://www.infoworld.com/article/3305321/when-to-use-a-crdt-based-database.html)
