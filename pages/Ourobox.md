@@ -60,8 +60,8 @@
 	- 冲突需要手动处理
 	- 需要拆分成两个项目吗？
 		- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
-		- 一个专门提供 git alike utils
-		- 一个负责执行自动 commi 之类的逻辑？
+			- 一个专门提供 git alike utils
+			- 一个负责执行自动 commi 之类的逻辑？
 		- 好像不是很有必要
 - 归档
 	- 如果把 backup 的思路加进来会怎么样？
