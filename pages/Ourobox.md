@@ -60,14 +60,15 @@
 		- 可以借鉴 [[LakeFS]]
 	- 维护两个状态，一个叫做 uncommited，一个叫做 commited
 		- 所有 commited 都会在远端？
-	- 然后 commites 可以做一些 retention
-	- 冲突需要手动处理
+			- 需要一个 [[Constant Database]] 来落盘存储
+		- 然后 commites 可以做一些 retention
+		- 冲突需要手动处理
+- 归档
 	- 需要拆分成两个项目吗？
 		- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
 			- 一个专门提供 git alike utils
 			- 一个负责执行自动 commi 之类的逻辑？
 		- 好像不是很有必要
-- 归档
 	- 如果把 backup 的思路加进来会怎么样？
 		- self-contained fuse？
 			- 使用 [[litestream]]?
