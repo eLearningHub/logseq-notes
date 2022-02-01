@@ -1,6 +1,5 @@
 - 核心思路
-	- 在远端维护可增量更新的 Index 作为文件索引
-	- Self-contained Mutable File System？
+	-
 - 优势
 	- 高效的 Metadata 操作：不再依赖存储后端提供的 List 接口
 -
