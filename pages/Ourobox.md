@@ -94,6 +94,11 @@
 		- 这个索引感觉不好扩展
 		- 而且也不 self contain
 		- 维护一组 commit？
-			- [Transform your object storage into a Git-like repository](https://lakefs.io/)
+			- 可以借鉴 [[LakeFS]]
+		- 维护两个状态，一个叫做 uncommited，一个叫做 commited
+			- 所有 commited 都会在远端？
+		- 然后 commites 可以做一些 retention
+		- 冲突需要手动处理
+			- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
 - 参考资料
 	- [When to use a CRDT-based database](https://www.infoworld.com/article/3305321/when-to-use-a-crdt-based-database.html)
