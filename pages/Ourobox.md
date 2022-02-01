@@ -59,11 +59,7 @@
 				- 公司的电脑和家里的电脑不会同时开机，这种时候如何同步数据？
 				- 如果我们可以支持多点并发写入数据的话就容易了
 					- 好像也不用并发？主要是冲突如何处理。
-					-
 		- Expose as s3 service？
-	- 对标 [[Dropbox]] 的 Smart Sync？
-		- IntelliSync 名字好像不太 match
-		- 改成 Ourobox -> 衔尾蛇
 	- 如果把 backup 的思路加进来会怎么样？
 		- self-contained fuse？
 			- 使用 [[litestream]]?
@@ -83,6 +79,8 @@
 				- 感觉在备份 / 安全这一块干不过 restic 啊- -
 		- 朴素的 fuse 功能
 		- 双向同步？
+		- 对标 [[Dropbox]] 的 Smart Sync？
+			- 改成 Ourobox -> 衔尾蛇
 	- 模仿 [[IPFS]] 来构建索引？
 		- 这个索引感觉不好扩展
 		- 而且也不 self contain
@@ -92,10 +90,11 @@
 			- 所有 commited 都会在远端？
 		- 然后 commites 可以做一些 retention
 		- 冲突需要手动处理
-			- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
 		- 需要拆分成两个项目吗？
+			- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
 			- 一个专门提供 git alike utils
 			- 一个负责执行自动 commi 之类的逻辑？
-		- 好像不是很有必要
+			- 好像不是很有必要
+- 归档
 - 参考资料
 	- [When to use a CRDT-based database](https://www.infoworld.com/article/3305321/when-to-use-a-crdt-based-database.html)
