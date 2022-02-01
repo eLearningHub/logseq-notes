@@ -8,21 +8,25 @@
 		- ourobox init 以初始化 ourobox
 		- ourobox add 能够将本地的数据添加到 staging
 		- ourobox commit 能够 commit staging 中所有的 metadata？
-		- ourobox remote add 能够添加一个 remote
 		- ourobox push 能够将数据上传到指定 remote？
 	- 配置已有的目录双向同步到远端
 		- ourobox init 以初始化 ourobox
-		- ourobox remote add 能够添加一个 remote
 		- ourobox pull 能够从远端拉取 metadata？
 	- 导出/接收共享
 		- ourobox export
 		- ourobox import
 	- 自动增量同步
-		- ourobox sync
+		- ourobox sync？
 	- 从远端拉取 metadata 并挂载为 fs
 		- `ourobox mount <commit-id>`
 - 索引设计
 	-
+- v0
+	- ourobox init
+	- ourobox add
+	- ourobox commit
+	- ourobox push
+	- ourobox pull
 - Random Ideas
 	- 外部更新目录？
 		- 好像不太好搞，未来再看怎么处理吧
