@@ -1,6 +1,6 @@
 - 核心思路
 	- 在远端维护可增量更新的 Index 作为文件索引
-		-
+	- Self-contained Mutable File System？
 - 优势
 	- 高效的 Metadata 操作：不再依赖存储后端提供的 List 接口
 -
@@ -90,5 +90,10 @@
 				- 感觉在备份 / 安全这一块干不过 restic 啊- -
 		- 朴素的 fuse 功能
 		- 双向同步？
+	- 模仿 [[IPFS]] 来构建索引？
+		- 这个索引感觉不好扩展
+		- 而且也不 self contain
+		- 维护一组 commit？
+			- [Transform your object storage into a Git-like repository](https://lakefs.io/)
 - 参考资料
 	- [When to use a CRDT-based database](https://www.infoworld.com/article/3305321/when-to-use-a-crdt-based-database.html)
