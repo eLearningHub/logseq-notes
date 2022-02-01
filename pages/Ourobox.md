@@ -1,7 +1,8 @@
 - 核心思路
-	-
+	- Keep data organized
+-
 - 优势
-	- 高效的 Metadata 操作：不再依赖存储后端提供的 List 接口
+	- 还没想到(
 -
 - 用户故事
 	- 首次配置远端同步(远端没有任何数据)
@@ -12,16 +13,9 @@
 			- 任何向这个目录的写入都会首先更新本地索引，然后落盘
 			- 然后本地的数据会同步到远端，索引定时更新
 	- 配置已有的目录双向同步到远端
-	- 外部更新目录？
-- v0
-	- Fuse？
-		- 一个简单的 fuse，基本上所有操作都会被转发给 local cache？
-	- 区分文件状态？
-- v1
-	- 怎么样给文件的图表加角标来标记状态呢？
-		- 感觉是完全没有接触过的领域
-			- 需要实现 [[dolphin]] 的插件？
 - Random Ideas
+	- 外部更新目录？
+		- 好像不太好搞，未来再看怎么处理吧
 	- 需要拆分 block 吗？
 		- 计算 sha256 吗？
 		- 可以先不拆分，直接写整个文件
@@ -99,5 +93,9 @@
 		- 然后 commites 可以做一些 retention
 		- 冲突需要手动处理
 			- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
+		- 需要拆分成两个项目吗？
+			- 一个专门提供 git alike utils
+			- 一个负责执行自动 commi 之类的逻辑？
+		- 好像不是很有必要
 - 参考资料
 	- [When to use a CRDT-based database](https://www.infoworld.com/article/3305321/when-to-use-a-crdt-based-database.html)
