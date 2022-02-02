@@ -5,30 +5,32 @@
 -
 - 用户故事
 	- 首次配置远端同步(远端没有任何数据)
-		- ourobox init 以初始化 ourobox
-		- ourobox status
-		- ourobox add 能够将本地的数据添加到 staging
-		- ourobox commit 能够 commit staging 中所有的 metadata？
-		- ourobox push 能够将数据上传到指定 remote？
+		- dit init 以初始化 dit
+		- dit  status
+		- dit  add 能够将本地的数据添加到 staging
+		- dit  commit 能够 commit staging 中所有的 metadata？
+		- dit  push 能够将数据上传到指定 remote？
 	- 配置已有的目录双向同步到远端
-		- ourobox init 以初始化 ourobox
-		- ourobox pull 能够从远端拉取 metadata？
+		- dit  init 以初始化 ourobox
+		- dit  pull 能够从远端拉取 metadata？
 	- 导出/接收共享
-		- ourobox export
-		- ourobox import
+		- dit  export
+		- dit  import
 	- 自动增量同步
-		- ourobox sync？
+		- dit  sync？
 	- 从远端拉取 metadata 并挂载为 fs
-		- `ourobox mount <commit-id>`
+		- `dit  mount <commit-id>`
 - v0
 	- 功能
-		- ourobox init
-		- ourobox add
-		- ourobox commit
-		- ourobox push
-		- ourobox pull
+		- dit  init
+		- dit  add
+		- dit  commit
+		- dit  push
+		- dit  pull
 	- 索引设计暂时不考虑，直接朴素的塞进 sqlite
-		-
+		- virtual inode？
+			- 还是每次都直接存储完整的 path？
+			- 可能需要参考一下 immutable-fs 相关的设计
 - Random Ideas
 	- 外部更新目录？
 		- 如果是 remote 发生了更新有点不太好搞

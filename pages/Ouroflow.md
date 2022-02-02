@@ -3,7 +3,7 @@
 - 可以先从比较简单的 kv-db 开始
 	- 需要完整的事务能力，最好是自带 snapshot export 的支持
 -
-- [[Ourobox]] 的需求
+- [[Dit]] 的需求
 	- 支持 replicate & restore sqlite
 		- https://www.sqlite.org/c3ref/wal_checkpoint_v2.html
 -
