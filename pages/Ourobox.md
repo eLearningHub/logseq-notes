@@ -6,6 +6,7 @@
 - 用户故事
 	- 首次配置远端同步(远端没有任何数据)
 		- ourobox init 以初始化 ourobox
+		- ourobox status
 		- ourobox add 能够将本地的数据添加到 staging
 		- ourobox commit 能够 commit staging 中所有的 metadata？
 		- ourobox push 能够将数据上传到指定 remote？
@@ -27,6 +28,7 @@
 		- ourobox push
 		- ourobox pull
 	- 索引设计暂时不考虑，直接朴素的塞进 sqlite
+		-
 - Random Ideas
 	- 外部更新目录？
 		- 如果是 remote 发生了更新有点不太好搞
