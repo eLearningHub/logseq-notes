@@ -1,0 +1,13 @@
+- 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
+-
+- [5 Main Features to Help Identify a Web 3.0 Definition | Expert.ai | Expert.ai](https://www.expert.ai/blog/web-3-0/)
+- [What happens when you profile a continuous profiler? | Open Source Continuous Profiling Platform](https://pyroscope.io/blog/profile-continuous-profiler/)
+- https://blog.rust-lang.org/2022/01/31/changes-in-the-core-team.html
+- http://charap.co/reading-group-log-structured-protocols-in-delos/
+- http://charap.co/reading-group-rabia-simplifying-state-machine-replication-through-randomization/
+- http://jeremymikkola.com/posts/2022_01_29_tech_debt_gets_worse_before_it_gets_beffer.html
+- https://rockset.com/blog/the-reasons-why-i-joined-rockset/
+- https://rockset.com/blog/what-do-i-do-when-my-snowflake-query-is-slow-part-1-diagnosis/
+- https://rockset.com/blog/busting-myths-about-the-SQL-database-and-real-time-analytics/
+- https://manjusaka.itscoder.com/posts/2022/01/31/a-simple-introduction-about-network-monitoring-in-linux-kernel/
+-

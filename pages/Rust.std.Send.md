@@ -1,0 +1,24 @@
+- Send 是一个 marker trait，用来标记一个类型的所有权可以在[[线程]]间传递
+-
+- 绝大部分类型都是 Send，只有一些例外
+	- 裸指针 (raw pointers)
+	- [UnsafeCell]([[Rust/std/UnsafeCell]])
+		- 同理，[Cell]([[Rust/std/Cell]]) 和 [RefCell]([[Rust/std/RefCell]]) 也不行
+	- [Rc]([[Rust/std/Rc]])
+-
+- 常见用法
+	- 绝大多数时候都是用在 async 相关的代码中
+		- 如果不是性能关键的场景，使用对应的替代即可
+			- [Rc]([[Rust/std/Rc]]) => [Arc]([[Rust/std/Arc]])
+	- [async-trait]([[dtolnay/async-trait]]) 最终会返回一个 `Pin<Box<dyn Future + Send + 'async_trait>>`
+		- 所以 async_trait 中的参数都必须是 Send 的
+		- 这是为什么我们通常会写出这样的类型 `type Reader = Box<dyn AsyncRead + Unpin + Send>`
+	-
+- 手动实现 [Send]([[Rust/std/Send]])/[Sync]([[Rust/std/Sync]]) 是 `unsafe` 的，需要注意维持对应的安全保证
+  id:: 61f20ff7-ce5e-462f-96be-ee18b449f2ca
+	- 大多数时候都没有必要
+		- 由 Send/Sync 类型组成的类型会自动实现 Send/Sync
+		- Send/Sync 都只是标记 trait，没有实际的方法需要实现
+- 参考资料
+	- [Trait std::marker::Send](https://doc.rust-lang.org/std/marker/trait.Send.html)
+	- [Send and Sync](https://doc.rust-lang.org/nomicon/send-and-sync.html)

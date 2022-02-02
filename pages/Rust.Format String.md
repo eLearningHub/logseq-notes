@@ -1,0 +1,2 @@
+- https://www.rustnote.com/blog/format_strings.html
+-
