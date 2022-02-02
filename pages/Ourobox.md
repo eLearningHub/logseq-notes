@@ -19,17 +19,17 @@
 		- ourobox sync？
 	- 从远端拉取 metadata 并挂载为 fs
 		- `ourobox mount <commit-id>`
-- 索引设计
-	-
 - v0
-	- ourobox init
-	- ourobox add
-	- ourobox commit
-	- ourobox push
-	- ourobox pull
+	- 功能
+		- ourobox init
+		- ourobox add
+		- ourobox commit
+		- ourobox push
+		- ourobox pull
+	- 索引设计暂时不考虑，直接朴素的塞进 sqlite
 - Random Ideas
 	- 外部更新目录？
-		- 好像不太好搞，未来再看怎么处理吧
+		- 如果是 remote 发生了更新有点不太好搞
 	- 需要拆分 block 吗？
 		- 计算 sha256 吗？
 		- 可以先不拆分，直接写整个文件
@@ -63,6 +63,8 @@
 			- 需要一个 [[Constant Database]] 来落盘存储
 		- 然后 commites 可以做一些 retention
 		- 冲突需要手动处理
+	- 如何处理链接？
+		-
 - 归档
 	- 需要拆分成两个项目吗？
 		- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
