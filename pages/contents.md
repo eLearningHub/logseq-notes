@@ -1,7 +1,7 @@
 - Hi，我是漩涡。
-	- 内容产出 [Xuanwo's Blog](https://xuanwo.io)
-	- 工作产出 [Xuanwo's Work](https://work.xuanwo.io)
-	- 代码产出 [Xuanwo's Github](https://github.com/Xuanwo)
+	- 内容 [Xuanwo's Blog](https://xuanwo.io)
+	- 工作 [Xuanwo's Work](https://work.xuanwo.io)
+	- 代码 [Xuanwo's Github](https://github.com/Xuanwo)
 -
 - 这里是 Xuanwo's Note
 	- 查看本站的源代码 [Xuanwo/Xuanwo](https://github.com/Xuanwo/Xuanwo)，欢迎 Star 本项目以示支持
@@ -23,4 +23,3 @@
 	- [[Product]]
 	- [[Blog]]
 - [[Archives]]
--
