@@ -342,7 +342,19 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 	- Partition Layer Architecture
 		- ![image.png](../assets/image_1642334536791_0.png)
 		- Partition Manager (PM)
-		-
+			- 负责把  Object Tables 拆分为 RangePartitions，并且把 RangePartitions 分配到指定的 Partition Server，这些 assignement 会存储在 Partition Map Table
+			- 每个 RangePartition 有且只有一个 Partition Server 在提供服务，他们之间不会出现 overlap
+		- Partition Server (PS)
+			- 负责处理自己绑定的 RangePartitions 部分的请求
+			- 所有的持久化数据都会存储在 Stream 中，同时会维护一个缓存
+			- PS 能够维护强一致的有序并发事务
+				- 所有跟当前 RangePartitions 相关的请求都会落到这个 PS 上
+				- 任意 RangePartitions 有且只有一个 PS 在提供服务
+			- 一个 PS 可以同时提供多个 RangePartitions 的服务
+				- 在 WAS 中，一个 PS 平均 serve 10 个 RangePartitions
+		- Lock Service
+			- 一个 Paxos Lock Service，用于 PM 选主
+			-
 - ---
 - 无用但有趣的一些小发现
 	- WAS 很容易手滑打成 AWS (
@@ -350,3 +362,5 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 		- 肯定跟这个没关系 (
 - [[2022-01-14]] 感想
 	- 有种逐渐理解了一切的感觉， [[azblob]] 之前有些奇怪的设计都有了合理的解释
+- [[2022-02-03]] 感想
+	- 已经都快忘光了- -
