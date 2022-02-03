@@ -386,7 +386,25 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 			- Memory Table
 				- > in-memory version of the commit log for a RangePartition, containing all of the recent updates that have not yet been checkpointed to the row data stream
 			- Index Cache
-				-
+				- stores the checkpoint indexes of the row data stream
+			- Row Data Cache
+				- 顾名思义
+			- Bloom Filters
+				- 如果在 memory table 和 row data cache 中没有找到数据，就需要到 data stream 中搜索
+				- 为了减少 search 的开销，PS 会为每个 checkpoint 维护一个 bloom filters，用来快速检查指定的 row 是否 **不在** 某个 checkpoint 中
+	- Data Flow
+		- 当 PS 收到写请求的时候，就会把请求追加到 commit log 中，然后加进 memory table
+		- 当 memory table 或者 commit log 的 size 达到阈值时，PS 就会把 memory table 中所有的数据都存进一个新的 checkpoint，同时，相关联的 commit log 也都会被清除
+		- 跟其他的 LSM 实现一样，PS 也会执行一个 compact 的操作，定期把旧的 checkpoint 合并成更大的 checkpoint
+		- 这里对 Blob 有特别的处理
+			- 增加了一个独立的 Blob Data Stream
+			- blob 的数据不是 row data 的一部分，所以不会放进 memory table
+			- 为了减少对 streams 的写入，PS 会把 blob 的数据存进 commit log
+			- 相对的，row data 中只会存储 blob 的 extent 和 offset，长度
+			- 在创建新 checkpoint 的时候，从 commit log 中删除的数据，会以 extent
+			  concatenation 的形式追加到 blob data stream 中。
+				- 注意这个操作是零拷贝的，只需要追加 extent 的指针
+			-
 - ---
 - 无用但有趣的一些小发现
 	- WAS 很容易手滑打成 AWS (
