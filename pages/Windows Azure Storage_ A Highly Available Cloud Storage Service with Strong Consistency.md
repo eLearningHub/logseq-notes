@@ -480,6 +480,36 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 					- the root of the data index in E’s data streams
 				- PS 开始接收 E 相关的请求
 				- PM 更新 Partition Map Table
+	- Partition Layer Inter-Stamp Replication
+		- 每个 account 会有一个 primary stamp，此外还会被分配一个或多个  secondary stamps
+		- 当创建一个 account 的时候，Location Services 会在不同的区域中各挑选一个 stamp
+			- 然后 primary stamp (P) 会处理所有的 live traffic
+			- secondary stamp (S) 则只处理  inter-stamp replication traffic
+		- 当 P 收到新的请求的时候，这个变化会在 stamp 内部通过 stream layer 被复制，然后返回 client
+			- 当 P commit 了这个请求，P 的 partition layer 会异步的将这个变化同步到 S
+		- 因为这个过程是异步的，所以 P 的 recent changes 可能会出现没有被同步的情况
+			- 在生产环境中，这个延迟平均是 30 s
+		- 这个机制会用来做灾难恢复和数据迁移
+			- 灾难恢复的时候会出现数据丢失，但是数据迁移的时候会执行 clean failover，不会出现数据丢失
+		- 当恢复/迁移完成后， Location Service 都会把当前活跃的 stamp 标记为这个 account 的新 primary stamp，将对应的域名解析到这个 stamp 的 VIP 上
+			- 注意整个 failover 的过程中，域名是不发生变化的
+- Application Throughput
+	- 一些性能数据
+	- WAS Table operation throughput
+		- performing random 1KB single entity get and put requests against a single 100GB Table
+		- It also shows batch inserts of 100 entities at a time – a common way applications insert groups of entities into a WAS Table
+		- ![image.png](../assets/image_1643877631833_0.png)
+	- randomly getting and putting 4MB blobs
+		- ![image.png](../assets/image_1643877670768_0.png)
+	- 挺好看的线性扩展图
+- Workload Profiles
+	- > Usage patterns for cloud-based applications can vary significantly.
+	- 这个部分展示了一些真实的 workload
+	- ![image.png](../assets/image_1643877818494_0.png)
+- Design Choices and Lessons Learned
+	- Scaling Computation Separate from Storage
+		- 存算分离！
+		-
 - ---
 - 无用但有趣的一些小发现
 	- WAS 很容易手滑打成 AWS (
