@@ -453,9 +453,33 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 				- PS 对 B 执行一次 checkpoint，然后停止响应请求
 				- PS 使用 Stream 提供的 “MultiModify” 操作来获取 B 的每一个 streams (metadata，commit log，data)
 					- 使用跟 B 一样的 extents 及顺序为 C & D 创建新的 streams
+						- #question 所以 B，C，D 会有完全一样的历史，只是被分配了不同的 key range？
+							- 然后历史中无用的记录会通过 GC 来清理？
 					- PS 在 C 和 D 的 metadata 中写入新的 key range
-				- PS
-			-
+				- PS 开始处理 C 和 D 的请求
+				- PS 通知 PM split 完成了，PM 会更新 Partition Map Table
+					- 之后 PM 可以把某个 RangePartition 移动到别的 PS 上
+		- Merge Operation
+			- 交互过程
+				- > The following steps are taken to merge C and D into a new RangePartition E.
+				- PM 会首先把 C 和 D 移动到同一个 PS 上
+				- PS 会为 C 和 D 创建新的 checkpoint，然后停止 C，D 的访问
+				- PS 使用 MultiModify 命令来为 E 创建新的 commit log 和 data streams
+					- 每个 stream 都是 C & D 的 concatenation
+					- `"E commit log extents" = concat("C commit log extents", "D commit log extents"`
+						- >  the extents in the new commit log stream for E will be all of C’s extents in the order they were in C’s commit log stream followed by all of D’s extents in their original order.
+					- #question 为什么可以直接这样 concat 呢？不需要某种形式的 merge 吗？
+						- C 和 D 完全不重叠，所以 commit log 的 reply 顺序不影响最后的结果
+						- 虽然论文中好像没有明确之处，但是 merge 应该是要求 key range 连续
+							- 所以这里的 C & D 的顺序应该是可以按照 `[11-20],[21-30]` 这样有序的排一下的
+						- 其他的 stream 应该也是类似的原因
+				- PS 会为 E 创建新的 metadata stream
+					- the names of the new commit log and data stream
+					- the combined key range for E
+					- pointers (extent+offset) for the start and end of the commit log regions in E’s commit log
+					- the root of the data index in E’s data streams
+				- PS 开始接收 E 相关的请求
+				- PM 更新 Partition Map Table
 - ---
 - 无用但有趣的一些小发现
 	- WAS 很容易手滑打成 AWS (
