@@ -421,6 +421,40 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 				- stream and extent metadata 需要能够完全存储在 SM 的内存中
 		- 对每个 stamp，大概每天能观察到 75 次 split 和 merge，200 次 RangePartition 负载均衡
 		- Load Balance Operation Details
+			- WAS 会跟踪每个 PS 和每个 RangePartition 的负载，包括
+				- transactions/second
+				- average pending transaction count
+				- throttling rate
+				- CPU usage
+				- network usage
+				- request latency
+				- data size of the RangePartition
+			- PM 会维护所有的 PS 的心跳，PS 通过心跳为上报这些信息
+			- 如果 PM 发现某个 PS 负载过高，PM 就会向 PS 发送命令，要求 PS 执行 split
+				- 如果 PM 发现某个 PS 负载很高，但是没有哪个 RangePartition 是高负载的，PM 就会从这个 PS 上拿走一些 RangePartition
+			- 交互过程
+				- PM 发送 offload 命令给 PS
+				- PS 会立即写入一个新的 checkpoint
+				- checkpoint 写入完成后，PS 会返回 ACK 通知 PM offload 已经完成
+				- PM 之后会把这个 RangePartition 分配给别的 PS，并更新 Partition
+				  Map Table
+				- 新的 PS 会加载这个 RangePartition 并开始接收请求
+		- Split Operation
+			- 如果 PM 发现某个 RangePartition 的负载过高，PM 会要求 PS 执行 Split 操作，PS 会决定从什么地方开始 Split
+			- Split 有两种情况
+				- 根据 size split
+					- RangePartition 会维护所有 objects 的 total size 以及 split key (有点像中位数，从这里开始切能大致上把 RangePartition 分成两半)
+					- PS 使用 RangePartition 的 split key 来执行 size split
+				- 根据 load split
+					- PS 会维护一个 Adaptive Range Profiling，动态的跟踪哪些 key range 有最高的负载
+			- 交互过程
+				- > split a RangePartition (B) into two new RangePartitions (C,D)
+				- PM 命令 PS 将 B 拆分为 C 和 D
+				- PS 对 B 执行一次 checkpoint，然后停止响应请求
+				- PS 使用 Stream 提供的 “MultiModify” 操作来获取 B 的每一个 streams (metadata，commit log，data)
+					- 使用跟 B 一样的 extents 及顺序为 C & D 创建新的 streams
+					- PS 在 C 和 D 的 metadata 中写入新的 key range
+				- PS
 			-
 - ---
 - 无用但有趣的一些小发现
