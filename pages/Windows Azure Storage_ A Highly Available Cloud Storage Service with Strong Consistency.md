@@ -354,7 +354,39 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 				- 在 WAS 中，一个 PS 平均 serve 10 个 RangePartitions
 		- Lock Service
 			- 一个 Paxos Lock Service，用于 PM 选主
-			-
+			- 此外，每个 PS 会维护一个 RangePartitions lease
+				- 一旦租约过期，跟该 PS 关联的 RangePartitions 会被分配到其他 PS 上
+	- RangePartition Data Structures
+		- Persistent Data Structure
+			- 持久化数据存储是一个 [[Log-Structured Merge-Tree]]
+			- 每个 OT 的 RangePartition 都会有一组自己的 Streams
+				- 这些 Streams 只给这个 RangePartition 提供服务
+				- 但是底层的 Extent 可能被多个 Streams 共享
+			- ![image.png](../assets/image_1643872534526_0.png)
+			- 这里的每个 Stream 实际上都跟能对应到 LSM 中 SSTable 的不同组成部分
+			- Metadata Stream
+				- > The PM assigns a partition to a PS by providing
+				  the name of the RangePartition’s metadata stream
+				- metadata 中会维护足够的信息使得 PS 能够加载一个 RangePartition
+					- the name of the commit log stream
+					- data streams for that RangePartition
+					- pointers (extent+offset) into those streams for where to start operating in
+					  those streams
+						- where to start processing in the commit log stream and the root of the index for the row data stream
+				- 同时 PS 也会在 metadata 中写入 split && merge 状态相关的状态
+			- Commit Log Stream
+				- 典型的 commit log
+				- 记录了自从上一个 checkpoint 以来 RangePartition 相关的写入操作
+			- Row Data Stream
+				- 存储 checkpoints 和索引数据
+					- #question checkpoint 是怎么组织的？指向某个 extent 吗？
+			- Blob Data Stream
+				- 只有 blob services 里会用到，存储 blob 二进制数据
+		- In-Memory Data Structures
+			- Memory Table
+				- > in-memory version of the commit log for a RangePartition, containing all of the recent updates that have not yet been checkpointed to the row data stream
+			- Index Cache
+				-
 - ---
 - 无用但有趣的一些小发现
 	- WAS 很容易手滑打成 AWS (
