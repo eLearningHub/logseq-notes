@@ -509,7 +509,46 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 - Design Choices and Lessons Learned
 	- Scaling Computation Separate from Storage
 		- 存算分离！
-		-
+		- 存储和计算可以独立扩展
+		- 多租户场景可以提供更好的隔离
+		- 支持更多的 workload
+	- Range Partitions vs. Hashing
+		- WAS 使用 range 分区而不是 hash (ceph)
+		- 一个原因是 range 分区可以更好的做性能隔离
+			- hash 可以方便的将负载均衡到多个节点上，但是会失去数据的局部性
+		- range 分区使得 WAS 能够把同一个用户的数据放到一起便于限速和避免 “坏邻居”
+			- 这对多租户的应用来说非常重要
+		- range 分区的缺点是存在局部的数据热点(顺序写场景)
+			- 比如说用户不断在某个表的末尾追加新的数据
+			- 所有的写入都落到了最后一个 RangePartition 中
+			- 目前没有好的方案，只能让用户在业务上自行拆分不同的 PartitionName, 来避免这种情况
+	- Throttling/Isolation
+		- > The system uses a Sample-Hold algorithm to track the request rate history of the top N busiest AccountNames and PartitionNames.
+	- Automatic Load Balancing
+		- >  We found it crucial to have efficient automatic load balancing of partitions that can quickly adapt to various traffic conditions.
+	- Separate Log Files per RangePartition
+		- > Having separate log files enables us to isolate the load time of a RangePartition to just the recent object updates in that RangePartition.
+	- Journaling
+		- WAS 最开始发布的时候是没有 journaling 的，在线上发现了同一块盘上的竞争读写严重影响了性能
+		- > We found this optimization quite effective in reducing the latency and providing consistent performance.
+	- Append-only System
+		- > Having an append-only system and sealing an extent upon failure have greatly simplified the replication protocol and handling of failure scenarios.
+		- 基于 append-only 来实现更复杂的语义能够极大的简化实现
+	- End-to-end Checksums
+		- > We found it crucial to keep checksums for user data end to end.
+		- > We have seen cases where a few servers had hardware issues, and our end-to-end checksum caught such issues and helped maintain data integrity.
+	- Upgrades
+		- > we use rolling upgrades, which enable us to maintain high availability when upgrading the storage service, and we upgrade a single upgrade domain at a time.
+		- >  The upgrade process is automated so that it is tractable to manage a large number of these large-scale deployments.
+	- Multiple Data Abstractions from a Single Stack
+		- >  Our system supports three different data abstraction from the same storage stack: Blobs, Tables and Queues.
+		- > This design enables all data abstractions to use the same intra-stamp and inter-stamp
+		  replication, use the same load balancing system, and realize the benefits from improvements in the stream and partition layers.
+	- Use of System-defined Object Tables
+		- > We chose to use a fixed number of system defined Object Tables to build Blob, Table, and
+		  Queue abstractions instead of exposing the raw Object Table
+		  semantics to end users.
+	-
 - ---
 - 无用但有趣的一些小发现
 	- WAS 很容易手滑打成 AWS (
