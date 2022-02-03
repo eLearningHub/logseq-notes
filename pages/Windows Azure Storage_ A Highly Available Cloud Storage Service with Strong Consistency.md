@@ -397,13 +397,30 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 		- 当 memory table 或者 commit log 的 size 达到阈值时，PS 就会把 memory table 中所有的数据都存进一个新的 checkpoint，同时，相关联的 commit log 也都会被清除
 		- 跟其他的 LSM 实现一样，PS 也会执行一个 compact 的操作，定期把旧的 checkpoint 合并成更大的 checkpoint
 		- 这里对 Blob 有特别的处理
-			- 增加了一个独立的 Blob Data Stream
-			- blob 的数据不是 row data 的一部分，所以不会放进 memory table
-			- 为了减少对 streams 的写入，PS 会把 blob 的数据存进 commit log
-			- 相对的，row data 中只会存储 blob 的 extent 和 offset，长度
+			- blob 的数据不视为 row data 的一部分，不放进 memory table (避免 memory table 过大)
+				- 相对的，row data 中只会存储 blob 的 extent 和 offset，长度
 			- 在创建新 checkpoint 的时候，从 commit log 中删除的数据，会以 extent
 			  concatenation 的形式追加到 blob data stream 中。
 				- 注意这个操作是零拷贝的，只需要追加 extent 的指针
+			- 这个优化是为了减少 stream write 的数据
+				- 因为 blob 的数据被单独存放在 blob data stream 中，以 extent pointers 的形式引用，不会被 raw data streams 重复 checkpoint
+	- RangePartition Load Balancing
+		- PM 会执行以下操作来维护 partition layer 的负载均衡
+			- Load Balance
+				- 如果某个 PS 负载过高，PM 会将某些 RangePartitions 移到
+			- Split
+				- 如果某个 RangePartition 负载过高，PM 会将 RangePartition 拆分为多个(更小的，不重叠的)RangePartitions，并分配到其他的 PS 上
+			- Merge
+				- 如果某些 RangePartition 负载过低，PM 会将他们合并成一个更大的 RangePartition
+					- 看起来是要求 key 连续
+		- partition layer 会保持 RangePartition 的量在低水位和高水位之间，动态扩缩容
+			- 平衡状态下会稳定在低水位的
+			- 如果有突发的大量请求，分区就会被 split
+			- 如果分区的数量到达高水位，系统就会提高 merge 率来使得分区的数量逐渐接近低水位
+				- 注意这里有一个内存的要求
+				- stream and extent metadata 需要能够完全存储在 SM 的内存中
+		- 对每个 stamp，大概每天能观察到 75 次 split 和 merge，200 次 RangePartition 负载均衡
+		- Load Balance Operation Details
 			-
 - ---
 - 无用但有趣的一些小发现
