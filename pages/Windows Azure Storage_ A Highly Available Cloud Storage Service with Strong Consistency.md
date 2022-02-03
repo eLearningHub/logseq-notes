@@ -2,6 +2,7 @@ title:: Windows Azure Storage: A Highly Available Cloud Storage Service with Str
 type:: [[Paper]]
 conference:: [[SOSP '11]]
 doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
+status:: [[DONE]]
 
 - 论文链接
 	- [SIGOPS](https://sigops.org/s/conferences/sosp/2011/current/2011-Cascais/printable/11-calder.pdf)
@@ -545,10 +546,22 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 		- > This design enables all data abstractions to use the same intra-stamp and inter-stamp
 		  replication, use the same load balancing system, and realize the benefits from improvements in the stream and partition layers.
 	- Use of System-defined Object Tables
-		- > We chose to use a fixed number of system defined Object Tables to build Blob, Table, and
-		  Queue abstractions instead of exposing the raw Object Table
-		  semantics to end users.
-	-
+		- > We chose to use a fixed number of system defined Object Tables to build Blob, Table, and Queue abstractions instead of exposing the raw Object Table semantics to end users.
+	- Offering Storage in Buckets of 100TBs
+		- > We currently limit the amount of storage for an account to be no more than 100TB. This constraint allows all of the storage account data to fit within a given storage stamp
+		- > To obtain more storage capacity within a single data center,
+		  customers use more than one account within that location.
+	- CAP Theorem
+		- > WAS provides high availability with strong consistency guarantees.
+		- > However, our system, in practice, provides all three of these properties within a storage stamp.
+	- High-performance Debug Logging
+		- > The high-performance logging system and associated log search tools are critical for investigating any problems in production in detail without the need to deploy special code or reproduce problems.
+	- Pressure Point Testing
+		- >  The system provides a programmable interface for all of the main operations in our system as well as the points in the system to create faults.
+		- > The pressure point system is used to trigger all of these interactions during a stress run in specific orders or randomly.
+		- 有点像混沌测试
+- Conclusions
+	- The Windows Azure Storage platform implements essential services for developers of cloud based solutions.
 - ---
 - 无用但有趣的一些小发现
 	- WAS 很容易手滑打成 AWS (
@@ -558,3 +571,5 @@ doi:: [10.1145/2043556.2043571](https://dl.acm.org/doi/10.1145/2043556.2043571)
 	- 有种逐渐理解了一切的感觉， [[azblob]] 之前有些奇怪的设计都有了合理的解释
 - [[2022-02-03]] 感想
 	- 已经都快忘光了- -
+	- WAS 的设计真的很不错
+-

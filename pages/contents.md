@@ -9,7 +9,6 @@
 	- 探讨问题请在 [Discussions](https://github.com/Xuanwo/Xuanwo/discussions) 开启讨论
 -
 - Projects
-	- Reading [[Windows Azure Storage: A Highly Available Cloud Storage Service with Strong Consistency]]
 	- [[Databend 测试重构]]
 - Areas
 	- [[Automation]]
