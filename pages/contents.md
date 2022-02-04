@@ -22,4 +22,7 @@
 	- [[Paper]]
 	- [[Product]]
 	- [[Blog]]
-- [[Archives]]
+- Archives
+	- [[Journals]]
+	- [Read]([[read]])
+	- [Question]([[question]])
