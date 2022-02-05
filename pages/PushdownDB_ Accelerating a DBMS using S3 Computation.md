@@ -11,4 +11,5 @@ type:: [[Paper]]
 - >  Experimentation with a collection of queries including TPC-H queries shows that PushdownDB
   is on average 30% cheaper and 6.7× faster than a baseline that does not use S3 Select.
 -
--
+- #question 这篇文章是在对比使用 S3 存储数据，然后使用 S3 Select 和不用的对比？
+	-
