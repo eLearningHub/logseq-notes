@@ -1,8 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://rockset.com/blog/what-do-i-do-when-my-snowflake-query-is-slow-part-1-diagnosis/
-- https://rockset.com/blog/busting-myths-about-the-SQL-database-and-real-time-analytics/
-- https://manjusaka.itscoder.com/posts/2022/01/31/a-simple-introduction-about-network-monitoring-in-linux-kernel/
 - https://hacks.mozilla.org/2022/02/retrospective-and-technical-details-on-the-recent-firefox-outage
 - http://smallcultfollowing.com/babysteps//blog/2022/01/07/dyn-async-traits-part-7
 - https://www.percona.com/blog/optimize-sst-in-percona-xtradb-cluster-with-zstd-compression/
