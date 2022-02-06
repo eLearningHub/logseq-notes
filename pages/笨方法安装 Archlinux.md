@@ -1,6 +1,7 @@
 - 或许可能开一个系列叫做笨方法安装 Archlinux，旨在从最基础的地方逐个讲解安装 Archlinux 涉及到的知识。零基础完整学完本系列后，读者应当能具备独立自主维护 Archlinux 的能力。
+- 本文内容会按照 [Installation guide](https://wiki.archlinux.org/title/Installation_guide) 中的顺序展开，请随意跳过你认为已经掌握的内容。
 - ---
 - 安装准备
-	-
+	- 下载
 - 安装 Archlinux
 - 维护
