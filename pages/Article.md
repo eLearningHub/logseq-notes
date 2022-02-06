@@ -1,6 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- [5 Main Features to Help Identify a Web 3.0 Definition | Expert.ai | Expert.ai](https://www.expert.ai/blog/web-3-0/)
 - [What happens when you profile a continuous profiler? | Open Source Continuous Profiling Platform](https://pyroscope.io/blog/profile-continuous-profiler/)
 - https://blog.rust-lang.org/2022/01/31/changes-in-the-core-team.html
 - http://charap.co/reading-group-log-structured-protocols-in-delos/
