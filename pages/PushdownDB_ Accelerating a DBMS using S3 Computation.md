@@ -13,3 +13,9 @@ doi:: [10.1109/ICDE48307.2020.00174](https://doi.org/10.1109/ICDE48307.2020.0017
 -
 - #question 这篇文章是在对比使用 S3 存储数据，然后使用 S3 Select 和不用的对比？
 	-
+-
+- S3 成本
+- ![image.png](../assets/image_1644140694682_0.png)
+- 性能对比
+- ![image.png](../assets/image_1644140947580_0.png)
+-
