@@ -1,6 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://hacks.mozilla.org/2022/02/retrospective-and-technical-details-on-the-recent-firefox-outage
 - http://smallcultfollowing.com/babysteps//blog/2022/01/07/dyn-async-traits-part-7
 - https://www.percona.com/blog/optimize-sst-in-percona-xtradb-cluster-with-zstd-compression/
 -
