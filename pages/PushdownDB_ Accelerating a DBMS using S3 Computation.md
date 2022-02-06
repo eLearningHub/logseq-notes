@@ -1,10 +1,10 @@
 title:: PushdownDB: Accelerating a DBMS using S3 Computation
 type:: [[Paper]]
+conference:: [[ICDE'20]]
+doi:: [10.1109/ICDE48307.2020.00174](https://doi.org/10.1109/ICDE48307.2020.00174)
 
 - https://arxiv.org/abs/2002.05837
 - http://pages.cs.wisc.edu/~yxy/pubs/pushdowndb-icde.pdf
--
-- > 预印本，还没有正式发表
 -
 - 这篇 paper 主要在研究通过把一些计算下推到 S3 Select 来加速计算
 -
