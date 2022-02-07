@@ -8,3 +8,4 @@
 -
 - 可参考的资料
 	- [Distributed Consensus Reading List](https://github.com/heidihoward/distributed-consensus-reading-list)
+	- [[CS 598XU: Reliability of Cloud-Scale Systems]]
