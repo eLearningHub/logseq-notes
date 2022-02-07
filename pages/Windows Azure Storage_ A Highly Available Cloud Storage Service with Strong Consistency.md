@@ -78,7 +78,7 @@ status:: [[DONE]]
 				- 凉拌，看起来设计上就不允许超过
 				- [文档](https://docs.microsoft.com/en-us/azure/storage/common/scalability-targets-standard-account) 给出了每个 storage account 的最大配额
 					- ![image.png](../assets/image_1641993632655_0.png)
-				- 注意这是整个 storage account 共用的
+					- 注意这是整个 storage account 共用的
 				- 不过 Azure 在文档页高亮了提示，如果超过配额可以找客服申请
 					- 我推测应该是会存在更大的 Stamp，可以将这个 Account 迁移过去
 	- Location Service (LS)
