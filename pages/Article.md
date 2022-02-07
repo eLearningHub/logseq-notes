@@ -2,4 +2,4 @@
 -
 - http://smallcultfollowing.com/babysteps//blog/2022/01/07/dyn-async-traits-part-7
 - https://www.percona.com/blog/optimize-sst-in-percona-xtradb-cluster-with-zstd-compression/
--
+- https://docs.google.com/document/d/1LptmFB7az2rLnou27QK_KKHgjcA5vKza0dWj4h8fkno
