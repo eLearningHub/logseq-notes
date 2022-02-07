@@ -54,7 +54,7 @@ status:: [[DONE]]
 			- Standard_IA： 低频存储
 			- Archive: 归档存储
 			- One Zone-IA: 其他的存储级别会在至少三个 AZ 中存储一份，这个存储级别只存储一份，价格会便宜 20%
-		- 具体到实现上，大家可能会用三副本来实现 Standard，用
+		- 具体到实现上，大家可能会用三副本来实现 Standard，用纠删码来实现 Standard_IA
 		- 但是 WAS 这里就把这两个维度拆开了，变成了正交的关系
 			- Account 级别配置 Redundancy
 			- Blobs 级别可以配置 Access Tier
