@@ -43,12 +43,6 @@
  {:block/name "2022-02-03",
   :block/created-at 1643846400000,
   :block/updated-at 1643846400000}
- {:block/name "2022-02-04",
-  :block/created-at 1643932800000,
-  :block/updated-at 1643932800000}
- {:block/name "2022-02-05",
-  :block/created-at 1644019200000,
-  :block/updated-at 1644019200000}
  {:block/name "2022-02-06",
   :block/created-at 1644105600000,
   :block/updated-at 1644105600000}
@@ -85,7 +79,7 @@
   :block/updated-at 1642755124693}
  {:block/name "antidotedb",
   :block/created-at 1644307623600,
-  :block/updated-at 1644307623600}
+  :block/updated-at 1644307728190}
  {:block/name "apache arrow",
   :block/created-at 1642171528810,
   :block/updated-at 1642171528810}
@@ -233,7 +227,7 @@
   :block/updated-at 1643521846763}
  {:block/name "cockroachdb",
   :block/created-at 1644307623601,
-  :block/updated-at 1644307623601}
+  :block/updated-at 1644307735504}
  {:block/name "constant database",
   :block/created-at 1644307623600,
   :block/updated-at 1644307623600}
@@ -289,9 +283,6 @@
  {:block/name "doing",
   :block/created-at 1640852033374,
   :block/updated-at 1640852033374}
- {:block/name "dolphin",
-  :block/created-at 1642664840849,
-  :block/updated-at 1642664840849}
  {:block/name "done",
   :block/created-at 1640852033376,
   :block/updated-at 1640852033376}
@@ -325,6 +316,9 @@
  {:block/name "erasure coding in windows azure storage",
   :block/created-at 1643377778151,
   :block/updated-at 1643377778151}
+ {:block/name "erlang",
+  :block/created-at 1644308147648,
+  :block/updated-at 1644308147648}
  {:block/name "exploiting nil-externality for fast replicated storage",
   :block/created-at 1643377778149,
   :block/updated-at 1643377778149}
@@ -402,7 +396,7 @@
   :block/updated-at 1643377778151}
  {:block/name "go",
   :block/created-at 1640856421670,
-  :block/updated-at 1640856421670}
+  :block/updated-at 1644307683734}
  {:block/name "golang",
   :block/created-at 1642171528810,
   :block/updated-at 1643468111363}
@@ -430,10 +424,10 @@
  {:block/name "hive",
   :block/created-at 1642171528809,
   :block/updated-at 1642171528809}
- {:block/name "hotstorage'16",
+ {:block/name "hotstorage '16",
   :block/created-at 1643377778150,
   :block/updated-at 1643377778150}
- {:block/name "hotstorage'17",
+ {:block/name "hotstorage '17",
   :block/created-at 1643377778150,
   :block/updated-at 1643377778150}
  {:block/name "hotstorage'18",
@@ -454,7 +448,7 @@
  {:block/name "hypothesis",
   :block/created-at 1642170540679,
   :block/updated-at 1642170615609}
- {:block/name "icde'20",
+ {:block/name "icde '20",
   :block/created-at 1644307623600,
   :block/updated-at 1644307623600}
  {:block/name "idea",
@@ -676,15 +670,12 @@
  {:block/name "os",
   :block/created-at 1641456448481,
   :block/updated-at 1641456448481}
- {:block/name "osdi'14",
+ {:block/name "osdi '14",
   :block/created-at 1643377778150,
   :block/updated-at 1643377778150}
  {:block/name "osstring",
   :block/created-at 1641456448481,
   :block/updated-at 1641456448481}
- {:block/name "ourobox",
-  :block/created-at 1642659281752,
-  :block/updated-at 1643465528138}
  {:block/name "ouroflow",
   :block/created-at 1643435617034,
   :block/updated-at 1643441273069}
@@ -693,7 +684,7 @@
   :block/updated-at 1641570460618}
  {:block/name "paper",
   :block/created-at 1640917612276,
-  :block/updated-at 1643879368011}
+  :block/updated-at 1644308099978}
  {:block/name "parquet",
   :block/created-at 1640852452891,
   :block/updated-at 1642060903983}
@@ -985,12 +976,12 @@
  {:block/name "understanding rack-scale disaggregated storage",
   :block/created-at 1643377778150,
   :block/updated-at 1643377778150}
+ {:block/name "usenix atc '12",
+  :block/created-at 1643377778151,
+  :block/updated-at 1643377778151}
  {:block/name "usenix atc '17",
   :block/created-at 1643377778150,
   :block/updated-at 1643377778150}
- {:block/name "usenix atc'12",
-  :block/created-at 1643377778151,
-  :block/updated-at 1643377778151}
  {:block/name "utlb",
   :block/created-at 1642171528810,
   :block/updated-at 1642171528810}
@@ -1012,7 +1003,7 @@
  {:block/name "virtualbox",
   :block/created-at 1643521846763,
   :block/updated-at 1643521846763}
- {:block/name "vldb '21",
+ {:block/name "vldb'21",
   :block/created-at 1642171528810,
   :block/updated-at 1642171528810}
  {:block/name "wait",

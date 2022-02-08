@@ -1,6 +1,6 @@
 title:: PushdownDB: Accelerating a DBMS using S3 Computation
 type:: [[Paper]]
-conference:: [[ICDE'20]]
+conference:: [[ICDE '20]]
 doi:: [10.1109/ICDE48307.2020.00174](https://doi.org/10.1109/ICDE48307.2020.00174)
 status:: [[DONE]]
 
