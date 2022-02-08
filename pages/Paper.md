@@ -1,5 +1,5 @@
 - To Read
-- {{query (and (page-property type Paper) (not (page-property status DONE)))}}
+- {{query (and (not (page-property status DONE)) (page-property type Paper))}}
   query-sort-by:: page
   query-sort-desc:: true
   query-properties:: [:page :conference :doi]
