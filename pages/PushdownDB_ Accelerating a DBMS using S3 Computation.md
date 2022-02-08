@@ -24,7 +24,7 @@ status:: [[DONE]]
 -
 - 如果这个优化要应用于工业界的话，应该还需要考虑这些问题
 	- 多种数据格式如何支持？
-		- S3 Select 只支持常见的 [[csv]]，[[JSON]] 和 [[parquet]] 等等
+		- S3 Select 只支持常见的 [[CSV]]，[[JSON]] 和 [[Parquet]] 等等
 	- 多云的支持
 		- S3 Select 的特性并不是所有的对象存储服务全都支持
 			- [[Azure Blobs]] 支持: [Query Blob Contents](https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents)

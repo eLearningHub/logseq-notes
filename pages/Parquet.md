@@ -1,4 +1,5 @@
 - 官网: https://parquet.apache.org/
+  title:: Parquet
 - 存储格式
   collapsed:: true
 	- ```
@@ -35,7 +36,7 @@
 	  ```
 - 相比于 CSV，parqeut 的数据压缩率真的很高
 	- 同样是一个月的 OnTime 数据，csv 有 100+ MB，parquet 只需要 11MB
-	- 根据实际的测试，把 [[csv]] 压缩成 [[zstd]] 也能取得类似的压缩率
+	- 根据实际的测试，把 [[CSV]] 压缩成 [[zstd]] 也能取得类似的压缩率
 		- 区别在于 parquet 直接可读，而 csv 需要先解压缩才能读取
 -
 - 原来 [[S3/Select]] 也支持 Parquet - -

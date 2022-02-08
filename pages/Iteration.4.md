@@ -18,5 +18,6 @@ date:: 2022-01-03 - 2022-01-16
 	- 可惜没拿大奖，我们的想法跟一等奖撞车了
 		- 具体的差异是一等奖没有使用 [[AWS Athena]] 而是直接使用 [[S3/Select]]
 		- 在功能上他们可以完整的跑完 [[TPC-H]] 测试，我们只能跑个别几个，所以就被 PK 下去了
+		- Paper [[PushdownDB: Accelerating a DBMS using S3 Computation]] 也是这个思路
 	- 我在这个项目里面的工作是为 [[TiDB]] dumpling 实现了 [[Parquet]] 支持
 -
