@@ -3,7 +3,7 @@
 	- [[CS 598XU: Reliability of Cloud-Scale Systems]]
 	- https://github.com/dyweb/papers-notebook
 -
-- 待读
+- 未读
 - {{query (and (not (page-property status DONE)) (page-property type Paper))}}
   query-sort-by:: page
   query-sort-desc:: true

@@ -6,6 +6,7 @@ status:: [[DONE]]
 
 - https://arxiv.org/abs/2002.05837
 - http://pages.cs.wisc.edu/~yxy/pubs/pushdowndb-icde.pdf
+- My Dropbox: https://www.dropbox.com/s/r52ojvy24gd0vqy
 -
 - 这篇 paper 主要在研究通过把一些计算下推到 S3 Select 来加速计算
 -
