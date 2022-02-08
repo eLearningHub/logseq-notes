@@ -24,13 +24,10 @@ status:: [[DONE]]
 -
 - 如果这个优化要应用于工业界的话，应该还需要考虑这些问题
 	- 多种数据格式如何支持？
-		- S3 Select 只支持常见的 csv，json 和 [[parquet]] 等等
+		- S3 Select 只支持常见的 [[csv]]，[[JSON]] 和 [[parquet]] 等等
 	- 多云的支持
 		- S3 Select 的特性并不是所有的对象存储服务全都支持
 			- [[Azure Blobs]] 支持: [Query Blob Contents](https://docs.microsoft.com/en-us/rest/api/storageservices/query-blob-contents)
-			- [[Google Cloud Storage]] 看起来不支持
+			- [[Google Cloud Storage]] 不支持
 	- 缓存
-		- 数据存在 S3 上的服务大多都会实习一个 cache layer，而 S3 select 拿到的数据相对来讲更不好 cache
-		- 那考虑一个请求落到 cache 和落到 S3 select 的差异，可能实际的价值还要再打一个折扣
--
-- 无论如何，值得一试
+		- 数据存在 S3 上的服务大多都会实现一个 cache layer，而 S3 select 拿到的数据相对来讲更不好 cache，考虑一个请求落到 cache 和落到 S3 select 的差异，可能实际的价值还要再打一个折扣
