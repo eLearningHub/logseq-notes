@@ -1,0 +1,11 @@
+[Unit]
+Description=Automatically does git push and pull
+
+[Service]
+Type=simple
+WorkingDirectory=/home/xuanwo/Notes
+ExecStart=./scripts/git-sync
+
+[Install]
+WantedBy=autosync.target
+

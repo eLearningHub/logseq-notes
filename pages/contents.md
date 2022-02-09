@@ -1,0 +1,28 @@
+- Hi，我是漩涡。
+	- 内容 [Xuanwo's Blog](https://xuanwo.io)
+	- 工作 [Xuanwo's Work](https://work.xuanwo.io)
+	- 代码 [Xuanwo's Github](https://github.com/Xuanwo)
+-
+- 这里是 Xuanwo's Note
+	- 查看本站的源代码 [Xuanwo/Xuanwo](https://github.com/Xuanwo/Xuanwo)，欢迎 Star 本项目以示支持
+	- 发现错误请在 [Issues](https://github.com/Xuanwo/Xuanwo/issues) 提交反馈
+	- 探讨问题请在 [Discussions](https://github.com/Xuanwo/Xuanwo/discussions) 开启讨论
+-
+- Projects
+	- [[Databend 测试重构]]
+- Areas
+	- [[Automation]]
+	- [[Database]]
+	- [[Storage]]
+	- [[Rust]]
+	- [[Linux]]
+- Resources
+	- [[Article]]
+	- [[Iteration]]
+	- [[Paper]]
+	- [[Product]]
+	- [[Blog]]
+- Archives
+	- [[Journals]]
+	- [Read]([[read]])
+	- [Question]([[question]])

@@ -1,0 +1,2 @@
+type:: [[Database]]
+language:: [[Rust]]

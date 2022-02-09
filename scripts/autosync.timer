@@ -1,0 +1,9 @@
+[Unit]
+Description=Automatically does git push and pull
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=15min
+
+[Install]
+WantedBy=timers.target

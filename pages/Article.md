@@ -1,0 +1,10 @@
+- 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
+-
+- https://www.percona.com/blog/optimize-sst-in-percona-xtradb-cluster-with-zstd-compression/
+- https://docs.google.com/document/d/1LptmFB7az2rLnou27QK_KKHgjcA5vKza0dWj4h8fkno
+- https://www.ncameron.org/blog/async-io-fundamentals/
+- https://accu.org/journals/overload/29/164/teodorescu/
+- http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0443r11.html
+- https://bonsaidb.io/blog/announcing-bonsaidb-alpha/
+- https://www.steveonstuff.com/2022/01/27/no-such-thing-as-clean-code
+-
