@@ -1,5 +1,3 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://blog.openacid.com/algo/paxos/
 - https://www.codedump.info/post/20220106-sqlite-btree-4-wal/
--
