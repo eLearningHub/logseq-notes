@@ -7,4 +7,4 @@
 - http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0443r11.html
 - https://bonsaidb.io/blog/announcing-bonsaidb-alpha/
 - https://www.steveonstuff.com/2022/01/27/no-such-thing-as-clean-code
--
+- https://xxchan.github.io/cs/2022/02/09/paxos-hard-zh.html
