@@ -1,8 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://www.ncameron.org/blog/async-io-fundamentals/
-- https://accu.org/journals/overload/29/164/teodorescu/
-- http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p0443r11.html
 - https://bonsaidb.io/blog/announcing-bonsaidb-alpha/
 - https://www.steveonstuff.com/2022/01/27/no-such-thing-as-clean-code
 - https://blog.openacid.com/algo/paxos/
