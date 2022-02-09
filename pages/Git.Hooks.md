@@ -1,15 +1,18 @@
 title:: Git/Hooks
 
-- 经常忘记在提交之前检查代码是不是 format 或者 clippy 检查过，可以配置一个 `pre-push` hook
+- 经常忘记在提交之前检查代码是不是 format 或者 clippy 检查过，可以配置一个 git hook
+	- 根据自己的需求选择 hook 触发的时间
+		- 在 Commit 之前：`.git/hooks/pre-commit`
+		- 在 Push 之前： `.git/hooks/pre-push`
 	- ```bash
 	  #!/bin/bash
 	  
 	  set -eu
 	  
 	  # Check fmt
-	  if ! cargo fmt -- --check
+	  if ! cargo fmt --all -q --check
 	  then
-	      cargo fmt
+	      cargo fmt --all
 	      echo "Fmt not happy, please add again."
 	      exit 1
 	  fi
