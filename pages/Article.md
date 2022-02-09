@@ -1,5 +1,4 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://bonsaidb.io/blog/announcing-bonsaidb-alpha/
-- https://www.steveonstuff.com/2022/01/27/no-such-thing-as-clean-code
 - https://blog.openacid.com/algo/paxos/
+-
