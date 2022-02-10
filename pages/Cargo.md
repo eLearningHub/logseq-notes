@@ -40,3 +40,7 @@
 	- [killercup/cargo-edit](https://github.com/killercup/cargo-edit)
 		- A utility for managing cargo dependencies from the command line.
 		- 提供 `cargo add`, `cargo rm`, `cargo update` 等命令
+-
+- 参考资料
+	- [The Cargo Book](https://doc.rust-lang.org/cargo/)
+	-
