@@ -1,0 +1,17 @@
+- cargo 是 [[Rust]] 的官方构建工具
+-
+- build
+- fmt
+	- `cargo fmt`： 格式化整个项目
+- check
+	-
+- clippy
+- test
+	- 运行指定测试: `cargo test -- "metrics::test_metric_server"`
+	- 输出测试中打印到 stdout 的内容: `cargo test -- "metrics::test_metric_server" --show-output`
+	- 显示完整的 Backtrace: `RUST_BACKTRACE=1 cargo test`
+	-
+- 方便的插件
+	- [killercup/cargo-edit](https://github.com/killercup/cargo-edit)
+		- A utility for managing cargo dependencies from the command line.
+		- 提供 `cargo add`, `cargo rm`, `cargo update` 等命令
