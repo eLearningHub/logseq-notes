@@ -7,6 +7,7 @@
 	- 查看本站的源代码 [Xuanwo/Xuanwo](https://github.com/Xuanwo/Xuanwo)，欢迎 Star 本项目以示支持
 	- 发现错误请在 [Issues](https://github.com/Xuanwo/Xuanwo/issues) 提交反馈
 	- 探讨问题请在 [Discussions](https://github.com/Xuanwo/Xuanwo/discussions) 开启讨论
+	- 链接如果失效请尝试使用 `Ctrl + K` 来搜索关键词
 -
 - Projects
 	- [[Databend 测试重构]]

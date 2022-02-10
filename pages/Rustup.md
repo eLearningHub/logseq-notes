@@ -1,7 +1,27 @@
 - [[Rust]] 多版本管理的组件
 	- 其他语言中类似的工具包括 Ruby's rbenv, Python's pyenv, or Node's nvm.
 -
-- How it works
+- 安装
+	- ```shell
+	  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	  ```
+	- Windows 可以使用专门的安装程序: https://win.rustup.rs/x86_64
+-
+- toolchain file
+	- ```toml
+	  [toolchain]
+	  channel = "nightly-2020-07-10"
+	  components = [ "rustfmt", "rustc-dev" ]
+	  targets = [ "wasm32-unknown-unknown", "thumbv2-none-eabi" ]
+	  profile = "minimal"
+	  ```
+	- 可以在项目根目录增加配置文件 `rust-toolchain.toml` 来指定一组特定的 rust 版本
+	- `rustc`，`cargo` 这些内置命令执行的时候，rustup 都会首先选择使用哪个 toolchain
+		- 选择顺序参考 [Overrides](https://rust-lang.github.io/rustup/overrides.html#overrides)
+	- 所以在 CI 等环境里面，实际上不需要做额外的 setup
+-
+- 工作原理
+  collapsed:: false
 	- `~/.cargo/bin` 下面的 `cargo` 和 `rustc` 等组件实际上是一个 proxy，会把对应的命令转发给具体的 toolchain
 		- 这些 proxy 实际上都是同一个二进制，通过不同的 args[0] 来切换行为
 		- ```shell
@@ -56,17 +76,5 @@
 		              }
 		          }
 		  ```
-- toolchain file
-	- ```toml
-	  [toolchain]
-	  channel = "nightly-2020-07-10"
-	  components = [ "rustfmt", "rustc-dev" ]
-	  targets = [ "wasm32-unknown-unknown", "thumbv2-none-eabi" ]
-	  profile = "minimal"
-	  ```
-	- 可以用 `rust-toolchain.toml` 来指定一组特定的 rust 版本
-	- `rustc`，`cargo` 这些内置命令执行的时候，rustup 都会首先选择使用哪个 toolchain
-		- 选择顺序参考 [Overrides](https://rust-lang.github.io/rustup/overrides.html#overrides)
-	- 所以在 CI 等环境里面，实际上不需要做额外的 setup
 - 参考资料
 	- [Rustup Introduction](https://rust-lang.github.io/rustup/index.html#introduction)
