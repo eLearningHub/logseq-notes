@@ -49,3 +49,5 @@ category:: [[OLTP]], [[SQL]]
 	- [Atomic Commit In SQLite](https://sqlite.com/atomiccommit.html)
 	- [我们常听到的WAL到底是什么](https://segmentfault.com/a/1190000022512468)
 	- [Write-Ahead Logging](https://sqlite.org/wal.html)
+	- codedump: [sqlite3.36版本 btree实现](https://www.codedump.info/post/20211217-sqlite-btree-0/) *推荐*
+-
