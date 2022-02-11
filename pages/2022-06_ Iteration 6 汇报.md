@@ -8,6 +8,7 @@ title:: 2022-06: Iteration 6 汇报
 - 不过在测试的时候还是遇到了一些难搞的问题，首先是一个业务逻辑问题。
 - 由于 DAL 目标是做一个通用的存储模块，所以它设计了自己独立的 Error 类型，没有复用 Databend 本身的那一套 ErrorCode 逻辑。在这个 PR 中，我只是简单的把所有的 Error 都 map 成了 transport error。但是某个模块恰恰就依赖这个 ErrorCode 做检查，导致相关的测试全都报错了。最后选择简单地 match 了一下错误，计划后面再去考虑错误处理相关的问题。
 - 这里其实也能反映出 Databend 现有的 exception 模块的问题，那个模块中使用了一个模板生成的函数，导致 IDE 完全跳转不过去，死活没有定位到原因。
-- 然后是 `block_on` 的问题。
+- 然后是 `block_on` 的问题。Async Rust 现在的设计使得 sync/async 之间的代码交互非常痛苦，特别是在 sync 代码中去调用 async 函数，非常难受。从实践上来看，block_on 经常会导致整个 runtime 死锁- -，所以最好能回避这种用法。最后还是把一些函数改造成了 async 解决了。
+-
 -
 -
