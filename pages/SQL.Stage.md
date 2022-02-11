@@ -6,5 +6,5 @@
 	- 外部存储的类型，密钥(ak/sk)，加密方式
 -
 - 常见的实现
-	- [[snowflake]]: [CREATE STAGE](https://docs.snowflake.com/en/sql-reference/sql/create-stage.html)
+	- [[Snowflake]]: [CREATE STAGE](https://docs.snowflake.com/en/sql-reference/sql/create-stage.html)
 -
