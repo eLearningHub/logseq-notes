@@ -2,4 +2,4 @@
 -
 - https://www.codedump.info/post/20220106-sqlite-btree-4-wal/
 - https://utcc.utoronto.ca/~cks/space/blog/solaris/ZFSModernDiskPerformance
--
+- https://thenewstack.io/kubernetes-and-the-next-generation-of-paas/
