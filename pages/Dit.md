@@ -101,7 +101,7 @@
 		- 而且也不 self contain
 	- 支持集群吗？
 	- 索引怎么维护？
-		- 写 [[sqlite]]，然后创建 snapshot？
+		- 写 [[SQLite]]，然后创建 snapshot？
 			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
 				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
 		- 可能直接写 k-v 来的更简单一些？

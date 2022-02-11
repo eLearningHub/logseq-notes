@@ -3,6 +3,36 @@ language:: [[C]]
 category:: [[OLTP]], [[SQL]]
 
 -
+- 生产级 btree 的实现
+	- 如何存储变长数据？
+	- 如何存储数据大小超过一个物理页面的数据？
+	- 如何利用被回收的空间？
+	- 如何处理崩溃恢复？
+	- 读写并发如何处理？
+-
+- btree 的架构
+	- btree 的实现
+	- 页面管理
+		- 页面缓存
+			- 页面缓存管理器
+				- 维护脏页面链表
+			- 页面缓存算法
+				- > 默认实现是 LRU
+				- 缓存页面
+				- 淘汰不常用页面
+				- 查询页面
+		- 页面备份
+			- journal 文件
+			- WAL 文件
+		- 事务
+	- 系统 API
+		- 文件 IO
+		- Mutex
+		- ...
+-
+- 并发控制
+	-
+-
 - 应用
 	- SQLite 可以作为一个 embed db 有很多独特的应用场景
 	- 比如存储在 [[Cloudflare/Durable Objects]] 中
@@ -12,3 +42,4 @@ category:: [[OLTP]], [[SQL]]
 -
 - 推荐读物
 	- Wesley Aptekar-Cassels: [Consider SQLite](https://blog.wesleyac.com/posts/consider-sqlite)
+	- [Atomic Commit In SQLite](https://sqlite.com/atomiccommit.html)
