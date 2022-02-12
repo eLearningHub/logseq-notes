@@ -6,10 +6,10 @@ features:: [[Git Host]]
 -
 - Github 点击展示更多内容
 	- ```markdown
-	  <detail>
+	  <details>
 	    <summary>Lalala</summary>
 	    Any markdown here
-	  </detail>
+	  </details>
 	  ```
 	- 实际的用例参见: https://github.com/datafuselabs/databend/pull/4081#issuecomment-1034590367
 		- ![image.png](../assets/image_1644487094037_0.png)
