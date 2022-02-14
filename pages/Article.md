@@ -3,3 +3,8 @@
 - https://www.codedump.info/post/20220106-sqlite-btree-4-wal/
 - https://utcc.utoronto.ca/~cks/space/blog/solaris/ZFSModernDiskPerformance
 - https://thenewstack.io/kubernetes-and-the-next-generation-of-paas/
+- http://smalldatum.blogspot.com/2022/02/rocksdb-internals-trivial-move.html
+- https://iam.lc/2021/10/a-failed-house-purchasing.ping
+- https://www.elastic.co/cn/blog/whats-new-elastic-8-0-0
+- https://www.percona.com/blog/online-ddl-with-group-replication-in-mysql-8-0-27/
+-
