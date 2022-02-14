@@ -4,18 +4,6 @@ title:: Rust/std/Try
 	- Tracking Issue: [Tracking Issue for try_trait_v2, A new design for the ? desugaring](https://github.com/rust-lang/rust/issues/84277)
 -
 - 现在 Rust 中支持通过 `?` 来自动返回 `Result<T, E>` 中的 `Err` 分支，但是 `Ok` 分支还是处理的不好。比如说我们现在没法自动提取 `Option<T>` 中的 value，必须配合使用 `NoneError` 或者 `Option::ok_or()`。
-- 导致我们经常写出这样的代码：
-	- ```rust
-	  if let Some(x) = y {
-	    if let Some(a) = x {
-	      ...
-	    }
-	  }
-	  ```
-	- 在引入了 `Try` 之后，我们可以
-	- ```
-	  if let a = (y?)? {
-	     xxx
-	  }
-	  ```
 -
+- 参考资料
+	- [Trait std::ops::Try](https://doc.rust-lang.org/std/ops/trait.Try.html)
