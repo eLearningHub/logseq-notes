@@ -1,4 +1,7 @@
 title:: 2022-06: Iteration 6 汇报
+type:: [[Blog]]
+status:: [[DONE]]
+link:: https://xuanwo.io/reports/2022-06/
 
 - 双周结束， [[Iteration/6]] 汇报。
 -
