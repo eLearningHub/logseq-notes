@@ -7,4 +7,12 @@
 - https://iam.lc/2021/10/a-failed-house-purchasing.ping
 - https://www.elastic.co/cn/blog/whats-new-elastic-8-0-0
 - https://www.percona.com/blog/online-ddl-with-group-replication-in-mysql-8-0-27/
+- https://www.ncameron.org/blog/async-read-and-write-traits/
+- https://nexte.st/
+- https://github.com/rust-lang/rust/issues/91611
+- https://gist.github.com/carllerche/5d7037bd55dac1cb72891529a4ff1540
+- https://github.com/nrc/portable-interoperable/issues/5
+- https://paper.dropbox.com/doc/MvytTgjIOTNpJAS6Mvw38
+- https://blog.yoshuawuyts.com/uninit-read-write/
+- https://rust-lang.github.io/rfcs/2930-read-buf.html
 -
