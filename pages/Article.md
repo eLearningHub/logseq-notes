@@ -1,6 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://thenewstack.io/kubernetes-and-the-next-generation-of-paas/
 - http://smalldatum.blogspot.com/2022/02/rocksdb-internals-trivial-move.html
 - https://iam.lc/2021/10/a-failed-house-purchasing.ping
 - https://www.elastic.co/cn/blog/whats-new-elastic-8-0-0
