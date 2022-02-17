@@ -15,4 +15,15 @@
 - https://paper.dropbox.com/doc/MvytTgjIOTNpJAS6Mvw38
 - https://blog.yoshuawuyts.com/uninit-read-write/
 - https://rust-lang.github.io/rfcs/2930-read-buf.html
--
+- https://arrow.apache.org/blog/2022/02/16/introducing-arrow-flight-sql/
+- https://blog.rust-lang.org/2022/02/15/Rust-Survey-2021.html
+- https://research.swtch.com/govcs
+- https://blog.rust-lang.org/2022/02/14/crates-io-snapshot-branches.html
+- http://smallcultfollowing.com/babysteps/blog/2022/02/09/dare-to-ask-for-more-rust2024/
+- https://blog.rust-lang.org/inside-rust/2022/02/03/async-in-2022.html
+- https://www.linode.com/press-release/akamai-to-acquire-linode/
+- https://doc.rust-lang.org/nightly/std/pin/macro.pin.html
+- https://www.usenix.org/system/files/fast21-zhong.pdf
+- https://twitter.com/semrush/status/1493861214451085314
+- https://www.ihcblog.com/rust-runtime-design-1/
+- https://arxiv.org/pdf/2010.12597.pdf
