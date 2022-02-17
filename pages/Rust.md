@@ -19,7 +19,6 @@
 -
 - 正在关注
 	- [Async IO trait in std]([[Rust/RFCs/Async IO in std]])
-	-
 -
 - 使用 Rust 的项目
 	- {{query (page-property language Rust)}}
