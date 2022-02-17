@@ -1,9 +1,6 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
 - https://nexte.st/
-- https://github.com/rust-lang/rust/issues/91611
-- https://gist.github.com/carllerche/5d7037bd55dac1cb72891529a4ff1540
-- https://github.com/nrc/portable-interoperable/issues/5
 - https://paper.dropbox.com/doc/MvytTgjIOTNpJAS6Mvw38
 - https://blog.yoshuawuyts.com/uninit-read-write/
 - https://rust-lang.github.io/rfcs/2930-read-buf.html
