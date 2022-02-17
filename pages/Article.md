@@ -1,9 +1,6 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
 - https://nexte.st/
-- https://paper.dropbox.com/doc/MvytTgjIOTNpJAS6Mvw38
-- https://blog.yoshuawuyts.com/uninit-read-write/
-- https://rust-lang.github.io/rfcs/2930-read-buf.html
 - https://arrow.apache.org/blog/2022/02/16/introducing-arrow-flight-sql/
 - https://blog.rust-lang.org/2022/02/15/Rust-Survey-2021.html
 - https://research.swtch.com/govcs
