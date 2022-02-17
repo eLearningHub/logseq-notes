@@ -1,0 +1,7 @@
+- 作为 [Portable across runtimes, easy to switch](https://rust-lang.github.io/wg-async/vision/roadmap/portable.html) 的一部分，我们需要在标准库中增加关于 AsyncRead 和 AsyncWrite 的抽象。
+-
+-
+- 参考资料
+	- [wg-async: Async read/write](https://rust-lang.github.io/wg-async/vision/roadmap/portable/read_write.html)
+	- nrc's Proposal: [Async read and write traits](https://www.ncameron.org/blog/async-read-and-write-traits/)
+-
