@@ -1,7 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://www.codedump.info/post/20220106-sqlite-btree-4-wal/
-- https://utcc.utoronto.ca/~cks/space/blog/solaris/ZFSModernDiskPerformance
 - https://thenewstack.io/kubernetes-and-the-next-generation-of-paas/
 - http://smalldatum.blogspot.com/2022/02/rocksdb-internals-trivial-move.html
 - https://iam.lc/2021/10/a-failed-house-purchasing.ping
