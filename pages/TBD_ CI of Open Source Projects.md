@@ -1,3 +1,4 @@
+title:: TBD: CI of Open Source Projects
 type:: [[Blog]]
 
 -
