@@ -15,3 +15,4 @@
 - https://arxiv.org/pdf/2010.12597.pdf
 - https://endler.dev/2020/rust-compile-times/
 - https://matklad.github.io/2021/09/04/fast-rust-builds.html
+- http://vldb.org/pvldb/vol12/p2170-tan.pdf
