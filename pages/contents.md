@@ -9,8 +9,6 @@
 	- 探讨问题请在 [Discussions](https://github.com/Xuanwo/Xuanwo/discussions) 开启讨论
 	- 链接如果失效请尝试使用 `Ctrl + K` 来搜索关键词
 -
-- Projects
-	- [[Databend 测试重构]]
 - Areas
 	- [[Automation]]
 	- [[Database]]
