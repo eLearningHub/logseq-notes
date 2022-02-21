@@ -16,10 +16,20 @@
 -
 - 该给用户暴露怎样的接口？
 -
+- 如何避免重复的 stat？
+	- 支持外部指定 size_hint()
 - ```rust
   let o = op.object("xxxx");
+  let () = o.delete().await?;
   let meta = o.stat().await?;
-  let r = o.new_sequential_reader().read().await?;
-  let r = o.new_random_reader().read().await?;
+  
+  let r = o.new_reader().read().await?;
   let w = o.new_writer();
   ```
+- ```rust
+  let o = op.objects(path)
+  ```
+-
+- 有没有办法统一成一个 Reader 呢？
+	- new_reader() -> Reader
+	- r.read()
