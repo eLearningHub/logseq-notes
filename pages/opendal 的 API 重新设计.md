@@ -17,5 +17,6 @@
 - 该给用户暴露怎样的接口？
 -
 - ```rust
-  op.object()
+  op.object("xxxx")
+  op.objects(query)
   ```
