@@ -1,0 +1,21 @@
+- 返回一个 Object，然后 Object 提供操作的支持
+- 比如说 reader() 和 seekable_reader()
+- 支持两种操作，一种是 read，另一种是 cursor
+	- 是不是从底层就得返回两个参数
+- 区分 Stream 和 Reader
+	- Convert stream to async reader
+		- https://api.rocket.rs/master/src/rocket/response/stream/reader.rs.html#13-96
+- Reader vs StatefulReader
+- 在 Object 中维护更多状态？
+- 默认返回的 Reader 就是 Seekable 的会不会引起混淆？
+	- Stream 其实有点像默认实现了 read_buf?
+- 如果统一返回 reader 的话，如何保持 read_all 的性能不发生回退呢？
+	- Sequential Reading
+	- Disorder Reading
+- 每次 open 的时候主动 stat 一下？
+-
+- 该给用户暴露怎样的接口？
+-
+- ```rust
+  op.object()
+  ```
