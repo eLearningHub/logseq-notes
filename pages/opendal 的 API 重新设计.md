@@ -17,6 +17,9 @@
 - 该给用户暴露怎样的接口？
 -
 - ```rust
-  op.object("xxxx")
-  op.objects(query)
+  let o = op.object("xxxx");
+  let meta = o.stat().await?;
+  let r = o.new_sequential_reader().read().await?;
+  let r = o.new_random_reader().read().await?;
+  let w = o.new_writer();
   ```
