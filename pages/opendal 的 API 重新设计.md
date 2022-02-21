@@ -33,3 +33,13 @@
 - 有没有办法统一成一个 Reader 呢？
 	- new_reader() -> Reader
 	- r.read()
+- 要考虑一下对用户和对 service 的 API
+-
+- 对用户暴露一个 new_reader 和 new_writer
+	- Reader 会使用如下 API
+		- acc.random_read()
+	- Writer 会使用如下 API
+		- acc.write()
+		-
+-
+- service 必须实现 sequential_read 和 random_read 其中一个，然后两个互为默认实现?
