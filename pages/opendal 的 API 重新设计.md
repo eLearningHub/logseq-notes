@@ -38,7 +38,7 @@
 - 对用户暴露一个 new_reader 和 new_writer
 	- Reader 会使用如下 API
 		- acc.random_read()
-	- Writer 会使用如下 API
+	- Writer 会使用如下 API (large file support？)
 		- acc.write()
 		-
 -
