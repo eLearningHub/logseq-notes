@@ -43,3 +43,5 @@
 		-
 -
 - service 必须实现 sequential_read 和 random_read 其中一个，然后两个互为默认实现?
+-
+- Proposal: https://github.com/datafuselabs/opendal/pull/41
