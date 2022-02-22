@@ -3,6 +3,7 @@
 -
 - Pin: [[Rust/std/Pin]]
 - Future: [[Rust/std/Future]]
+- Runtime: [[Rust/Async Runtime]]
 -
 - 参考资料
 	- [Async/Await](https://os.phil-opp.com/async-await/)

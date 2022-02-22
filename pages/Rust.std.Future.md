@@ -119,6 +119,15 @@
 		- 因为 Executor 每次来 `poll` 的时候，我们都会生成一个全新的 Future 返回，每次 resolve 得到的状态都是 `Pending`
 		- 所以我们需要在这个 Reader 内部维护它的 State，不断的推进状态
 			- #question 如果我们在实现 `poll_read` 的时候使用 loop，跟直接 block_on 有什么区别呢？
+				- 注意看内部的逻辑，这里的 loop 并不是循环去 poll，只是用来做状态的切换
+				- 每个状态如果出现 `Poll::Pending` 是需要立刻返回的
+				- 这里还需要注意，Future 的有效期与当前 Reader 的有效期的关系
+					- 每次 `poll_read` 返回 `Poll::Ready` 之后，当前 future 就已经执行结束了
+					- 但是 Reader 仍然是存在的，所有的状态也都会保留
+						- 如果需要清理，那在返回 Ready 之前需要自行清理
+						- 如果不需要清理，那要想清楚用户再次进入之后状态如何转换
+			- 以这个版本的 SeekableReader 为例
+				- 在进入 Reading 状态后，后续的每一次 `poll_read` 都会从 state 中的 Reader 直接读取数据，不会再发起新的请求
 			- ```rust
 			  enum State<'d> {
 			      Idle,
@@ -208,4 +217,5 @@
 	- [Inside Rust's Async Transform](https://blag.nemo157.com/2018/12/09/inside-rusts-async-transform.html)
 	- [@sticnarf 关于 Rust Async 的分享](https://docs.google.com/presentation/d/1UYGAAm60-FCudvEmXPV0Ca6REo-nvN_L73ddWIDBuik/edit)
 	- [Pin and suffering](https://fasterthanli.me/articles/pin-and-suffering) *妙趣横生的文章，跟 Cool bear 一起讨论 Async Rust 会很有趣*
+	- [future explained(0)](https://hsqstephenzhang.github.io/2021/11/24/rust/futures/future-explained0/)
 	-
