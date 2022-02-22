@@ -45,6 +45,10 @@
 	- 于是 `Pin` 诞生了，它的作用是保证指针类型背后的值不会被 move。编译器会在编译期对 `Pin<T>` 做检查，如果发生了 move，就会给出一个编译错误，从而强迫开发者写出正确的代码。
 -
 - 常用的技巧
+	- `pin!`
+		- https://doc.rust-lang.org/nightly/std/pin/macro.pin.html
+		- 将数据 pin 在栈上，不会有堆分配
+			- 目前还是 nightly 特性
 	- `Box::pin()`
 		- 将数据 pin 在堆上
 	- `futures::pin_mut`

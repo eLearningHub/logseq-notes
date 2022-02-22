@@ -1,9 +1,6 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
 - http://smallcultfollowing.com/babysteps/blog/2022/02/09/dare-to-ask-for-more-rust2024/
-- https://doc.rust-lang.org/nightly/std/pin/macro.pin.html
-- https://www.usenix.org/system/files/fast21-zhong.pdf
-- https://twitter.com/semrush/status/1493861214451085314
 - https://www.ihcblog.com/rust-runtime-design-1/
 - https://arxiv.org/pdf/2010.12597.pdf
 - https://endler.dev/2020/rust-compile-times/
@@ -22,4 +19,5 @@
 - https://github.com/dwmkerr/hacker-laws
 - https://github.com/awslabs/aws-lambda-rust-runtime
 - https://github.com/plougher/squashfs-tools
+- https://hsqstephenzhang.github.io/2021/11/24/rust/futures/future-explained0/
 -
