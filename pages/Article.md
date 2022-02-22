@@ -1,6 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://nexte.st/
 - https://arrow.apache.org/blog/2022/02/16/introducing-arrow-flight-sql/
 - https://blog.rust-lang.org/2022/02/15/Rust-Survey-2021.html
 - https://research.swtch.com/govcs
@@ -16,3 +15,17 @@
 - https://endler.dev/2020/rust-compile-times/
 - https://matklad.github.io/2021/09/04/fast-rust-builds.html
 - http://vldb.org/pvldb/vol12/p2170-tan.pdf
+- https://twitter.com/marcan42/status/1494213855387734019
+- https://developer.1password.com/docs/ssh/
+- https://www.scylladb.com/2022/01/12/async-rust-in-practice-performance-pitfalls-profiling/
+- https://crates.io/crates/q_compress
+- https://tokio.rs/blog/2022-02-announcing-tokio-metrics
+- https://zhuanlan.zhihu.com/p/464145981
+- https://blog.cloudflare.com/tubular-fixing-the-socket-api-with-ebpf/
+- https://spcl.inf.ethz.ch/Publications/.pdf/atomic-bench.pdf
+- https://www.cockroachlabs.com/blog/what-is-database-contention/
+- https://twitter.com/andy_pavlo/status/1495799247584829449
+- https://github.com/dwmkerr/hacker-laws
+- https://github.com/awslabs/aws-lambda-rust-runtime
+- https://github.com/plougher/squashfs-tools
+-
