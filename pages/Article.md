@@ -1,7 +1,6 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
 - http://smallcultfollowing.com/babysteps/blog/2022/02/09/dare-to-ask-for-more-rust2024/
-- https://developer.1password.com/docs/ssh/
 - https://www.scylladb.com/2022/01/12/async-rust-in-practice-performance-pitfalls-profiling/
 - https://crates.io/crates/q_compress
 - https://tokio.rs/blog/2022-02-announcing-tokio-metrics
