@@ -62,4 +62,6 @@ title:: Rust/std/Error
 		  }
 		  ```
 		- 支持 `#[from]` 来自动实现 `impl From<io::Error> for YourError`.
-		- 支持
+		- 支持 `#[source]` 来自动实现 `source`
+		- 支持 `#[backtrace]` 来自动实现 `backtrace`
+-
