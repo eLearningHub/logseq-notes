@@ -38,7 +38,9 @@
 - 发送一个 HEAD 请求给 `<endpoint>/<bucket>`
 	- 可能的情况
 		- 预期响应 30X
-		- 也有可能 200 或者 403，说明这个服务不指定 region 也能用，我们可以用默认的 `us-east-1`
+		- 也有可能 200 或者 403
+			- 如果 `X-Amz-Bucket-Region`
+			- 说明这个服务不指定 region 也能用，我们可以用默认的 `us-east-1`
 		- 404 说明 bucket 不存在或者 endpoint 有问题
 	- 标准的 S3 服务会提供 `X-Amz-Bucket-Region` 指示正确的 region
 	- [[minio]] 提供了这个兼容
