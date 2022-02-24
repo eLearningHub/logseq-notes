@@ -41,6 +41,27 @@
 		- 也有可能 200 或者 403，说明这个服务不指定 region 也能用，我们可以用默认的 `us-east-1`
 		- 404 说明 bucket 不存在或者 endpoint 有问题
 	- 标准的 S3 服务会提供 `X-Amz-Bucket-Region` 指示正确的 region
+	- [[minio]] 提供了这个兼容
+		- 在启动 minio 的时候设置 region：
+			- ```shell
+			  MINIO_SITE_REGION=test minio server . 
+			  ```
+		- 那么去访问他的时候也会返回 `X-Amz-Bucket-Region`
+			- ```shell
+			  HTTP/1.1 403 Forbidden
+			  Accept-Ranges: bytes
+			  Content-Length: 0
+			  Content-Security-Policy: block-all-mixed-content
+			  Server: MinIO
+			  Strict-Transport-Security: max-age=31536000; includeSubDomains
+			  Vary: Origin
+			  Vary: Accept-Encoding
+			  X-Amz-Bucket-Region: test
+			  X-Amz-Request-Id: 16D69F6B835C12A8
+			  X-Content-Type-Options: nosniff
+			  X-Xss-Protection: 1; mode=block
+			  Date: Thu, 24 Feb 2022 04:46:37 GMT
+			  ```
 	- [[Aliyun OSS]]
 		- Aliyun 不支持重定向，会直接返回 404
 		- 只有 endpoint 正确的，比如 `oss-ap-northeast-1.aliyuncs.com`，才会返回 403 错误
@@ -56,4 +77,3 @@
 		  X-Qs-Request-Id: 05b8281a10004415
 		  ```
 		- 需要解析 `Location`？
--
