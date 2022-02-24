@@ -1,3 +1,5 @@
+- 已经提交为 RFC: https://github.com/datafuselabs/opendal/pull/57
+-
 - 理论上 S3 能够不依赖用户自己输入的 region 来判断
 -
 - list_buckets => 需要权限
@@ -34,15 +36,20 @@
 		  < X-Amz-Request-Id: 3EWMB6XK7K02RTJ2
 		  ```
 -
-- 用户没给 endpoint，按照 `s3.amazonaws.com` 处理
-- 发送一个 HEAD 请求给 `<endpoint>/<bucket>`
-	- 可能的情况
-		- 预期响应 30X
-		- 也有可能 200 或者 403
-			- 如果 `X-Amz-Bucket-Region`
-			- 说明这个服务不指定 region 也能用，我们可以用默认的 `us-east-1`
-		- 404 说明 bucket 不存在或者 endpoint 有问题
-	- 标准的 S3 服务会提供 `X-Amz-Bucket-Region` 指示正确的 region
+- 判断流程
+	- 用户没给 endpoint，按照 `https://s3.amazonaws.com` 处理
+	- 发送一个 HEAD 请求给 `<endpoint>/<bucket>`
+		- 标准的 S3 服务会提供 `X-Amz-Bucket-Region` 指示正确的 region
+	- 服务返回 200 / 403
+		- 说明当前 endpoint 本来就是完整的
+		- 响应中如果有 `X-Amz-Bucket-Region` 可以直接使用
+		- 如果没有就需要 fallback 到 `us-east-1`
+	- 服务返回 301
+		- 说明 endpoint 缺少了 region，需要使用 `X-Amz-Bucket-Region` 补全
+		- 没有的话需要报错
+	- 其他的状态码说明 bucket 不存在或者 endpoint 有问题
+-
+- 兼容情况
 	- [[minio]] 提供了这个兼容
 		- 在启动 minio 的时候设置 region：
 			- ```shell
