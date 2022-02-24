@@ -2,7 +2,7 @@
 -
 - 理论上 S3 能够不依赖用户自己输入的 region 来判断
 -
-- list_buckets => 需要权限
+- list_buckets => 需要权限，不太现实
 	- 最好不要 list_buckets
 - 可以发送一个 HEAD 请求来看
 	- 访问 `s3.amazonaws.com/databend-shared` 会返回
