@@ -34,13 +34,27 @@
 		  < X-Amz-Request-Id: 3EWMB6XK7K02RTJ2
 		  ```
 -
-- 用户没给 endpoint
-	- 发送一个 HEAD 请求给 `<endpoint>/<bucket>`
-		- 可能的情况
-			- 预期响应 30X
-			- 也有可能 200 或者 403，说明这个服务不指定 region 也能用，我们可以用默认的 `us-east-1`
-			- 404 说明 bucket 不存在
-		- 然后取 `X-Amz-Bucket-Region`
-		- 为空的话需要解析 `Location`？
-- 参考资料
-	-
+- 用户没给 endpoint，按照 `s3.amazonaws.com` 处理
+- 发送一个 HEAD 请求给 `<endpoint>/<bucket>`
+	- 可能的情况
+		- 预期响应 30X
+		- 也有可能 200 或者 403，说明这个服务不指定 region 也能用，我们可以用默认的 `us-east-1`
+		- 404 说明 bucket 不存在或者 endpoint 有问题
+	- 标准的 S3 服务会提供 `X-Amz-Bucket-Region` 指示正确的 region
+	- [[Aliyun OSS]]
+		- Aliyun 不支持重定向，会直接返回 404
+		- 只有 endpoint 正确的，比如 `oss-ap-northeast-1.aliyuncs.com`，才会返回 403 错误
+	- [[QingStor]]
+		- ```shell
+		  curl https://s3.qingstor.com/community
+		  
+		  HTTP/1.1 301 Moved Permanently
+		  Server: nginx/1.13.6
+		  Date: Thu, 24 Feb 2022 04:09:41 GMT
+		  Connection: keep-alive
+		  Location: https://s3.pek3a.qingstor.com/community
+		  X-Qs-Request-Id: 05b8281a10004415
+		  ```
+		- 需要解析 `Location`？
+-
+-
