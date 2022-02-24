@@ -35,9 +35,12 @@
 		  ```
 -
 - 用户没给 endpoint
-	- 发送一个 HEAD 请求给 `<bucket>.<endpoint>`
+	- 发送一个 HEAD 请求给 `<endpoint>/<bucket>`
+		- 可能的情况
+			- 预期响应 30X
+			- 也有可能 200 或者 403，说明这个服务不指定 region 也能用，我们可以用默认的 `us-east-1`
+			- 404 说明 bucket 不存在
 		- 然后取 `X-Amz-Bucket-Region`
-		- 404 说明 bucket 不存在，可能的响应包括 200 和 403
-- 用户给了 endpoint
-	- 发送 HEAD 请求给 `<bucket>.<endpoint>`
-		-
+		- 为空的话需要解析 `Location`？
+- 参考资料
+	-
