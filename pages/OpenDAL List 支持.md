@@ -11,7 +11,6 @@
 				- 把 Metadata 放进 object？Metadata 不对外暴露接口？
 					- 遇到的问题
 						- `Object::metadata()` 要求签名变成 `&mut self` 了，有点奇怪
-						- 或者不提供
 -
 - 用户体验
 	- op.objects("xxxxx") 得到一个 ObjectStream，然后就可以不断的 next 来获取 object 直到全部返回
