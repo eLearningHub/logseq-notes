@@ -1,0 +1,14 @@
+- DAL 肯定需要支持 List
+-
+- fs 的 List 和对象存储的 List 是不一样的
+	- fs 需要操作同一个 fd，不停的 getdents 然后解析
+		- 最好对 fs 能保持使用同一个 fd，注意这个 read_dir 操作是不能再入的，用户不能中断之后再恢复
+	- 对象的每次 list 都是一个新的请求，返回一组(一般为 100 个) objects
+		- 对象会返回一个 continuation_token，下次请求的时候再带上
+			- 根据实现不同，这个 continuation_token 也不一定是持久化的，用户需要尽量避免保存它
+		- 其他考虑
+			- 对象的 list 会返回更多信息，比如 content_length 等等，有没有可能 cache 这些数据避免重复访问
+-
+- 用户体验
+	- op.objects("xxxxx") 得到一个 ObjectStream
+-
