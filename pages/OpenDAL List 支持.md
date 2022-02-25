@@ -11,6 +11,22 @@
 				- 把 Metadata 放进 object？Metadata 不对外暴露接口？
 					- 遇到的问题
 						- `Object::metadata()` 要求签名变成 `&mut self` 了，有点奇怪
+							- 把所有函数都改成要求 `&mut self` 如何？
+						- 用 `RefCell`？
+							- 感觉非常的僵硬，语义也不太对，还有可能出现 runtime panic
+								- ```rust
+								  pub async fn metadata(&self) -> Result<Metadata> {
+								    let mut meta = self.meta.borrow_mut();
+								    if meta.complete {
+								      return Ok(meta.clone());
+								    }
+								  
+								    let op = &OpStat::new(&self.path());
+								    *meta = self.acc.stat(op).await?;
+								  
+								    Ok(meta.clone())
+								  }
+								  ```
 -
 - 用户体验
 	- op.objects("xxxxx") 得到一个 ObjectStream，然后就可以不断的 next 来获取 object 直到全部返回
