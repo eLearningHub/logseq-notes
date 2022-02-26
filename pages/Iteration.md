@@ -6,6 +6,10 @@
   query-sort-by:: page
   query-sort-desc:: true
 -
+- [[Github]] 支持在 filter 中使用
+	- `iteration:"@current"` 来标记当前 iteration 了
+		- 此外还有 `@next` 和 `@previous` 分别代替下一个和上一个周期
+-
 - 可能的改进
 	- 调用 [[Github]] [[GraphQL]] API 获取 task 内容直接展示在 Iteration 里面？
 	- 自动创建下一个 Iteration？

@@ -1,5 +1,7 @@
 title:: 2022-08: Iteration 7 汇报
 type:: [[Blog]]
+status:: [[DONE]]
+link:: https://xuanwo.io/reports/2022-08/
 
 - [[Iteration/7]]
 -
