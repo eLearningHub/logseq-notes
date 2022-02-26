@@ -1,0 +1,12 @@
+- > Zig is a general-purpose programming language and toolchain for maintaining robust, optimal, and reusable software.
+-
+- Zig 是一门刚诞生的语言，核心特性包括
+	- 简单：没有隐式逻辑，隐式分配，没有预处理，没有宏
+	- 基于编译时代码执行和惰性分析做元编程 (不太懂)
+	- 完整的工具链
+		- 能够直接 replace C/C++，原生支持交叉编译
+		- 提供 `zig build` 来构建跨平台的二进制
+		- 能够跟 C/C++ 无缝集成
+- 样例
+	- ```zig
+	  ```
