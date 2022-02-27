@@ -15,3 +15,7 @@
 - https://github.com/ringbahn/ringbahn
 - https://docs.rs/futures-executor/latest/futures_executor/
 - https://www.cs.umb.edu/~poneil/StarSchemaB.PDF
+- https://blog.rust-lang.org/inside-rust/2022/02/22/compiler-team-ambitions-2022.html
+- https://ryhl.io/blog/async-what-is-blocking/
+- https://www.reddit.com/r/rust/comments/lg0a7b/benchmarking_tokio_tasks_and_goroutines/
+-
