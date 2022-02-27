@@ -1,7 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- http://smallcultfollowing.com/babysteps/blog/2022/02/09/dare-to-ask-for-more-rust2024/
-	- 这个网站好像没法访问了。。
 - https://www.scylladb.com/2022/01/12/async-rust-in-practice-performance-pitfalls-profiling/
 - https://tokio.rs/blog/2022-02-announcing-tokio-metrics
 - https://zhuanlan.zhihu.com/p/464145981
