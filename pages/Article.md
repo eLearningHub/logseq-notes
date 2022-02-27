@@ -1,9 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://www.cockroachlabs.com/blog/what-is-database-contention/
-- https://twitter.com/andy_pavlo/status/1495799247584829449
-- https://github.com/dwmkerr/hacker-laws
-- https://github.com/awslabs/aws-lambda-rust-runtime
 - https://github.com/plougher/squashfs-tools
 - https://hsqstephenzhang.github.io/2021/11/24/rust/futures/future-explained0/
 - https://github.com/ringbahn/ringbahn
