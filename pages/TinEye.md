@@ -1,6 +1,6 @@
 type:: [[Product]]
 features:: [[Search]]
-link::
+link:: https://tineye.com/
 
-- https://tineye.com/
+- Reverse Image Search
 -
