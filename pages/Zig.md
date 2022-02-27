@@ -12,7 +12,7 @@
 	- 跟 C 的无缝集成
 		- Integration with C libraries without FFI/bindings
 			- `zig` 本身就是一个 C 编译器(via [[LLVM]])
-		- 可以直接引入一个 C `.h`
+		- 直接引入一个 C `.h`
 collapsed:: true
 			- ```zig
 			  const c = @cImport(@cInclude("soundio/soundio.h"));
