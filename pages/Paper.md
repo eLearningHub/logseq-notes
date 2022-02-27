@@ -12,4 +12,3 @@
 - 已读
 - {{query (and (page-property type Paper) (page-property status DONE))}}
   query-properties:: [:page :conference :doi]
--

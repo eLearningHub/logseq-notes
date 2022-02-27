@@ -41,3 +41,5 @@
 -
 - 原来 [[S3/Select]] 也支持 Parquet - -
 -
+- 参考资料
+	- [Dremel made simple with Parquet](https://blog.twitter.com/engineering/en_us/a/2013/dremel-made-simple-with-parquet)
