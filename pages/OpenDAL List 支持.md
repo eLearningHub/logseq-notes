@@ -30,6 +30,9 @@
 -
 - 用户体验
 	- op.objects("xxxxx") 得到一个 ObjectStream，然后就可以不断的 next 来获取 object 直到全部返回
+	- object.metadata() 可以返回所有的 metadata
+		- 支持 reuse list 时返回的 object 信息，比如 content_length 等等
+		- 在获取指定的 meta 信息时，可以自动的去发出 stat 请求
 -
 - 问题
 	- 只允许 List 一个 dir 吗？
@@ -102,4 +105,5 @@
 		- 弊端
 			- 所有的 getter 方法都要 `&mut self`，都需要 async，都需要处理错误
 			- 没法区分朴素的 getter 和支持 fetch 的 getter
-		-
+				- 增加一个 direct_get_xx ？
+			-
