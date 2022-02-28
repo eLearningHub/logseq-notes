@@ -106,4 +106,6 @@
 			- 所有的 getter 方法都要 `&mut self`，都需要 async，都需要处理错误
 			- 没法区分朴素的 getter 和支持 fetch 的 getter
 				- 增加一个 direct_get_xx ？
+					- 改成了更符合语义的 fetch_xxx
+				-
 			-
