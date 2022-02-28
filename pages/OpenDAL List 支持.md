@@ -68,3 +68,38 @@
 	  }
 	  
 	  ```
+- 尝试
+	- 将 Metadata 直接嵌入 Object
+		- ```rust
+		      async fn fetch(&mut self) -> Result<()> {
+		          if self.complete {
+		              return Ok(());
+		          }
+		  
+		          let m = self.acc.stat(&OpStat::new(&self.path)).await?;
+		          self.merge(&m);
+		  
+		          Ok(())
+		      }
+		  
+		      pub fn path(&self) -> &str {
+		          &self.path
+		      }
+		  
+		      pub async fn mode(&mut self) -> Result<ObjectMode> {
+		          if let Some(v) = self.mode {
+		              return Ok(v);
+		          }
+		  
+		          self.fetch().await?;
+		          if let Some(v) = self.mode {
+		              return Ok(v);
+		          }
+		  
+		          unreachable!("object meta should have mode, but it's not")
+		      }
+		  ```
+		- 弊端
+			- 所有的 getter 方法都要 `&mut self`，都需要 async，都需要处理错误
+			- 没法区分朴素的 getter 和支持 fetch 的 getter
+		-
