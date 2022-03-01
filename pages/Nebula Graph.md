@@ -48,7 +48,7 @@ category:: [[Grpah]]
 		  RETURN x, count(x) as c ORDER BY c DESC
 		  ```
 -
--
+- 第一感觉是比 SQL 还要复杂不少，需要理解点和边的概念
 -
 - 参考资料
 	- [图数据库体操：用 Nebula Graph 搭成语图谱解汉兜](https://siwei.io/resolve-wordle/)
