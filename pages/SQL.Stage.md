@@ -1,0 +1,10 @@
+- Stage 是一个用于载入(files -> tables)和卸载数据(tables -> files)的阶段
+-
+- 通常的来说，Stage 会关联到一组特定的存储配置
+- 比如
+	- 文件的格式：[[CSV]]，[[Parquet]]， [[avro]]
+	- 外部存储的类型，密钥(ak/sk)，加密方式
+-
+- 常见的实现
+	- [[Snowflake]]: [CREATE STAGE](https://docs.snowflake.com/en/sql-reference/sql/create-stage.html)
+-

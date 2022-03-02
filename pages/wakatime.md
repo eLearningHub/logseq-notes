@@ -1,0 +1,1 @@
+- wakatime 支持两个 account 的合并，非常好用
