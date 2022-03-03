@@ -34,4 +34,9 @@
 		                          thrpt:  [1.9649 GiB/s 2.0167 GiB/s 2.0673 GiB/s]
 		  
 		  ```
-	-
+	- 优化后
+		- ```rust
+		  s3/read_exact/f34bf150-0a5c-45e6-886c-9e76b21dd91f
+		                          time:   [1.7521 ms 1.7995 ms 1.8513 ms]
+		                          thrpt:  [2.1100 GiB/s 2.1707 GiB/s 2.2294 GiB/s]
+		  ```
