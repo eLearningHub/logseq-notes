@@ -17,6 +17,4 @@ link:: https://xuanwo.io/reports/2022-06/
 	- 这周时间比较紧张，没有搞什么好玩的东西，只有顺手给 openacid 的 blog 修了个 typo。
 - 日常
 	- 这周入手了一个早就该买了的东西：即热饮水器
-	-
-	-
 -

@@ -1,3 +1,5 @@
+title:: Rust/Cargo/Lock
+
 - [Why do binaries have Cargo.lock in version control, but not libraries?](https://doc.rust-lang.org/cargo/faq.html#why-do-binaries-have-cargolock-in-version-control-but-not-libraries)
 -
 - `Cargo.lock` 的设计目标是可重现(确定性)构建
