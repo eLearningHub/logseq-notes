@@ -1,0 +1,15 @@
+- OpenDAL 是一个重 IO 的库，可以考虑提供维护自己的 runtime
+-
+- 几个设计考虑
+	- 独立的 runtime，同时允许用户使用自己的 runtime？
+		- 考虑到现状，可能必须要自己抽象 trait 或者绑定在 tokio 上
+	- API 是否需要变化？
+		- 从 async xx 改成返回一个 Future？
+			- 有生命周期的要求
+	- 能够实现 thread local 的分配？
+		- 比如 s3 的 client 每个 thread 分配一个而不是共享同一个
+-
+- 可以参考的项目
+	- influxdata DedicatedExecutor
+		- https://github.com/influxdata/influxdb_iox/blob/main/executor/src/lib.rs
+	-
