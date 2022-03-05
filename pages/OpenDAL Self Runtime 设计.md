@@ -106,9 +106,23 @@
 					  ```
 					- 还有一种可能是直接传入 `&mut buf` 但是这样是不是有生命周期的问题
 						- 修改 API，要求传入一个 owned buf，最后返回？
+							- 没法用啊，怎么实现 `futures::AsyncRead` 呢？
+								- 在内存里面多复制一遍(性能开销大)
+								- ```rust
+								      fn read2(mut self) -> JoinHandle<Result<usize>> {
+								          self.backend.exec.spawn(async move {
+								              let mut f = self.inner.lock().expect("file mutex poisoned");
+								              let n = f
+								                  .read(self.buf.as_mut())
+								                  .map_err(|e| parse_io_error(e, "read", "x"))?;
+								              Ok(n)
+								          })
+								      }
+								  ```
+							- 实现 `futures::AsyncWrite` 的时候也会有问题
 						- 还有 file 没法修改的问题
 							- MutexGuard 不是 Send 的
-							-
+								- `Arc<Mutex<std::fs::File>>` 是 Send，在线程内部加锁即可
 						- 如果接收 `&mut buf` 作为参数，出现  invalid range 怎么办？
 							- 比如 s3 在一个 1MB 的文件上尝试读取 4MB 的 range
 							- 直接返回错误可以吗？
