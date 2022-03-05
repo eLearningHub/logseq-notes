@@ -105,6 +105,10 @@
 					  r.read()
 					  ```
 					- 还有一种可能是直接传入 `&mut buf` 但是这样是不是有生命周期的问题
+						- 修改 API，要求传入一个 owned buf，最后返回？
+						- 还有 file 没法修改的问题
+							- MutexGuard 不是 Send 的
+							-
 						- 如果接收 `&mut buf` 作为参数，出现  invalid range 怎么办？
 							- 比如 s3 在一个 1MB 的文件上尝试读取 4MB 的 range
 							- 直接返回错误可以吗？
