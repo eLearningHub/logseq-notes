@@ -119,6 +119,18 @@
 								          })
 								      }
 								  ```
+								- 不只是性能问题，这个 Object 只能 read 一次 - -
+							- [[bytedance/monoio]] 的设计是返回 owned T
+								- ```rust
+								  pub trait AsyncReadRent {
+								      type ReadFuture: Future<Output = BufResult<usize, T>>;
+								      type ReadvFuture: Future<Output = BufResult<usize, T>>;
+								      fn read<T: IoBufMut>(&self, buf: T) -> Self::ReadFuture;
+								      fn readv<T: IoVecBufMut>(&self, buf: T) -> Self::ReadvFuture;
+								  }
+								  
+								  type ReadFuture: Future<Output = BufResult<usize, T>>
+								  ```
 							- 实现 `futures::AsyncWrite` 的时候也会有问题
 						- 还有 file 没法修改的问题
 							- MutexGuard 不是 Send 的
