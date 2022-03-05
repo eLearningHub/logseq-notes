@@ -119,6 +119,9 @@
 				- 下推到 object 一层，在 object 上直接实现 reader 和 writer
 					- 能不能保持 fd 开着呢？避免重复的 open/seek/close
 						- 只有 fs 需要做这个，其他的服务可以直接发新的请求
+						- 啊，想到了 s3 不能这么做的原因
+							- s3 不支持 pwrite，所以只能支持顺序写
+								- 可以考虑再追加一个 ReadFrom，WriteTo
 					- 可以在 futures::AsyncRead 之外，再提供一套自己的底层 API
 						- Readiness + Read + Write
 					- 返回一个 Object？
