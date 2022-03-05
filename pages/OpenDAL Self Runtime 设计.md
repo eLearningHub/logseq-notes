@@ -8,8 +8,43 @@
 			- 有生命周期的要求
 	- 能够实现 thread local 的分配？
 		- 比如 s3 的 client 每个 thread 分配一个而不是共享同一个
+	- 使用同一个 runtime 还是每个 backend 分配一个自己的？
+		-
 -
 - 可以参考的项目
 	- influxdata DedicatedExecutor
 		- https://github.com/influxdata/influxdb_iox/blob/main/executor/src/lib.rs
-	-
+	- hyper 支持外部的 executor
+		- ```rust
+		  #[derive(Clone)]
+		  pub enum Exec {
+		      Default,
+		      Executor(Arc<dyn Executor<BoxSendFuture> + Send + Sync>),
+		  }
+		  
+		  // ===== impl Exec =====
+		  
+		  impl Exec {
+		      pub(crate) fn execute<F>(&self, fut: F)
+		      where
+		          F: Future<Output = ()> + Send + 'static,
+		      {
+		          match *self {
+		              Exec::Default => {
+		                  #[cfg(feature = "tcp")]
+		                  {
+		                      tokio::task::spawn(fut);
+		                  }
+		                  #[cfg(not(feature = "tcp"))]
+		                  {
+		                      // If no runtime, we need an executor!
+		                      panic!("executor must be set")
+		                  }
+		              }
+		              Exec::Executor(ref e) => {
+		                  e.execute(Box::pin(fut));
+		              }
+		          }
+		      }
+		  }
+		  ```
