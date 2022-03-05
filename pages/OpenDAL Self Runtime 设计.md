@@ -108,6 +108,7 @@
 						- 修改 API，要求传入一个 owned buf，最后返回？
 							- 没法用啊，怎么实现 `futures::AsyncRead` 呢？
 								- 在内存里面多复制一遍(性能开销大)
+									- reuse 同一个 buf？
 								- ```rust
 								      fn read2(mut self) -> JoinHandle<Result<usize>> {
 								          self.backend.exec.spawn(async move {
