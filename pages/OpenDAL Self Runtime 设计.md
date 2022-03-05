@@ -52,6 +52,44 @@
 		  }
 		  ```
 -
+- 大致的实现
+	- ```rust
+	  pub static GLOBAL_EXECUTOR: Lazy<tokio::runtime::Runtime> =
+	      Lazy::new(|| tokio::runtime::Runtime::new().unwrap());
+	  
+	  pub trait Spawner {
+	      fn spawn<T>(&self, future: T) -> JoinHandle<T::Output>
+	      where
+	          T: Future + Send + 'static,
+	          T::Output: Send + 'static,
+	      {
+	          let _ = future;
+	          unimplemented!()
+	      }
+	  }
+	  
+	  #[derive(Clone, Debug)]
+	  pub enum Executor {
+	      External,
+	      Global,
+	      Internal(),
+	  }
+	  
+	  impl Spawner for Executor {
+	      fn spawn<T>(&self, future: T) -> JoinHandle<T::Output>
+	      where
+	          T: Future + Send + 'static,
+	          T::Output: Send + 'static,
+	      {
+	          match self {
+	              Executor::External => tokio::spawn(future),
+	              Executor::Global => GLOBAL_EXECUTOR.spawn(future),
+	              Executor::Internal() => unimplemented!(),
+	          }
+	      }
+	  }
+	  ```
+-
 - 目前存在的问题
 	- 只是在 accessor 中使用 `self.exec.spawn` 的话好像并不会保证返回的 Reader 也运行在这个 runtime 中
 		- 返回的 Reader 需要额外包装一下，确保所有的 poll_read call 都在自己的 runtime 上运行？
@@ -67,12 +105,19 @@
 					  r.read()
 					  ```
 					- 还有一种可能是直接传入 `&mut buf` 但是这样是不是有生命周期的问题
+						- 如果接收 `&mut buf` 作为参数，出现  invalid range 怎么办？
+							- 比如 s3 在一个 1MB 的文件上尝试读取 4MB 的 range
+							- 直接返回错误可以吗？
+								- 在 Object 的层面维护好 remaining size？
 				- 下推到 object 一层，在 object 上直接实现 reader 和 writer
 					- 能不能保持 fd 开着呢？避免重复的 open/seek/close
 						- 只有 fs 需要做这个，其他的服务可以直接发新的请求
 					- 可以在 futures::AsyncRead 之外，再提供一套自己的底层 API
-						- Readiness +
+						- Readiness + Read + Write
 					- 返回一个 Object？
+						- 在 Object 里塞一个 inner 结构体？
+							- 比如说 `std::any`，然后做运行时反射
+							- `Box<dyn Any>`
 		- 除了性能考虑之外，更严重的是会 block 当前的 runtime
 			- 比如 sync io 泄漏给了外面的 runtime
 	- 每个 Accessor 都要这样实现一遍好像没有必要，应该可以在最外面套一个？
