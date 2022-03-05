@@ -132,6 +132,7 @@
 								  type ReadFuture: Future<Output = BufResult<usize, T>>
 								  ```
 							- 实现 `futures::AsyncWrite` 的时候也会有问题
+								- 需要接受一个 owned slice
 						- 还有 file 没法修改的问题
 							- MutexGuard 不是 Send 的
 								- `Arc<Mutex<std::fs::File>>` 是 Send，在线程内部加锁即可
