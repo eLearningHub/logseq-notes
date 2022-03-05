@@ -119,4 +119,71 @@
 	                          Performance has improved.
 	  
 	  ```
+- tokio 跟测试共享 同一个 tokio runtime
+	- ```rust
+	  fs/read                 time:   [1.8692 ms 1.9521 ms 2.0349 ms]
+	                          thrpt:  [7.6785 GiB/s 8.0044 GiB/s 8.3591 GiB/s]
+	                   change:
+	                          time:   [-2.2447% +4.8898% +12.552%] (p = 0.19 > 0.05)
+	                          thrpt:  [-11.152% -4.6619% +2.2962%]
+	                          No change in performance detected.
+	  fs/buf_read             time:   [2.0496 ms 2.1506 ms 2.2522 ms]
+	                          thrpt:  [6.9377 GiB/s 7.2655 GiB/s 7.6233 GiB/s]
+	                   change:
+	                          time:   [-21.682% -16.311% -10.640%] (p = 0.00 < 0.05)
+	                          thrpt:  [+11.907% +19.490% +27.685%]
+	                          Performance has improved.
+	  fs/range_read           time:   [959.04 us 1.0468 ms 1.1413 ms]
+	                          thrpt:  [6.8456 GiB/s 7.4630 GiB/s 8.1462 GiB/s]
+	                   change:
+	                          time:   [-35.457% -28.056% -19.372%] (p = 0.00 < 0.05)
+	                          thrpt:  [+24.026% +38.996% +54.935%]
+	                          Performance has improved.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    2 (2.00%) high severe
+	  fs/read_half            time:   [671.11 us 729.57 us 797.96 us]
+	                          thrpt:  [9.7906 GiB/s 10.708 GiB/s 11.641 GiB/s]
+	                   change:
+	                          time:   [-36.996% -32.532% -27.240%] (p = 0.00 < 0.05)
+	                          thrpt:  [+37.438% +48.218% +58.720%]
+	                          Performance has improved.
+	  
+	  fs_parallel/parallel_range_read_2
+	                          time:   [1.5739 ms 1.6297 ms 1.6815 ms]
+	                          thrpt:  [9.2923 GiB/s 9.5879 GiB/s 9.9274 GiB/s]
+	                   change:
+	                          time:   [-30.258% -23.227% -15.368%] (p = 0.00 < 0.05)
+	                          thrpt:  [+18.159% +30.254% +43.386%]
+	                          Performance has improved.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    1 (1.00%) high mild
+	    1 (1.00%) high severe
+	  fs_parallel/parallel_range_read_4
+	                          time:   [2.8989 ms 2.9747 ms 3.0536 ms]
+	                          thrpt:  [10.234 GiB/s 10.505 GiB/s 10.780 GiB/s]
+	                   change:
+	                          time:   [-17.760% -14.797% -11.948%] (p = 0.00 < 0.05)
+	                          thrpt:  [+13.570% +17.366% +21.595%]
+	                          Performance has improved.
+	  Found 10 outliers among 100 measurements (10.00%)
+	    6 (6.00%) low mild
+	    2 (2.00%) high mild
+	    2 (2.00%) high severe
+	  fs_parallel/parallel_range_read_8
+	                          time:   [8.3861 ms 8.6552 ms 8.9230 ms]
+	                          thrpt:  [7.0043 GiB/s 7.2211 GiB/s 7.4528 GiB/s]
+	                   change:
+	                          time:   [-1.6689% +2.5945% +7.0404%] (p = 0.23 > 0.05)
+	                          thrpt:  [-6.5773% -2.5289% +1.6973%]
+	                          No change in performance detected.
+	  fs_parallel/parallel_range_read_16
+	                          time:   [20.320 ms 20.739 ms 21.153 ms]
+	                          thrpt:  [5.9094 GiB/s 6.0274 GiB/s 6.1515 GiB/s]
+	                   change:
+	                          time:   [-5.8135% -2.8594% +0.1498%] (p = 0.07 > 0.05)
+	                          thrpt:  [-0.1496% +2.9436% +6.1724%]
+	                          No change in performance detected.
+	  
+	  
+	  ```
 -
