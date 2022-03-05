@@ -109,6 +109,13 @@
 							- 比如 s3 在一个 1MB 的文件上尝试读取 4MB 的 range
 							- 直接返回错误可以吗？
 								- 在 Object 的层面维护好 remaining size？
+								- 可以解析 get_object 时返回 content_range?
+								- 其实可以自己尝试 retry 一下
+									- 如果 range 不对就直接读取后面的全部 size
+										- 挺离谱的，rust sdk 甚至没有返回 invalid range 错误的支持。。
+									- 如果 range 不对就 stat 一下？
+									- > Amazon S3 doesn't support retrieving multiple ranges of data per GET request.
+							- 把 object 变成 trait？
 				- 下推到 object 一层，在 object 上直接实现 reader 和 writer
 					- 能不能保持 fd 开着呢？避免重复的 open/seek/close
 						- 只有 fs 需要做这个，其他的服务可以直接发新的请求
