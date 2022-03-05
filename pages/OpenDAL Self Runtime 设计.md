@@ -52,6 +52,11 @@
 		  }
 		  ```
 -
+- 目前存在的问题
+	- 只是在 accessor 中使用 `self.exec.spawn` 的话好像并不会保证返回的 Reader 也运行在这个 runtime 中
+		-
+-
+-
 - Unblocking bench
 	- ```rust
 	  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.0s, enable flat sampling, or reduce sample count to 50.
