@@ -54,7 +54,12 @@
 -
 - 目前存在的问题
 	- 只是在 accessor 中使用 `self.exec.spawn` 的话好像并不会保证返回的 Reader 也运行在这个 runtime 中
-		-
+		- 返回的 Reader 需要额外包装一下，确保所有的 poll_read call 都在自己的 runtime 上运行？
+			- 这样是不是有额外的开销？
+				- 每次 poll_read 下去都会创建一个新的 future，然后要再等待
+		- 除了性能考虑之外，更严重的是会 block 当前的 runtime
+			- 比如 sync io 泄漏给了外面的 runtime
+	- 每个 Accessor 都要这样实现一遍好像没有必要，应该可以在最外面套一个？
 -
 -
 - Unblocking bench
