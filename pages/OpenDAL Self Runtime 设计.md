@@ -61,7 +61,18 @@
 				- 这样可以不用去改造 BoxedReader
 				- 这样的话需要维护一个 channel，连接 Reader 和 Writer
 					- ```rust
+					  let (pr, pw) = pipe();
+					  op.object().reader();
+					  
+					  r.read()
 					  ```
+					- 还有一种可能是直接传入 `&mut buf` 但是这样是不是有生命周期的问题
+				- 下推到 object 一层，在 object 上直接实现 reader 和 writer
+					- 能不能保持 fd 开着呢？避免重复的 open/seek/close
+						- 只有 fs 需要做这个，其他的服务可以直接发新的请求
+					- 可以在 futures::AsyncRead 之外，再提供一套自己的底层 API
+						- Readiness +
+					- 返回一个 Object？
 		- 除了性能考虑之外，更严重的是会 block 当前的 runtime
 			- 比如 sync io 泄漏给了外面的 runtime
 	- 每个 Accessor 都要这样实现一遍好像没有必要，应该可以在最外面套一个？
