@@ -9,7 +9,10 @@
 	- 能够实现 thread local 的分配？
 		- 比如 s3 的 client 每个 thread 分配一个而不是共享同一个
 	- 使用同一个 runtime 还是每个 backend 分配一个自己的？
-		-
+		- 默认可以使用外部的 executor
+		- 然后提供一个 global 的 executor
+		- 最后每个 backend 可以选择再自己创建 executor？
+			- 放在 backend 里面？
 -
 - 可以参考的项目
 	- influxdata DedicatedExecutor
@@ -48,3 +51,6 @@
 		      }
 		  }
 		  ```
+-
+- Unblocking bench
+	-
