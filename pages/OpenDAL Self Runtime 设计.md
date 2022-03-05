@@ -108,6 +108,15 @@
 						- 修改 API，要求传入一个 owned buf，最后返回？
 							- 没法用啊，怎么实现 `futures::AsyncRead` 呢？
 								- 在内存里面多复制一遍(性能开销大)
+									- 内存中 coyp 4MB bytes 需要 1.2 ms 左右，吞吐大约为 3GB/s
+										- ```rust
+										  copy/memory_copy        time:   [1.2547 ms 1.2613 ms 1.2674 ms]
+										                          thrpt:  [3.0820 GiB/s 3.0971 GiB/s 3.1133 GiB/s]
+										                   change:
+										                          time:   [+3.6469% +4.6892% +5.5711%] (p = 0.00 < 0.05)
+										                          thrpt:  [-5.2771% -4.4792% -3.5186%]
+										  
+										  ```
 									- reuse 同一个 buf？
 								- ```rust
 								      fn read2(mut self) -> JoinHandle<Result<usize>> {
@@ -235,7 +244,6 @@ collapsed:: true
 		  
 		  ```
 	- tokio 跟测试共享 同一个 tokio runtime
-collapsed:: true
 		- ```rust
 		  fs/read                 time:   [1.8692 ms 1.9521 ms 2.0349 ms]
 		                          thrpt:  [7.6785 GiB/s 8.0044 GiB/s 8.3591 GiB/s]
