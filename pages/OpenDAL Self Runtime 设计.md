@@ -676,23 +676,63 @@ collapsed:: true
 			- `op.create(path) -> Result<File>`
 			-
 			- 本质上还是 fs 和 对象的抽象很难统一到一起
+collapsed:: true
 				- 要不要放弃对 file 侧的优化？
 					- 每次 read 都重新打开文件和 take offset？
 					- 打开一个文件和进行 offset 的开销其实很小，本地这边测试都在 ns 级别
-						- 跟 IO 相比不算是大头，感觉没有必要针对文件进行优化
+collapsed:: true
+						- 跟 IO 相比不算是大头，感觉没有必要针对文件进行优化？
 						- ```rust
-						  file/open_file          time:   [746.23 ns 747.14 ns 748.16 ns]
-						  Found 12 outliers among 100 measurements (12.00%)
+						  file/open_file          time:   [804.53 ns 806.59 ns 808.92 ns]
+						                          change: [+5.3797% +5.8694% +6.3125%] (p = 0.00 < 0.05)
+						                          Performance has regressed.
+						  Found 10 outliers among 100 measurements (10.00%)
+						    1 (1.00%) low severe
+						    3 (3.00%) low mild
+						    4 (4.00%) high mild
+						    2 (2.00%) high severe
+						  file/seek_file          time:   [890.87 ns 891.81 ns 892.90 ns]
+						                          change: [+4.1270% +4.5609% +5.0086%] (p = 0.00 < 0.05)
+						                          Performance has regressed.
+						  Found 16 outliers among 100 measurements (16.00%)
+						    5 (5.00%) low severe
+						    1 (1.00%) low mild
+						    7 (7.00%) high mild
+						    3 (3.00%) high severe
+						  file/read_file_1k       time:   [1.0367 us 1.0375 us 1.0383 us]
+						                          change: [+3.6974% +4.5057% +5.2159%] (p = 0.00 < 0.05)
+						                          Performance has regressed.
+						  Found 20 outliers among 100 measurements (20.00%)
 						    2 (2.00%) low severe
 						    3 (3.00%) low mild
-						    3 (3.00%) high mild
-						    4 (4.00%) high severe
-						  file/seek_file          time:   [883.45 ns 885.12 ns 886.76 ns]
-						  Found 12 outliers among 100 measurements (12.00%)
-						    2 (2.00%) low severe
-						    2 (2.00%) low mild
 						    6 (6.00%) high mild
-						    2 (2.00%) high severe
+						    9 (9.00%) high severe
+						  file/read_file_4k       time:   [1.1051 us 1.1071 us 1.1092 us]
+						                          change: [-0.6052% -0.1509% +0.2611%] (p = 0.50 > 0.05)
+						                          No change in performance detected.
+						  Found 10 outliers among 100 measurements (10.00%)
+						    2 (2.00%) low severe
+						    1 (1.00%) low mild
+						    4 (4.00%) high mild
+						    3 (3.00%) high severe
+						  file/read_file_1MB      time:   [31.355 us 31.422 us 31.484 us]
+						                          change: [-5.9701% -5.6834% -5.3993%] (p = 0.00 < 0.05)
+						                          Performance has improved.
+						  Found 4 outliers among 100 measurements (4.00%)
+						    3 (3.00%) high mild
+						    1 (1.00%) high severe
+						  file/read_file_4MB      time:   [127.47 us 127.77 us 128.03 us]
+						                          change: [-9.0247% -8.3413% -7.7052%] (p = 0.00 < 0.05)
+						                          Performance has improved.
 						  
 						  ```
+						- 读取 1KB -> 78%
+						- 读取 4KB -> 73%
+						- 读取 1MB -> 2.6%
+						- 读取 4MB -> 0.6%
 						-
+						- 随着读取数据的变多会占的越来越少，所以实际上可以不用考虑？
+							- 而且需要考虑 OpenDAL 的定位
+			-
+			- op.object(path).reader()
+			-
