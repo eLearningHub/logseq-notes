@@ -311,7 +311,6 @@ collapsed:: true
 		  
 		  ```
 	- pure sync io on tokio runtime
-collapsed:: true
 		- ```rust
 		  fs/read                 time:   [833.42 us 845.03 us 858.12 us]
 		                          thrpt:  [18.208 GiB/s 18.491 GiB/s 18.748 GiB/s]
