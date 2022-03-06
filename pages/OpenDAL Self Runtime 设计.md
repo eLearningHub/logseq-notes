@@ -664,14 +664,35 @@ collapsed:: true
 			- op.object(path).reader()
 		- 想象中的 API
 			- 向标准库看齐？
-			- op.remove_file(path)
-			- op.remove_dir(path)
-			- op.create_dir(path)
-			- op.create_dir_all(path)
-			- op.read_dir(path)
+			- `op.remove_file(path)`
+			- `op.remove_dir(path)`
+			- `op.create_dir(path)`
+			- `op.create_dir_all(path)`
+			- `op.read_dir(path)`
 			-
-			- OpenOption
-			- op.write(path);
-			- op.read(path);
-			- op.open(path) -> Result<File>
-			- op.create(path) -> Result<File>
+			- `op.write(path, Vec<u8>)`
+			- `op.read(path) -> Vec<u8>`
+			- `op.open(path) -> Result<File>`
+			- `op.create(path) -> Result<File>`
+			-
+			- 本质上还是 fs 和 对象的抽象很难统一到一起
+				- 要不要放弃对 file 侧的优化？
+					- 每次 read 都重新打开文件和 take offset？
+					- 打开一个文件和进行 offset 的开销其实很小，本地这边测试都在 ns 级别
+						- 跟 IO 相比不算是大头，感觉没有必要针对文件进行优化
+						- ```rust
+						  file/open_file          time:   [746.23 ns 747.14 ns 748.16 ns]
+						  Found 12 outliers among 100 measurements (12.00%)
+						    2 (2.00%) low severe
+						    3 (3.00%) low mild
+						    3 (3.00%) high mild
+						    4 (4.00%) high severe
+						  file/seek_file          time:   [883.45 ns 885.12 ns 886.76 ns]
+						  Found 12 outliers among 100 measurements (12.00%)
+						    2 (2.00%) low severe
+						    2 (2.00%) low mild
+						    6 (6.00%) high mild
+						    2 (2.00%) high severe
+						  
+						  ```
+						-
