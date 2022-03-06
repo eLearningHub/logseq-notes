@@ -244,6 +244,7 @@ collapsed:: true
 		  
 		  ```
 	- tokio 跟测试共享 同一个 tokio runtime
+collapsed:: true
 		- ```rust
 		  fs/read                 time:   [1.8692 ms 1.9521 ms 2.0349 ms]
 		                          thrpt:  [7.6785 GiB/s 8.0044 GiB/s 8.3591 GiB/s]
