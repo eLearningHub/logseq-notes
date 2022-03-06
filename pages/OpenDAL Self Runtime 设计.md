@@ -524,6 +524,99 @@ collapsed:: true
 		    1 (1.00%) high mild
 		  
 		  ```
+	- 使用 unsafe set_len (on global)
+		- ```rust
+		  fs/read                 time:   [8.3752 ms 8.4022 ms 8.4306 ms]
+		                          thrpt:  [1.8534 GiB/s 1.8596 GiB/s 1.8656 GiB/s]
+		                   change:
+		                          time:   [-40.470% -38.895% -37.025%] (p = 0.00 < 0.05)
+		                          thrpt:  [+58.792% +63.652% +67.981%]
+		                          Performance has improved.
+		  Found 9 outliers among 100 measurements (9.00%)
+		    7 (7.00%) low mild
+		    1 (1.00%) high mild
+		    1 (1.00%) high severe
+		  fs/buf_read             time:   [2.5840 ms 2.5872 ms 2.5906 ms]
+		                          thrpt:  [6.0315 GiB/s 6.0394 GiB/s 6.0469 GiB/s]
+		                   change:
+		                          time:   [-34.940% -32.911% -30.682%] (p = 0.00 < 0.05)
+		                          thrpt:  [+44.263% +49.055% +53.704%]
+		                          Performance has improved.
+		  Found 12 outliers among 100 measurements (12.00%)
+		    10 (10.00%) high mild
+		    2 (2.00%) high severe
+		  fs/range_read           time:   [5.3462 ms 5.6247 ms 5.9101 ms]
+		                          thrpt:  [1.3219 GiB/s 1.3890 GiB/s 1.4613 GiB/s]
+		                   change:
+		                          time:   [-27.026% -21.966% -15.952%] (p = 0.00 < 0.05)
+		                          thrpt:  [+18.980% +28.150% +37.036%]
+		                          Performance has improved.
+		  fs/read_half            time:   [8.8952 ms 9.0929 ms 9.3406 ms]
+		                          thrpt:  [856.48 MiB/s 879.81 MiB/s 899.36 MiB/s]
+		                   change:
+		                          time:   [-42.275% -37.479% -32.056%] (p = 0.00 < 0.05)
+		                          thrpt:  [+47.179% +59.945% +73.234%]
+		                          Performance has improved.
+		  Found 6 outliers among 100 measurements (6.00%)
+		    1 (1.00%) high mild
+		    5 (5.00%) high severe
+		  fs/write                time:   [6.6648 ms 6.6897 ms 6.7149 ms]
+		                          thrpt:  [2.3269 GiB/s 2.3357 GiB/s 2.3444 GiB/s]
+		                   change:
+		                          time:   [-0.4973% +0.7196% +1.8254%] (p = 0.24 > 0.05)
+		                          thrpt:  [-1.7927% -0.7145% +0.4997%]
+		                          No change in performance detected.
+		  
+		  
+		  ```
+	- 使用 unsafe set_len (on external)
+		- ```rust
+		  fs/read                 time:   [13.979 ms 15.384 ms 16.768 ms]
+		                          thrpt:  [954.18 MiB/s 1.0157 GiB/s 1.1178 GiB/s]
+		                   change:
+		                          time:   [+67.725% +83.093% +102.74%] (p = 0.00 < 0.05)
+		                          thrpt:  [-50.675% -45.383% -40.378%]
+		                          Performance has regressed.
+		  fs/buf_read             time:   [4.4740 ms 4.4907 ms 4.5085 ms]
+		                          thrpt:  [3.4657 GiB/s 3.4794 GiB/s 3.4924 GiB/s]
+		                   change:
+		                          time:   [+72.937% +73.576% +74.309%] (p = 0.00 < 0.05)
+		                          thrpt:  [-42.631% -42.388% -42.176%]
+		                          Performance has regressed.
+		  Found 2 outliers among 100 measurements (2.00%)
+		    1 (1.00%) high mild
+		    1 (1.00%) high severe
+		  fs/range_read           time:   [11.678 ms 11.734 ms 11.792 ms]
+		                          thrpt:  [678.41 MiB/s 681.79 MiB/s 685.07 MiB/s]
+		                   change:
+		                          time:   [+98.524% +108.61% +119.56%] (p = 0.00 < 0.05)
+		                          thrpt:  [-54.455% -52.064% -49.628%]
+		                          Performance has regressed.
+		  Found 21 outliers among 100 measurements (21.00%)
+		    1 (1.00%) low severe
+		    7 (7.00%) low mild
+		    7 (7.00%) high mild
+		    6 (6.00%) high severe
+		  fs/read_half            time:   [8.5076 ms 8.7344 ms 9.0195 ms]
+		                          thrpt:  [886.96 MiB/s 915.92 MiB/s 940.34 MiB/s]
+		                   change:
+		                          time:   [-7.2484% -3.9428% -0.1972%] (p = 0.04 < 0.05)
+		                          thrpt:  [+0.1976% +4.1047% +7.8149%]
+		                          Change within noise threshold.
+		  Found 7 outliers among 100 measurements (7.00%)
+		    3 (3.00%) high mild
+		    4 (4.00%) high severe
+		  fs/write                time:   [6.4632 ms 6.5024 ms 6.5422 ms]
+		                          thrpt:  [2.3883 GiB/s 2.4030 GiB/s 2.4175 GiB/s]
+		                   change:
+		                          time:   [-3.4676% -2.8008% -2.0884%] (p = 0.00 < 0.05)
+		                          thrpt:  [+2.1330% +2.8816% +3.5922%]
+		                          Performance has improved.
+		  Found 3 outliers among 100 measurements (3.00%)
+		    3 (3.00%) high mild
+		  
+		  ```
+-
 - 跨线程 IO 投递任务
 	- ```rust
 	  for field in &fields {
