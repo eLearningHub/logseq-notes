@@ -312,6 +312,7 @@ collapsed:: true
 		  
 		  ```
 	- pure sync io on tokio runtime
+collapsed:: true
 		- ```rust
 		  fs/read                 time:   [833.42 us 845.03 us 858.12 us]
 		                          thrpt:  [18.208 GiB/s 18.491 GiB/s 18.748 GiB/s]
@@ -380,3 +381,127 @@ collapsed:: true
 		                          thrpt:  [+178.09% +187.88% +199.13%]
 		  
 		  ```
+-
+	- unsafe async read
+		- ```rust
+		  fs/read                 time:   [17.743 ms 17.951 ms 18.136 ms]
+		                          thrpt:  [882.23 MiB/s 891.32 MiB/s 901.78 MiB/s]
+		                   change:
+		                          time:   [+0.6244% +1.9695% +3.2652%] (p = 0.00 < 0.05)
+		                          thrpt:  [-3.1620% -1.9315% -0.6206%]
+		                          Change within noise threshold.
+		  Found 11 outliers among 100 measurements (11.00%)
+		    5 (5.00%) low severe
+		    2 (2.00%) low mild
+		    4 (4.00%) high mild
+		  fs/buf_read             time:   [2.3751 ms 2.4501 ms 2.5227 ms]
+		                          thrpt:  [6.1938 GiB/s 6.3773 GiB/s 6.5788 GiB/s]
+		                   change:
+		                          time:   [-3.4575% -0.3920% +2.4060%] (p = 0.80 > 0.05)
+		                          thrpt:  [-2.3495% +0.3935% +3.5814%]
+		                          No change in performance detected.
+		  Found 21 outliers among 100 measurements (21.00%)
+		    2 (2.00%) low severe
+		    15 (15.00%) low mild
+		    4 (4.00%) high mild
+		  fs/range_read           time:   [4.0747 ms 4.2163 ms 4.3980 ms]
+		                          thrpt:  [1.7764 GiB/s 1.8529 GiB/s 1.9173 GiB/s]
+		                   change:
+		                          time:   [-48.636% -45.543% -41.999%] (p = 0.00 < 0.05)
+		                          thrpt:  [+72.412% +83.632% +94.690%]
+		                          Performance has improved.
+		  Found 6 outliers among 100 measurements (6.00%)
+		    6 (6.00%) high severe
+		  fs/read_half            time:   [8.6497 ms 9.1379 ms 9.7009 ms]
+		                          thrpt:  [824.66 MiB/s 875.48 MiB/s 924.88 MiB/s]
+		                   change:
+		                          time:   [+8.2479% +13.362% +20.585%] (p = 0.00 < 0.05)
+		                          thrpt:  [-17.071% -11.787% -7.6195%]
+		                          Performance has regressed.
+		  Found 13 outliers among 100 measurements (13.00%)
+		    1 (1.00%) high mild
+		    12 (12.00%) high severe
+		  fs/write                time:   [6.8004 ms 6.8491 ms 6.9082 ms]
+		                          thrpt:  [2.2618 GiB/s 2.2813 GiB/s 2.2977 GiB/s]
+		                   change:
+		                          time:   [-1.8862% -1.0006% -0.0722%] (p = 0.02 < 0.05)
+		                          thrpt:  [+0.0722% +1.0107% +1.9225%]
+		                          Change within noise threshold.
+		  Found 6 outliers among 100 measurements (6.00%)
+		    4 (4.00%) low mild
+		    1 (1.00%) high mild
+		    1 (1.00%) high severe
+		  
+		  ```
+	- ```rust
+	  fs/read                 time:   [18.298 ms 18.423 ms 18.573 ms]
+	                          thrpt:  [861.45 MiB/s 868.48 MiB/s 874.43 MiB/s]
+	                   change:
+	                          time:   [+1.3287% +2.6302% +4.0890%] (p = 0.00 < 0.05)
+	                          thrpt:  [-3.9284% -2.5628% -1.3113%]
+	                          Performance has regressed.
+	  Found 14 outliers among 100 measurements (14.00%)
+	    1 (1.00%) low severe
+	    4 (4.00%) high mild
+	    9 (9.00%) high severe
+	  fs/buf_read             time:   [3.9463 ms 3.9623 ms 3.9799 ms]
+	                          thrpt:  [3.9260 GiB/s 3.9434 GiB/s 3.9594 GiB/s]
+	                   change:
+	                          time:   [+57.084% +61.721% +66.768%] (p = 0.00 < 0.05)
+	                          thrpt:  [-40.036% -38.165% -36.340%]
+	                          Performance has regressed.
+	  Found 16 outliers among 100 measurements (16.00%)
+	    14 (14.00%) high mild
+	    2 (2.00%) high severe
+	  fs/range_read           time:   [5.7431 ms 6.2377 ms 6.7498 ms]
+	                          thrpt:  [1.1574 GiB/s 1.2525 GiB/s 1.3603 GiB/s]
+	                   change:
+	                          time:   [+34.514% +47.944% +60.830%] (p = 0.00 < 0.05)
+	                          thrpt:  [-37.823% -32.407% -25.658%]
+	                          Performance has regressed.
+	  fs/read_half            time:   [8.8356 ms 8.8871 ms 8.9467 ms]
+	                          thrpt:  [894.18 MiB/s 900.18 MiB/s 905.43 MiB/s]
+	                   change:
+	                          time:   [-8.3907% -2.7437% +2.7720%] (p = 0.36 > 0.05)
+	                          thrpt:  [-2.6972% +2.8211% +9.1593%]
+	                          No change in performance detected.
+	  Found 9 outliers among 100 measurements (9.00%)
+	    2 (2.00%) low mild
+	    2 (2.00%) high mild
+	    5 (5.00%) high severe
+	  fs/write                time:   [6.7729 ms 6.7921 ms 6.8116 ms]
+	                          thrpt:  [2.2939 GiB/s 2.3005 GiB/s 2.3070 GiB/s]
+	                   change:
+	                          time:   [-1.7090% -0.8331% -0.0568%] (p = 0.05 < 0.05)
+	                          thrpt:  [+0.0569% +0.8401% +1.7387%]
+	                          Change within noise threshold.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high mild
+	  ```
+-
+- 跨线程 IO 投递任务
+	- ```rust
+	  for field in &fields {
+	    if let Some(meta) = col_map.get(field.name.as_str()) {
+	      let (start, len) = meta.byte_range();
+	      let mut reader = data_accessor.object(path.as_str()).range_reader(start, len);
+	      let mut chunk = vec![0; len as usize];
+	      debug!("read_exact, offset {}, len {}", start, len);
+	      let current = Span::current();
+	      let fut = async move {
+	        reader
+	        .read_exact(&mut chunk)
+	        .instrument(
+	          debug_span!(parent: current, "read_exact_col_chunk").or_current(),
+	        )
+	        .await?;
+	        Ok::<_, ErrorCode>(chunk)
+	      };
+	      // spawn io tasks
+	      let fut = exec.spawn(fut);
+	      futs.push(fut);
+	      col_meta.push(meta);
+	    }
+	  }
+	  ```
+-
