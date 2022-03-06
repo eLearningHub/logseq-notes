@@ -15,10 +15,10 @@
 			- 放在 backend 里面？
 -
 - 可以参考的项目
-collapsed:: true
 	- influxdata DedicatedExecutor
 		- https://github.com/influxdata/influxdb_iox/blob/main/executor/src/lib.rs
 	- hyper 支持外部的 executor
+collapsed:: true
 		- ```rust
 		  #[derive(Clone)]
 		  pub enum Exec {
@@ -50,6 +50,32 @@ collapsed:: true
 		              }
 		          }
 		      }
+		  }
+		  ```
+	- 跨线程 IO 投递任务
+collapsed:: true
+		- ```rust
+		  for field in &fields {
+		    if let Some(meta) = col_map.get(field.name.as_str()) {
+		      let (start, len) = meta.byte_range();
+		      let mut reader = data_accessor.object(path.as_str()).range_reader(start, len);
+		      let mut chunk = vec![0; len as usize];
+		      debug!("read_exact, offset {}, len {}", start, len);
+		      let current = Span::current();
+		      let fut = async move {
+		        reader
+		        .read_exact(&mut chunk)
+		        .instrument(
+		          debug_span!(parent: current, "read_exact_col_chunk").or_current(),
+		        )
+		        .await?;
+		        Ok::<_, ErrorCode>(chunk)
+		      };
+		      // spawn io tasks
+		      let fut = exec.spawn(fut);
+		      futs.push(fut);
+		      col_meta.push(meta);
+		    }
 		  }
 		  ```
 -
@@ -628,28 +654,9 @@ collapsed:: true
 		  
 		  ```
 -
-- 跨线程 IO 投递任务
-	- ```rust
-	  for field in &fields {
-	    if let Some(meta) = col_map.get(field.name.as_str()) {
-	      let (start, len) = meta.byte_range();
-	      let mut reader = data_accessor.object(path.as_str()).range_reader(start, len);
-	      let mut chunk = vec![0; len as usize];
-	      debug!("read_exact, offset {}, len {}", start, len);
-	      let current = Span::current();
-	      let fut = async move {
-	        reader
-	        .read_exact(&mut chunk)
-	        .instrument(
-	          debug_span!(parent: current, "read_exact_col_chunk").or_current(),
-	        )
-	        .await?;
-	        Ok::<_, ErrorCode>(chunk)
-	      };
-	      // spawn io tasks
-	      let fut = exec.spawn(fut);
-	      futs.push(fut);
-	      col_meta.push(meta);
-	    }
-	  }
-	  ```
+- 感觉效果其实还可以，可以认真实现一把看看
+-
+- 实现需要考虑的问题
+	- 对用户的 API 可以尽可能不变化吗？
+	- 可以去掉 `async_trait` 了？
+		-
