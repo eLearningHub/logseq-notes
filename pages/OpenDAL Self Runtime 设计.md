@@ -478,7 +478,52 @@ collapsed:: true
 	  Found 1 outliers among 100 measurements (1.00%)
 	    1 (1.00%) high mild
 	  ```
--
+	- 稍微做了一些优化
+		- ```rust
+		  fs/read                 time:   [15.221 ms 15.288 ms 15.362 ms]
+		                          thrpt:  [1.0171 GiB/s 1.0220 GiB/s 1.0266 GiB/s]
+		                   change:
+		                          time:   [-17.783% -17.016% -16.317%] (p = 0.00 < 0.05)
+		                          thrpt:  [+19.499% +20.505% +21.629%]
+		                          Performance has improved.
+		  Found 14 outliers among 100 measurements (14.00%)
+		    3 (3.00%) high mild
+		    11 (11.00%) high severe
+		  fs/buf_read             time:   [3.2227 ms 3.2292 ms 3.2367 ms]
+		                          thrpt:  [4.8274 GiB/s 4.8387 GiB/s 4.8484 GiB/s]
+		                   change:
+		                          time:   [-18.895% -18.503% -18.114%] (p = 0.00 < 0.05)
+		                          thrpt:  [+22.121% +22.703% +23.297%]
+		                          Performance has improved.
+		  Found 4 outliers among 100 measurements (4.00%)
+		    2 (2.00%) high mild
+		    2 (2.00%) high severe
+		  fs/range_read           time:   [7.5952 ms 7.8492 ms 8.1078 ms]
+		                          thrpt:  [986.71 MiB/s 1019.2 MiB/s 1.0286 GiB/s]
+		                   change:
+		                          time:   [+15.553% +25.835% +37.336%] (p = 0.00 < 0.05)
+		                          thrpt:  [-27.186% -20.531% -13.459%]
+		                          Performance has regressed.
+		  Found 1 outliers among 100 measurements (1.00%)
+		    1 (1.00%) low mild
+		  fs/read_half            time:   [11.430 ms 12.233 ms 13.086 ms]
+		                          thrpt:  [611.35 MiB/s 653.95 MiB/s 699.90 MiB/s]
+		                   change:
+		                          time:   [+28.928% +37.652% +47.005%] (p = 0.00 < 0.05)
+		                          thrpt:  [-31.975% -27.353% -22.437%]
+		                          Performance has regressed.
+		  Found 1 outliers among 100 measurements (1.00%)
+		    1 (1.00%) high mild
+		  fs/write                time:   [6.5152 ms 6.5787 ms 6.6451 ms]
+		                          thrpt:  [2.3514 GiB/s 2.3751 GiB/s 2.3982 GiB/s]
+		                   change:
+		                          time:   [-4.1086% -3.1418% -2.1582%] (p = 0.00 < 0.05)
+		                          thrpt:  [+2.2059% +3.2438% +4.2846%]
+		                          Performance has improved.
+		  Found 1 outliers among 100 measurements (1.00%)
+		    1 (1.00%) high mild
+		  
+		  ```
 - 跨线程 IO 投递任务
 	- ```rust
 	  for field in &fields {
@@ -504,4 +549,3 @@ collapsed:: true
 	    }
 	  }
 	  ```
--
