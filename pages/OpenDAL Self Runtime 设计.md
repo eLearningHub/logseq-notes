@@ -15,6 +15,7 @@
 			- 放在 backend 里面？
 -
 - 可以参考的项目
+collapsed:: true
 	- influxdata DedicatedExecutor
 		- https://github.com/influxdata/influxdb_iox/blob/main/executor/src/lib.rs
 	- hyper 支持外部的 executor
@@ -53,6 +54,7 @@
 		  ```
 -
 - 大致的实现
+collapsed:: true
 	- ```rust
 	  pub static GLOBAL_EXECUTOR: Lazy<tokio::runtime::Runtime> =
 	      Lazy::new(|| tokio::runtime::Runtime::new().unwrap());
@@ -92,6 +94,7 @@
 -
 - 目前存在的问题
 	- 只是在 accessor 中使用 `self.exec.spawn` 的话好像并不会保证返回的 Reader 也运行在这个 runtime 中
+collapsed:: true
 		- 返回的 Reader 需要额外包装一下，确保所有的 poll_read call 都在自己的 runtime 上运行？
 			- 这样是不是有额外的开销？
 				- 每次 poll_read 下去都会创建一个新的 future，然后要再等待
@@ -173,9 +176,11 @@
 			- 比如 sync io 泄漏给了外面的 runtime
 	- 每个 Accessor 都要这样实现一遍好像没有必要，应该可以在最外面套一个？
 		- 跟异步的 API 可以结合吗？
+	- 为什么 blocking 这么快呢？
+		- 需要学习借鉴一下
 -
 - Benchmark 测试结果
-	- Unblocking bench
+	- blocking bench
 collapsed:: true
 		- ```rust
 		  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.0s, enable flat sampling, or reduce sample count to 50.
@@ -313,6 +318,7 @@ collapsed:: true
 		  ```
 	- pure sync io on tokio runtime
 collapsed:: true
+		- 这个结果应该是有问题的，没有把数据完整的读完
 		- ```rust
 		  fs/read                 time:   [833.42 us 845.03 us 858.12 us]
 		                          thrpt:  [18.208 GiB/s 18.491 GiB/s 18.748 GiB/s]
@@ -381,8 +387,10 @@ collapsed:: true
 		                          thrpt:  [+178.09% +187.88% +199.13%]
 		  
 		  ```
--
+		-
+	-
 	- unsafe async read
+collapsed:: true
 		- ```rust
 		  fs/read                 time:   [17.743 ms 17.951 ms 18.136 ms]
 		                          thrpt:  [882.23 MiB/s 891.32 MiB/s 901.78 MiB/s]
@@ -433,52 +441,53 @@ collapsed:: true
 		    1 (1.00%) high severe
 		  
 		  ```
-	- ```rust
-	  fs/read                 time:   [18.298 ms 18.423 ms 18.573 ms]
-	                          thrpt:  [861.45 MiB/s 868.48 MiB/s 874.43 MiB/s]
-	                   change:
-	                          time:   [+1.3287% +2.6302% +4.0890%] (p = 0.00 < 0.05)
-	                          thrpt:  [-3.9284% -2.5628% -1.3113%]
-	                          Performance has regressed.
-	  Found 14 outliers among 100 measurements (14.00%)
-	    1 (1.00%) low severe
-	    4 (4.00%) high mild
-	    9 (9.00%) high severe
-	  fs/buf_read             time:   [3.9463 ms 3.9623 ms 3.9799 ms]
-	                          thrpt:  [3.9260 GiB/s 3.9434 GiB/s 3.9594 GiB/s]
-	                   change:
-	                          time:   [+57.084% +61.721% +66.768%] (p = 0.00 < 0.05)
-	                          thrpt:  [-40.036% -38.165% -36.340%]
-	                          Performance has regressed.
-	  Found 16 outliers among 100 measurements (16.00%)
-	    14 (14.00%) high mild
-	    2 (2.00%) high severe
-	  fs/range_read           time:   [5.7431 ms 6.2377 ms 6.7498 ms]
-	                          thrpt:  [1.1574 GiB/s 1.2525 GiB/s 1.3603 GiB/s]
-	                   change:
-	                          time:   [+34.514% +47.944% +60.830%] (p = 0.00 < 0.05)
-	                          thrpt:  [-37.823% -32.407% -25.658%]
-	                          Performance has regressed.
-	  fs/read_half            time:   [8.8356 ms 8.8871 ms 8.9467 ms]
-	                          thrpt:  [894.18 MiB/s 900.18 MiB/s 905.43 MiB/s]
-	                   change:
-	                          time:   [-8.3907% -2.7437% +2.7720%] (p = 0.36 > 0.05)
-	                          thrpt:  [-2.6972% +2.8211% +9.1593%]
-	                          No change in performance detected.
-	  Found 9 outliers among 100 measurements (9.00%)
-	    2 (2.00%) low mild
-	    2 (2.00%) high mild
-	    5 (5.00%) high severe
-	  fs/write                time:   [6.7729 ms 6.7921 ms 6.8116 ms]
-	                          thrpt:  [2.2939 GiB/s 2.3005 GiB/s 2.3070 GiB/s]
-	                   change:
-	                          time:   [-1.7090% -0.8331% -0.0568%] (p = 0.05 < 0.05)
-	                          thrpt:  [+0.0569% +0.8401% +1.7387%]
-	                          Change within noise threshold.
-	  Found 1 outliers among 100 measurements (1.00%)
-	    1 (1.00%) high mild
-	  ```
+		- ```rust
+		  fs/read                 time:   [18.298 ms 18.423 ms 18.573 ms]
+		                          thrpt:  [861.45 MiB/s 868.48 MiB/s 874.43 MiB/s]
+		                   change:
+		                          time:   [+1.3287% +2.6302% +4.0890%] (p = 0.00 < 0.05)
+		                          thrpt:  [-3.9284% -2.5628% -1.3113%]
+		                          Performance has regressed.
+		  Found 14 outliers among 100 measurements (14.00%)
+		    1 (1.00%) low severe
+		    4 (4.00%) high mild
+		    9 (9.00%) high severe
+		  fs/buf_read             time:   [3.9463 ms 3.9623 ms 3.9799 ms]
+		                          thrpt:  [3.9260 GiB/s 3.9434 GiB/s 3.9594 GiB/s]
+		                   change:
+		                          time:   [+57.084% +61.721% +66.768%] (p = 0.00 < 0.05)
+		                          thrpt:  [-40.036% -38.165% -36.340%]
+		                          Performance has regressed.
+		  Found 16 outliers among 100 measurements (16.00%)
+		    14 (14.00%) high mild
+		    2 (2.00%) high severe
+		  fs/range_read           time:   [5.7431 ms 6.2377 ms 6.7498 ms]
+		                          thrpt:  [1.1574 GiB/s 1.2525 GiB/s 1.3603 GiB/s]
+		                   change:
+		                          time:   [+34.514% +47.944% +60.830%] (p = 0.00 < 0.05)
+		                          thrpt:  [-37.823% -32.407% -25.658%]
+		                          Performance has regressed.
+		  fs/read_half            time:   [8.8356 ms 8.8871 ms 8.9467 ms]
+		                          thrpt:  [894.18 MiB/s 900.18 MiB/s 905.43 MiB/s]
+		                   change:
+		                          time:   [-8.3907% -2.7437% +2.7720%] (p = 0.36 > 0.05)
+		                          thrpt:  [-2.6972% +2.8211% +9.1593%]
+		                          No change in performance detected.
+		  Found 9 outliers among 100 measurements (9.00%)
+		    2 (2.00%) low mild
+		    2 (2.00%) high mild
+		    5 (5.00%) high severe
+		  fs/write                time:   [6.7729 ms 6.7921 ms 6.8116 ms]
+		                          thrpt:  [2.2939 GiB/s 2.3005 GiB/s 2.3070 GiB/s]
+		                   change:
+		                          time:   [-1.7090% -0.8331% -0.0568%] (p = 0.05 < 0.05)
+		                          thrpt:  [+0.0569% +0.8401% +1.7387%]
+		                          Change within noise threshold.
+		  Found 1 outliers among 100 measurements (1.00%)
+		    1 (1.00%) high mild
+		  ```
 	- 稍微做了一些优化
+collapsed:: true
 		- ```rust
 		  fs/read                 time:   [15.221 ms 15.288 ms 15.362 ms]
 		                          thrpt:  [1.0171 GiB/s 1.0220 GiB/s 1.0266 GiB/s]
@@ -525,6 +534,7 @@ collapsed:: true
 		  
 		  ```
 	- 使用 unsafe set_len (on global)
+collapsed:: true
 		- ```rust
 		  fs/read                 time:   [8.3752 ms 8.4022 ms 8.4306 ms]
 		                          thrpt:  [1.8534 GiB/s 1.8596 GiB/s 1.8656 GiB/s]
@@ -570,6 +580,7 @@ collapsed:: true
 		  
 		  ```
 	- 使用 unsafe set_len (on external)
+collapsed:: true
 		- ```rust
 		  fs/read                 time:   [13.979 ms 15.384 ms 16.768 ms]
 		                          thrpt:  [954.18 MiB/s 1.0157 GiB/s 1.1178 GiB/s]
