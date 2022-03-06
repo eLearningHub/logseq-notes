@@ -657,6 +657,21 @@ collapsed:: true
 - 感觉效果其实还可以，可以认真实现一把看看
 -
 - 实现需要考虑的问题
-	- 对用户的 API 可以尽可能不变化吗？
 	- 可以去掉 `async_trait` 了？
-		-
+		- 其实没啥变化，所有的 future 还是需要包上 Box？
+	- 对用户的 API 可以尽可能不变化吗？
+		- 现在的 API
+			- op.object(path).reader()
+		- 想象中的 API
+			- 向标准库看齐？
+			- op.remove_file(path)
+			- op.remove_dir(path)
+			- op.create_dir(path)
+			- op.create_dir_all(path)
+			- op.read_dir(path)
+			-
+			- OpenOption
+			- op.write(path);
+			- op.read(path);
+			- op.open(path) -> Result<File>
+			- op.create(path) -> Result<File>
