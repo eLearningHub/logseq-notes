@@ -739,6 +739,85 @@ collapsed:: true
 			-
 			-
 -
+- 当面 main 分支 benchmark (参考值)
+	- ```rust
+	  s3/read                 time:   [4.8642 ms 4.9794 ms 5.0968 ms]
+	                          thrpt:  [3.0656 GiB/s 3.1379 GiB/s 3.2123 GiB/s]
+	                   change:
+	                          time:   [-14.139% -11.915% -9.7364%] (p = 0.00 < 0.05)
+	                          thrpt:  [+10.787% +13.526% +16.467%]
+	                          Performance has improved.
+	  s3/buf_read             time:   [4.9669 ms 5.0360 ms 5.1018 ms]
+	                          thrpt:  [3.0626 GiB/s 3.1027 GiB/s 3.1458 GiB/s]
+	                   change:
+	                          time:   [-51.868% -50.818% -49.625%] (p = 0.00 < 0.05)
+	                          thrpt:  [+98.511% +103.33% +107.76%]
+	                          Performance has improved.
+	  Found 4 outliers among 100 measurements (4.00%)
+	    4 (4.00%) low mild
+	  s3/range_read           time:   [3.0333 ms 3.1433 ms 3.2663 ms]
+	                          thrpt:  [2.3919 GiB/s 2.4854 GiB/s 2.5756 GiB/s]
+	                   change:
+	                          time:   [+10.974% +16.301% +22.100%] (p = 0.00 < 0.05)
+	                          thrpt:  [-18.100% -14.016% -9.8889%]
+	                          Performance has regressed.
+	  Found 4 outliers among 100 measurements (4.00%)
+	    1 (1.00%) high mild
+	    3 (3.00%) high severe
+	  s3/read_half            time:   [2.9057 ms 2.9813 ms 3.0648 ms]
+	                          thrpt:  [2.5491 GiB/s 2.6205 GiB/s 2.6887 GiB/s]
+	                   change:
+	                          time:   [-8.2502% -4.9245% -1.0213%] (p = 0.01 < 0.05)
+	                          thrpt:  [+1.0319% +5.1795% +8.9921%]
+	                          Performance has improved.
+	  Found 5 outliers among 100 measurements (5.00%)
+	    4 (4.00%) high mild
+	    1 (1.00%) high severe
+	  s3/write                time:   [39.665 ms 40.472 ms 41.275 ms]
+	                          thrpt:  [387.64 MiB/s 395.34 MiB/s 403.38 MiB/s]
+	                   change:
+	                          time:   [-61.179% -60.259% -59.242%] (p = 0.00 < 0.05)
+	                          thrpt:  [+145.35% +151.63% +157.59%]
+	                          Performance has improved.
+	  
+	  fs not set, ignore
+	  s3_parallel/parallel_range_read_2
+	                          time:   [3.5926 ms 3.6604 ms 3.7435 ms]
+	                          thrpt:  [4.1739 GiB/s 4.2687 GiB/s 4.3493 GiB/s]
+	                   change:
+	                          time:   [+5.5733% +8.5830% +11.664%] (p = 0.00 < 0.05)
+	                          thrpt:  [-10.445% -7.9046% -5.2791%]
+	                          Performance has regressed.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high severe
+	  s3_parallel/parallel_range_read_4
+	                          time:   [4.9526 ms 5.0581 ms 5.1640 ms]
+	                          thrpt:  [6.0515 GiB/s 6.1783 GiB/s 6.3099 GiB/s]
+	                   change:
+	                          time:   [+4.4256% +8.1345% +11.594%] (p = 0.00 < 0.05)
+	                          thrpt:  [-10.390% -7.5225% -4.2381%]
+	                          Performance has regressed.
+	  Found 3 outliers among 100 measurements (3.00%)
+	    3 (3.00%) low mild
+	  s3_parallel/parallel_range_read_8
+	                          time:   [8.1868 ms 8.4811 ms 8.7875 ms]
+	                          thrpt:  [7.1124 GiB/s 7.3693 GiB/s 7.6342 GiB/s]
+	                   change:
+	                          time:   [-13.658% -9.0803% -3.9414%] (p = 0.00 < 0.05)
+	                          thrpt:  [+4.1032% +9.9872% +15.819%]
+	                          Performance has improved.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high mild
+	  s3_parallel/parallel_range_read_16
+	                          time:   [19.370 ms 19.851 ms 20.352 ms]
+	                          thrpt:  [6.1420 GiB/s 6.2970 GiB/s 6.4533 GiB/s]
+	                   change:
+	                          time:   [-4.1929% -0.7665% +2.8570%] (p = 0.67 > 0.05)
+	                          thrpt:  [-2.7777% +0.7724% +4.3764%]
+	                          No change in performance detected.
+	  Found 5 outliers among 100 measurements (5.00%)
+	    5 (5.00%) high mild
+	  ```
 - 目前实现的 benchmark
 	- s3 buf read
 		- ```rust
