@@ -657,6 +657,7 @@ collapsed:: true
 - 感觉效果其实还可以，可以认真实现一把看看
 -
 - 实现需要考虑的问题
+collapsed:: true
 	- 可以去掉 `async_trait` 了？
 		- 其实没啥变化，所有的 future 还是需要包上 Box？
 	- 对用户的 API 可以尽可能不变化吗？
@@ -737,3 +738,14 @@ collapsed:: true
 			- op.object(path).reader()
 			-
 			-
+-
+- 目前实现的 benchmark
+	- s3 buf read
+		- ```rust
+		  s3/buf_read             time:   [10.047 ms 10.240 ms 10.438 ms]
+		                          thrpt:  [1.4969 GiB/s 1.5259 GiB/s 1.5552 GiB/s]
+		                   change:
+		                          time:   [+4.1896% +6.4811% +9.0741%] (p = 0.00 < 0.05)
+		                          thrpt:  [-8.3192% -6.0866% -4.0211%]
+		  ```
+-
