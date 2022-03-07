@@ -828,4 +828,8 @@ collapsed:: true
 		                          thrpt:  [-8.3192% -6.0866% -4.0211%]
 		  ```
 -
+- memory 的 benchmark
+	- ```rust
+	  ```
+-
 - 感觉不太行，性能不是很好
