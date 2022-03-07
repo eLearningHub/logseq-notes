@@ -830,6 +830,73 @@ collapsed:: true
 -
 - memory 的 benchmark
 	- ```rust
+	  copy/memory_copy_128B   time:   [2.0103 ns 2.0107 ns 2.0111 ns]
+	                          thrpt:  [59.277 GiB/s 59.289 GiB/s 59.299 GiB/s]
+	                   change:
+	                          time:   [-7.5861% -7.4435% -7.3184%] (p = 0.00 < 0.05)
+	                          thrpt:  [+7.8962% +8.0422% +8.2088%]
+	                          Performance has improved.
+	  Found 19 outliers among 100 measurements (19.00%)
+	    6 (6.00%) high mild
+	    13 (13.00%) high severe
+	  Benchmarking copy/memory_copy_256B: Collecting 100 samples in estimated 5.0000 s (1.6B                                                                                      copy/memory_copy_256B   time:   [3.0379 ns 3.0394 ns 3.0411 ns]
+	                          thrpt:  [39.199 GiB/s 39.222 GiB/s 39.240 GiB/s]
+	                   change:
+	                          time:   [+59.261% +59.620% +60.108%] (p = 0.00 < 0.05)
+	                          thrpt:  [-37.542% -37.351% -37.210%]
+	                          Performance has regressed.
+	  Found 16 outliers among 100 measurements (16.00%)
+	    4 (4.00%) high mild
+	    12 (12.00%) high severe
+	  Benchmarking copy/memory_copy_512B: Collecting 100 samples in estimated 5.0000 s (1.3B                                                                                      copy/memory_copy_512B   time:   [3.7197 ns 3.7227 ns 3.7280 ns]
+	                          thrpt:  [127.91 GiB/s 128.09 GiB/s 128.19 GiB/s]
+	                   change:
+	                          time:   [-6.0335% -5.8034% -5.6017%] (p = 0.00 < 0.05)
+	                          thrpt:  [+5.9341% +6.1610% +6.4209%]
+	                          Performance has improved.
+	  Found 13 outliers among 100 measurements (13.00%)
+	    3 (3.00%) high mild
+	    10 (10.00%) high severe
+	  Benchmarking copy/memory_copy_1k: Collecting 100 samples in estimated 5.0000 s (649M i                                                                                      copy/memory_copy_1k     time:   [7.9070 ns 8.0311 ns 8.1559 ns]
+	                          thrpt:  [116.93 GiB/s 118.75 GiB/s 120.61 GiB/s]
+	                   change:
+	                          time:   [-6.3639% -4.8805% -3.1718%] (p = 0.00 < 0.05)
+	                          thrpt:  [+3.2758% +5.1309% +6.7964%]
+	                          Performance has improved.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high severe
+	  Benchmarking copy/memory_copy_4k: Collecting 100 samples in estimated 5.0003 s (5.4M i                                                                                      copy/memory_copy_4k     time:   [918.03 ns 918.77 ns 919.62 ns]
+	                          thrpt:  [4.1481 GiB/s 4.1520 GiB/s 4.1553 GiB/s]
+	  Found 5 outliers among 100 measurements (5.00%)
+	    4 (4.00%) high mild
+	    1 (1.00%) high severe
+	  Benchmarking copy/memory_copy_8k: Collecting 100 samples in estimated 5.0074 s (2.8M i                                                                                      copy/memory_copy_8k     time:   [1.8074 us 1.8096 us 1.8121 us]
+	                          thrpt:  [4.2103 GiB/s 4.2162 GiB/s 4.2213 GiB/s]
+	                   change:
+	                          time:   [-1.5153% -1.0090% -0.5109%] (p = 0.00 < 0.05)
+	                          thrpt:  [+0.5135% +1.0193% +1.5386%]
+	                          Change within noise threshold.
+	  Found 14 outliers among 100 measurements (14.00%)
+	    4 (4.00%) high mild
+	    10 (10.00%) high severe
+	  Benchmarking copy/memory_copy_1M: Collecting 100 samples in estimated 5.6357 s (35k it                                                                                      copy/memory_copy_1M     time:   [155.66 us 157.12 us 158.59 us]
+	                          thrpt:  [6.1579 GiB/s 6.2154 GiB/s 6.2737 GiB/s]
+	                   change:
+	                          time:   [-5.5206% -3.8590% -2.2796%] (p = 0.00 < 0.05)
+	                          thrpt:  [+2.3327% +4.0139% +5.8432%]
+	                          Performance has improved.
+	  Found 7 outliers among 100 measurements (7.00%)
+	    1 (1.00%) low mild
+	    5 (5.00%) high mild
+	    1 (1.00%) high severe
+	  Benchmarking copy/memory_copy_4M: Collecting 100 samples in estimated 9.3087 s (10k it                                                                                      copy/memory_copy_4M     time:   [919.06 us 921.67 us 924.41 us]
+	                          thrpt:  [4.2257 GiB/s 4.2382 GiB/s 4.2503 GiB/s]
+	                   change:
+	                          time:   [-0.5356% +1.3699% +3.2749%] (p = 0.15 > 0.05)
+	                          thrpt:  [-3.1711% -1.3514% +0.5385%]
+	                          No change in performance detected.
+	  
 	  ```
+	- 过了 4KB 之后速度断崖式下降
 -
 - 感觉不太行，性能不是很好
