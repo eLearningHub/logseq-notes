@@ -1,0 +1,5 @@
+- 官网: https://carbondata.apache.org/
+- 存储格式
+	- ![image.png](../assets/image_1640852397810_0.png)
+	- ![image.png](../assets/image_1640852408013_0.png)
+	-

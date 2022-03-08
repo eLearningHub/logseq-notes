@@ -1,0 +1,11 @@
+- 作为 [Portable across runtimes, easy to switch](https://rust-lang.github.io/wg-async/vision/roadmap/portable.html) 的一部分，我们需要在标准库中增加关于 AsyncRead 和 AsyncWrite 的抽象。
+-
+- 依赖特性
+	- [Tracking Issue for static async fn in traits](https://github.com/rust-lang/rust/issues/91611)
+	- [read_buf]([[Rust/RFCs/read_buf]])
+-
+- 参考资料
+	- [wg-async: Async read/write](https://rust-lang.github.io/wg-async/vision/roadmap/portable/read_write.html)
+	- nrc's Proposal: [Async read and write traits](https://www.ncameron.org/blog/async-read-and-write-traits/)
+	- carllerche's Proposal: [async-read-write](https://gist.github.com/carllerche/5d7037bd55dac1cb72891529a4ff1540)
+	- portable-interoperable issue: [AsyncRead and AsyncWrite](https://github.com/nrc/portable-interoperable/issues/5)

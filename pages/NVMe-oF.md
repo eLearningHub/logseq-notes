@@ -1,0 +1,3 @@
+- Specification
+	- The NVMe® over Fabrics (NVMe-oF™) specification was created to enable non-volatile memory express commands that transfer data between a host and SSD or system over a networked fabric.
+	- https://nvmexpress.org/developers/nvme-of-specification/

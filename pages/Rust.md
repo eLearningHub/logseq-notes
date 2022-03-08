@@ -1,0 +1,25 @@
+- https://www.rust-lang.org/
+-
+- A language empowering everyone to build reliable and efficient software.
+	- 赋能！抓手！打法！[体操](https://github.com/skyzh/type-exercise-in-rust)！组合拳！
+-
+- Why?
+	- Performance
+	- Reliability
+	- Productivity
+-
+- 如何使用 Rust？
+	- 推荐使用 [[Rustup]] 来安装和管理 Rust
+	- [标准库]([[Rust/std]])
+	- [异步 Rust]([[Rust/Async]])
+-
+- 如何参与 Rust？
+	- [贡献指南]([[Rust/Contribute]])
+	- [看看我对 Rust 的贡献](https://github.com/rust-lang/rust/commits?author=Xuanwo)
+-
+- 正在关注
+	- [Async IO trait in std]([[Rust/RFCs/Async IO in std]])
+-
+- 使用 Rust 的项目
+	- {{query (page-property language Rust)}}
+	  query-properties:: [:type :language :areas :source :category :page]
