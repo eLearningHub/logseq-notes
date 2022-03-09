@@ -12,3 +12,5 @@
 	- 这样会导致 service 实现的复杂度高很多
 		- 需要 bench 一下 channel 发送 bytes 的开销到底有多大
 -
+- Reader2 性能
+	-
