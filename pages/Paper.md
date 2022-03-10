@@ -4,7 +4,7 @@
 	- https://github.com/dyweb/papers-notebook
 -
 - 未读
-- {{query (and (not (page-property status DONE)) (page-property type Paper))}}
+- {{query (and  (page-property type Paper))}}
   query-sort-by:: page
   query-sort-desc:: true
   query-properties:: [:page :conference :doi]
