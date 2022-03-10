@@ -2,4 +2,6 @@
 	- 实测编译就需要 120 秒
 -
 - 有没有可能自己维护一个简单的 SDK？
-	- 毕竟只需要几个简单的请求
+	- 毕竟只需要几个请求
+		- list_objects, get_object, put_object, head_object
+-
