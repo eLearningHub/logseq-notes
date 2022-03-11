@@ -1,7 +1,8 @@
 type:: [[Product]]
 features:: [[Network]]
 
-- tcpdump 是 [[Linux]] 平台下的网络数据采集分析工具。
+- tcpdump 是 [[Linux]] 平台下的网络数据采集分析工具
+	- tcpdump 基于 [libpcap](https://www.tcpdump.org/manpages/pcap.3pcap.html) 开发，有更高级的需求可以使用 libpcap 来自定义
 -
 - 监听特定网卡
 	- ```shell
