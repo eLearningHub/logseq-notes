@@ -10,6 +10,14 @@ title:: 2022-09: Iteration 8 汇报以及聊聊外卷
 	  let buf = vec[0;4*1024*1024];
 	  r.read_exact(buf).await;
 	  ```
-	- 理论上我们应该只从 S3 获取 4MB 的数据，然后这个链接被销毁。但是 opendal 在实现的时候总是使用当前 reader 的 size 来发送请求：
+	- 理论上应该只从 S3 获取 4MB 的数据，但实际上会下载将近 4.5MB 的数据，其中多余的部分数据会在这个请求销毁的时候被一同丢弃掉。Databend 平均每次请求的大小大约为 256KB，opendal 多读取的数据经常会超出一倍左右。
+	- 背后的原因是 opendal 并不知道用户会如何使用这个 reader ，所以在实现的时候总是使用当前 reader 的 size 来发送请求：
 		- ```rust
+		  let op = OpRead {
+		    path: self.path.to_string(),
+		    offset: Some(self.current_offset()),
+		    size: self.current_size(),
+		  };
 		  ```
+	- 这就使得 reader 会从服务器端获取比用户预期更多的数据。
+- 一种可能的解决方式是 reader 每次读取的时候都按照用户传入的 buf length 来读取。
