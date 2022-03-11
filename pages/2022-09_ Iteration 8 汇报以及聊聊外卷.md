@@ -75,4 +75,9 @@ title:: 2022-09: Iteration 8 汇报以及聊聊外卷
 	- minitrace 是一个超快的 tracing 库，从 benchmark 的结果看能比 tokio-tracing 快十倍，在收集的 span 特别多的时候差距能拉大到 100 倍以上。我帮助 [minitrace](https://github.com/tikv/minitrace-rust) 修复了 contributing guide 中的 dead link，增加了简单的开发入门指导，此外还在 PR [deps: Reduce version requirements](https://github.com/tikv/minitrace-rust/pull/108) 中统一了依赖的版本规则，将 `v0.x.y` 统一成了 `v0.x`，放松了一些对版本的要求。
 	- minstant 是 minitrace 的依赖，是 `std::time::Instant` 的高性能替代，在支持的平台上会使用 CPU 中的 [TSC](https://en.wikipedia.org/wiki/Time_Stamp_Counter)，比 std 中的实现快一倍。由于这个库功能已经比较成熟，所以相关的维护也比较少，我在 PR [ci: Say goodbye to travis](https://github.com/tikv/minstant/pull/22) 中删掉了已经不再工作的 travis CI 的配置。
 -
-- 除了
+- 这个周期推动 OpenDAL 进行了一轮迭代，上线了 main 分支的文档网站 <https://opendal.databend.rs/opendal/>，方便用户查看还没有正式 release 的 API。花了不少时间补全了所有公开 API 的文档和样例，现在访问 [docs.rs](https://docs.rs/opendal/0.2.1/opendal/) 终于不是光秃秃的一片了。
+- 现在 OpenDAL 对外的接口基本上稳定，接下来计划增加服务器端加密的支持，然后把能力扩展到更多的服务，只支持 S3 怎么能叫做 OpenDAL 呢！此外还有个重点话题是可观察性，通过为 OpenDAL 增加完善的 logging，tracing，metrics 支持，用户能够知道 OpenDAL 的内部状态，从而做出更好的决策。
+-
+- 接下来聊聊外卷的话题。
+-
+- 今年的 1/7 我上线了 [Xuanwo's Note](https://note.xuanwo.io/)，然后从 1/18 开始我以差不多每个工作日一篇的速度分享今天学到的东西，内容囊括了方方面面，从 Rust 相关到 Linux 的小技巧。最开始的想法是通过这种方式反向逼迫自己每天去学习，去分享一些新的东西，最大化的利用已经开源出来的 Xuanwo's Note。但是很快我发现相比于
