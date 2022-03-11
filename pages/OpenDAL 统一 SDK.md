@@ -5,3 +5,7 @@
 	- 毕竟只需要几个请求
 		- list_objects, get_object, put_object, head_object
 -
+- 重试？timeout？
+-
+- 首先我们需要一个统一的 http client
+- 然后每个 service 提供一个功能定义， 生成一个 local service client
