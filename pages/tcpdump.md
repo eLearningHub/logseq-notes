@@ -7,10 +7,20 @@ features:: [[Network]]
 	- ```shell
 	  tcpdump -i wlan0
 	  ```
-- 监听来自主机 `192.168.0.11` 在端口 `280 上的
+- 监听来自主机 `192.168.0.11` 在端口 `80` 上的 TCP 包
 	- ```shell
-	  tcpdump port 3000
+	  tcpdump tcp port 80 and src host 192.168.0.11
 	  ```
+-
+- 跟 [[Wireshark]] 可以搭配使用
+	- 通过指定 `-w` 参数可以将抓包数据保存下来
+		- ```shell
+		  tcpdump tcp port 80 and src host 192.168.0.11 -w ./http.pcap
+		  ```
+	- 然后在 wireshark 中直接打开即可
+-
+- [[kubernetes]] 环境下可以使用 [[kubectl]] 的插件 [ksniff](https://github.com/eldadru/ksniff)
+	- 它集成了 tcpdump 和 [[wireshark]] ，能够方便的查看指定 pod 的流量
 -
 - 参考资料
 	- [tcpdump(8) - Linux man page](https://linux.die.net/man/8/tcpdump)
