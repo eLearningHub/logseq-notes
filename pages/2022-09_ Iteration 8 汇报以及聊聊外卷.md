@@ -68,32 +68,11 @@ title:: 2022-09: Iteration 8 汇报以及聊聊外卷
 		      }
 		  }
 		  ```
-	- 这通常被叫做观察者模式，非常适合这种场景。在 PR [dal_context: Use ObserveReader to calculate metrics](https://github.com/datafuselabs/databend/pull/4298) 中，我为 databend 增加了时间统计的支持。
-		- ```rust
-		  async fn read(&self, args: &OpRead) -> DalResult<BoxedAsyncReader> {
-		    let metric = self.metrics.clone();
-		  
-		    self.inner.as_ref().unwrap().read(args).await.map(|reader| {
-		      let mut last_pending = None;
-		      let r = ObserveReader::new(reader, move |e| {
-		        let start = match last_pending {
-		          None => Instant::now(),
-		          Some(t) => t,
-		        };
-		        match e {
-		          ReadEvent::Pending => last_pending = Some(start),
-		          ReadEvent::Read(n) => {
-		            last_pending = None;
-		            metric.inc_read_bytes(n);
-		          }
-		          ReadEvent::Error(_) => last_pending = None,
-		          _ => {}
-		        }
-		        metric.inc_read_bytes_cost(start.elapsed().as_millis() as u64);
-		      });
-		  
-		      Box::new(r) as BoxedAsyncReader
-		    })
-		  }
-		  ```
+	- 在 PR [dal_context: Use ObserveReader to calculate metrics](https://github.com/datafuselabs/databend/pull/4298) 中，我使用 `ObserveReader` 为 databend 增加了时间统计的支持。
+- 最后是 S3 匿名访问的问题。由于 aws-sdk 不支持匿名访问的功能，所以被迫自己搞了一些 Hack，通过修改 AWS SDK 的 Middleware，实现了在没有读取到密钥时直接发送未签名的请求。在这个功能的加持下，databend 能够直接从一个公开的 S3 Bucket 中直接加载数据，非常适合用来做 demo。
 -
+- 除了 Databend 社区之外，这个周期还给 tikv 旗下的 [minitrace](https://github.com/tikv/minitrace-rust) 和 [minstant](https://github.com/tikv/minstant) 水了一些 PR。
+	- minitrace 是一个超快的 tracing 库，从 benchmark 的结果看能比 tokio-tracing 快十倍，在收集的 span 特别多的时候差距能拉大到 100 倍以上。我帮助 [minitrace](https://github.com/tikv/minitrace-rust) 修复了 contributing guide 中的 dead link，增加了简单的开发入门指导，此外还在 PR [deps: Reduce version requirements](https://github.com/tikv/minitrace-rust/pull/108) 中统一了依赖的版本规则，将 `v0.x.y` 统一成了 `v0.x`，放松了一些对版本的要求。
+	- minstant 是 minitrace 的依赖，是 `std::time::Instant` 的高性能替代，在支持的平台上会使用 CPU 中的 [TSC](https://en.wikipedia.org/wiki/Time_Stamp_Counter)，比 std 中的实现快一倍。由于这个库功能已经比较成熟，所以相关的维护也比较少，我在 PR [ci: Say goodbye to travis](https://github.com/tikv/minstant/pull/22) 中删掉了已经不再工作的 travis CI 的配置。
+-
+- 除了
