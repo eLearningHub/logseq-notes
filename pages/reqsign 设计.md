@@ -11,4 +11,9 @@
 -
 - 设计考虑
 	- 怎么支持各种 Request 结构体呢？
-	-
+	- 不同服务的考虑
+		- aws：一套 signing logic
+			- https://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
+		- gcs：Oauth2
+		- azblob：一套 signing logic (类似 aws)
+			- https://docs.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key
