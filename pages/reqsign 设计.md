@@ -17,3 +17,18 @@
 		- gcs：Oauth2
 		- azblob：一套 signing logic (类似 aws)
 			- https://docs.microsoft.com/en-us/rest/api/storageservices/authorize-with-shared-key
+-
+- 啊，第一个请求测试成功了！
+	- ```rust
+	  running 1 test
+	  [2022-03-13T16:52:14Z DEBUG reqsign::services::aws::v4] creq: 0c65a2cd6a1a1a4c14d6e96f5c458fc43255ef0f429e8270d768530adcba0030
+	  [2022-03-13T16:52:14Z DEBUG reqsign::services::aws::v4] string to sign: AWS4-HMAC-SHA256
+	      20220101T120000Z
+	      20220101/test/s3/aws4_request
+	      0c65a2cd6a1a1a4c14d6e96f5c458fc43255ef0f429e8270d768530adcba0030
+	  test services::aws::tests::test_get_object ... ok
+	  
+	  
+	  ```
+	- 可以稍微整理一下代码实现了，后面再加上更多的请求测试
+-
