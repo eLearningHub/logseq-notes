@@ -9,3 +9,7 @@
 	  2022-03-13T14:06:31.619475Z ERROR databend_query::storages::fuse::io::block_reader: read file 2/1/_b/660e9f382bec4fcd91e4c84ea0ede809.parquet total 3783 at offset 1138 size 63: unexpected end of file
 	  
 	  ```
+- 文件的大小是 3783B，用户从 offset 1138B 尝试读取 63B
+	- 大部分 IO 都是正常的，但是有请求会直接返回 0
+	- 目前推测是 blocking::Unblock 实现的问题，暂时先撤回这个变更，回头再看
+-
