@@ -34,3 +34,15 @@
 -
 - SignableRequest -> CanonicalRequest -> SigningContext
 -
+- s3 签名 性能优化
+	- ```rust
+	  aws_v4/calculate        time:   [4.2811 us 4.2835 us 4.2866 us]
+	                          change: [-6.9840% -6.8283% -6.6866%] (p = 0.00 < 0.05)
+	                          Performance has improved.
+	  
+	  ```
+	- 跟 aws sigv4 的对比
+		- ```rust
+		  aws_v4/reqsign          time:   [4.7081 us 4.7190 us 4.7329 us]
+		  aws_v4/aws_sigv4        time:   [6.3138 us 6.3272 us 6.3439 us]
+		  ```
