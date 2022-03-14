@@ -32,3 +32,5 @@
 	  ```
 	- 可以稍微整理一下代码实现了，后面再加上更多的请求测试
 -
+- SignableRequest -> CanonicalRequest -> SigningContext
+-
