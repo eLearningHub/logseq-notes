@@ -22,4 +22,4 @@
 -
 - 使用 Rust 的项目
 	- {{query (page-property language Rust)}}
-	  query-properties:: [:type :language :areas :source :category :page]
+	  query-properties:: [:page :type :areas :source :category]
