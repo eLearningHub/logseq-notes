@@ -4,7 +4,7 @@ I'm focused on **Automation**, **Distributed Systems** and **Storage**.
 
 - To read more about me: [Blog](https://xuanwo.io)
 - To know what I'm doing: [Work](https://work.xuanwo.io)
-- To find what I'm learing: [Note](https://note.xuanwo.io)
+- To find what I'm learning: [Note](https://note.xuanwo.io)
 - Also, follow me on [Twitter](https://twitter.com/OnlyXuanwo)
   
 ---
