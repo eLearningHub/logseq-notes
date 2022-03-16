@@ -50,5 +50,38 @@
 		    </ResponseMetadata>
 		  </AssumeRoleWithWebIdentityResponse>
 		  ```
-		-
+	- 很多应用会在 [[AWS EKS]] 中注入这些变量
+		- 创建一个 serviceaccount，然后在 pod 启动时指定环境变量
+			- ```yaml
+			  apiVersion: apps/v1
+			  kind: Pod
+			  metadata:
+			    name: myapp
+			  spec:
+			    serviceAccountName: my-serviceaccount
+			    containers:
+			    - name: myapp
+			      image: myapp:1.2
+			      env:
+			      - name: AWS_ROLE_ARN
+			        value: arn:aws:iam::123456789012:role/eksctl-irptest-addon-iamsa-default-my-serviceaccount-Role1-UCGG6NDYZ3UE
+			      - name: AWS_WEB_IDENTITY_TOKEN_FILE
+			        value: /var/run/secrets/eks.amazonaws.com/serviceaccount/token
+			      volumeMounts:
+			      - mountPath: /var/run/secrets/eks.amazonaws.com/serviceaccount
+			          name: aws-iam-token
+			          readOnly: true
+			    volumes:
+			    - name: aws-iam-token
+			      projected:
+			        defaultMode: 420
+			        sources:
+			        - serviceAccountToken:
+			            audience: sts.amazonaws.com
+			            expirationSeconds: 86400
+			            path: token
+			  ```
+			-
 -
+- 参考资料
+	- [Introducing fine-grained IAM roles for service accounts](https://aws.amazon.com/blogs/opensource/introducing-fine-grained-iam-roles-service-accounts/)
