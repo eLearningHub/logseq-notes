@@ -1,4 +1,4 @@
-- 文档： https://docs.aws.amazon.com/STS/
+- 文档： https://docs.aws.amazon.com/STS/latest/APIReference/welcome.html
 -
 - STS 一般是用来跟 IAM 配合使用，用来生成一个临时的，有限制的 Token 给应用使用。
 -
