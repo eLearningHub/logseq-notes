@@ -11,5 +11,47 @@ type:: [[Blog]]
 - 反思
 	- 于是我开始思考，为什么简单的 HTTP API 变成了如今这样？核心逻辑明明只有 `HTTP 1.1 GET https://127.0.0.1/abc` ，我们为什么需要做这么多额外的工作？如果自己来构造这个请求会不会变得更简单？
 	- 一个星期之前，我在 [opendal](https://github.com/datafuselabs/opendal) 的讨论区记录下了这个想法：[Self maintianed SDK](https://github.com/datafuselabs/opendal/discussions/139)。但是我很快意识到，这样的做法是不可维护的：在项目中为用到的每一个服务维护独立的 SDK 在未来会变成一个沉重的负担。更糟糕的是，我在重复造轮子，所有现有的 SDK 踩过的坑，实现的细节我需要在项目中重新趟一遍。不仅如此，其他的开源项目无法复用我的工作成果，使得这个做法的收益比极低。
-	- 紧接着，我开始思考为什么维护 SDK 的成本会这么高。
--
+	- 紧接着，我开始思考为什么维护 SDK 的成本会这么高。以 opendal 为例，它只需要使用 `aws-sdk-s3` 中的五个接口，需要做哪些事情能让它在不依赖 `aws-sdk-s3` 的前提下运作起来，而其中成本最高的部分又在哪里？很快我意识到了症结：认证。
+	- 实现 `get_object`, `delete_object` 等接口非常简单：
+		- ```rust
+		  pub(crate) async fn delete_object(&self, path: &str) -> Result<hyper::Response<hyper::Body>> {
+		    let mut req =
+		    hyper::Request::delete(&format!("{}/{}/{}", self.endpoint, self.bucket, path))
+		    .body(hyper::Body::empty())
+		    .expect("must be valid request");
+		  
+		    self.client.request(req).await.map_err(|e| {
+		      error!("object {} delete_object: {:?}", path, e);
+		      Error::Unexpected(anyhow::Error::from(e))
+		    })
+		  }
+		  ```
+	- 但是为了能认证这个请求，我们需要做非常多事情：
+		- 从这个请求中构造出 `CanonicalRequest`
+		- 基于 `CanonicalRequest` 来生成 `StringToSign`
+		- 构造 `SigningKey`
+		- 然后再通过 `SigningKey` 和 `StringToSign` 计算出本次请求的 signature
+		- 再按照要求把 signature 追加到请求中合适的位置
+	- 为了满足各种场景的需求，围绕着核心的签名计算逻辑，我们还需要做其他的工作
+		- 同时支持通过 HTTP Header 和 HTTP Query 来签名
+		- 支持从环境变量，配置文件，AWS STS 服务，AWS EC2 Metadata 服务等多种途径获取密钥
+		- 支持 Security Token 这样会过期的认证信息，为此还需要搭配一套完整的过期自动更新机制
+	- 假设我们有一个库，能把上面的这些跟请求签名相关的工作全部搞定，让我们的 API 实现变成这样：
+		- ```rust
+		  pub(crate) async fn delete_object(&self, path: &str) -> Result<hyper::Response<hyper::Body>> {
+		    let mut req =
+		    hyper::Request::delete(&format!("{}/{}/{}", self.endpoint, self.bucket, path))
+		    .body(hyper::Body::empty())
+		    .expect("must be valid request");
+		  
+		    self.signer.sign(&mut req).await.expect("sign must success");
+		  
+		    self.client.request(req).await.map_err(|e| {
+		      error!("object {} delete_object: {:?}", path, e);
+		      Error::Unexpected(anyhow::Error::from(e))
+		    })
+		  }
+		  ```
+	- 一切是不是迎刃而解了呢？
+- 实现
+	- 怀揣着这样的思路，我搓出来了 [reqsign](https://github.com/Xuanwo/reqsign)。它的目标就是让简单的 HTTP API 回归简单，专注于搞定请求签名这一件事情：用户传递一个
