@@ -1,7 +1,7 @@
 title:: 2022-11: 新轮子 reqsign
 type:: [[Blog]]
 
-- 这周主要的时间都在搓新轮子 [reqsign](https://github.com/Xuanwo/reqsign)，用于对用户的请求进行签名，使得用户不再需要依赖完整的 SDK，我将其概括为 `Signing API requests without effort`。今天这期周报就来聊聊为什么要造这个轮子，以及适合使用它的场景。
+- 这周主要的时间都在搓新轮子 [reqsign](https://github.com/Xuanwo/reqsign)，用于对用户的请求进行签名，使得用户不再需要依赖完整的 SDK，我将其概括为 `Signing API requests without effort`。今天这期周报就来聊聊为什么要造这个轮子。
 -
 - 背景
 	- 开发云上服务不可避免的会使用 SDK，它帮助用户处理认证，构造请求，解析响应等任务，使得用户不需要关心服务内部的细节。对于绝大多数用户来说，使用 SDK 已经足够满足需求，但是 SDK 也有不小的弊端。
@@ -13,6 +13,7 @@ type:: [[Blog]]
 	- 一个星期之前，我在 [opendal](https://github.com/datafuselabs/opendal) 的讨论区记录下了这个想法：[Self maintianed SDK](https://github.com/datafuselabs/opendal/discussions/139)。但是我很快意识到，这样的做法是不可维护的：在项目中为用到的每一个服务维护独立的 SDK 在未来会变成一个沉重的负担。更糟糕的是，我在重复造轮子，所有现有的 SDK 踩过的坑，实现的细节我需要在项目中重新趟一遍。不仅如此，其他的开源项目无法复用我的工作成果，使得这个做法的收益比极低。
 	- 紧接着，我开始思考为什么维护 SDK 的成本会这么高。以 opendal 为例，它只需要使用 `aws-sdk-s3` 中的五个接口，需要做哪些事情能让它在不依赖 `aws-sdk-s3` 的前提下运作起来，而其中成本最高的部分又在哪里？很快我意识到了症结：认证。
 	- 实现 `get_object`, `delete_object` 等接口非常简单：
+	  id:: 62355d12-21dd-4c16-8141-e22273a4ea84
 		- ```rust
 		  pub(crate) async fn delete_object(&self, path: &str) -> Result<hyper::Response<hyper::Body>> {
 		    let mut req =
@@ -100,4 +101,5 @@ type:: [[Blog]]
 	-
 - 展望
 	- 社区的小伙伴正在 PR [feat: Add support for azure storage](https://github.com/Xuanwo/reqsign/pull/29) 中尝试实现 Azure Storage 服务的支持，我也计划在 reqsign 中实现 OAuth2 的支持，并完善集成测试，保证 reqsign 生成的签名结果与官方的 SDK 相符。
-	- 希望 reqsign 能够为有同样需求的同学提供帮助，欢迎大家一起来贡献和完善这个项目~
+	-
+	- 欢迎大家一起来贡献和完善 [reqsign](https://github.com/Xuanwo/reqsign)，走过路过点个赞吧，哈哈~
