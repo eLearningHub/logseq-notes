@@ -185,20 +185,37 @@
 - 感觉可以搞一搞
 - read (`async fn read(&self, args: &OpRead) -> Result<BoxedAsyncReader>`)
 	- ```rust
-	  read_full/4.00 KiB      time:   [466.21 us 477.49 us 488.19 us]
-	                          thrpt:  [8.0016 MiB/s 8.1808 MiB/s 8.3787 MiB/s]
-	  read_full/256 KiB       time:   [562.30 us 574.96 us 587.29 us]
-	                          thrpt:  [425.68 MiB/s 434.81 MiB/s 444.60 MiB/s]
+	  read_full/4.00 KiB      time:   [501.63 us 510.70 us 519.31 us]
+	                          thrpt:  [7.5220 MiB/s 7.6488 MiB/s 7.7871 MiB/s]
+	                   change:
+	                          time:   [-14.730% -12.242% -9.6087%] (p = 0.00 < 0.05)
+	                          thrpt:  [+10.630% +13.949% +17.275%]
+	                          Performance has improved.
+	  read_full/256 KiB       time:   [574.83 us 585.27 us 595.59 us]
+	                          thrpt:  [419.75 MiB/s 427.15 MiB/s 434.91 MiB/s]
+	                   change:
+	                          time:   [-18.059% -15.562% -12.993%] (p = 0.00 < 0.05)
+	                          thrpt:  [+14.933% +18.430% +22.040%]
+	                          Performance has improved.
 	  Found 2 outliers among 100 measurements (2.00%)
 	    1 (1.00%) low mild
-	    1 (1.00%) high severe
-	  read_full/4.00 MiB      time:   [2.8694 ms 2.8994 ms 2.9293 ms]
-	                          thrpt:  [1.3335 GiB/s 1.3473 GiB/s 1.3614 GiB/s]
-	  read_full/16.0 MiB      time:   [11.558 ms 11.634 ms 11.706 ms]
-	                          thrpt:  [1.3348 GiB/s 1.3430 GiB/s 1.3518 GiB/s]
-	  Found 19 outliers among 100 measurements (19.00%)
-	    1 (1.00%) low severe
-	    18 (18.00%) low mild
+	    1 (1.00%) high mild
+	  read_full/4.00 MiB      time:   [2.7627 ms 2.7974 ms 2.8320 ms]
+	                          thrpt:  [1.3793 GiB/s 1.3964 GiB/s 1.4139 GiB/s]
+	                   change:
+	                          time:   [+67.643% +70.017% +72.427%] (p = 0.00 < 0.05)
+	                          thrpt:  [-42.004% -41.182% -40.349%]
+	                          Performance has regressed.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    1 (1.00%) low mild
+	    1 (1.00%) high mild
+	  read_full/16.0 MiB      time:   [11.173 ms 11.276 ms 11.377 ms]
+	                          thrpt:  [1.3733 GiB/s 1.3856 GiB/s 1.3985 GiB/s]
+	                   change:
+	                          time:   [+110.02% +112.29% +114.50%] (p = 0.00 < 0.05)
+	                          thrpt:  [-53.381% -52.894% -52.386%]
+	                          Performance has regressed.
+	  
 	  
 	  ```
 - read2 (`async fn read2(&self, args: &OpRead, buf: &mut tokio::io::ReadBuf)`)
@@ -235,4 +252,58 @@
 	                          Change within noise threshold.
 	  
 	  ```
-- 4MB 以及 16MB 的 case 上有奇怪的双倍性能提升，怀疑是测试方式有问题导致的
+	- 4MB 以及 16MB 的 case 上有奇怪的双倍性能提升，怀疑是测试方式有问题导致的
+		- 是因为减少了一次不必要的内存复制吗？
+- 尝试直接使用 `&mut [8]`: (`async fn read2(&self, args: &OpRead, mut buf: &mut [u8])`)
+	- ```rust
+	  read_full/4.00 KiB      time:   [535.73 us 550.49 us 564.94 us]
+	                          thrpt:  [6.9145 MiB/s 7.0959 MiB/s 7.2915 MiB/s]
+	                   change:
+	                          time:   [-3.4323% -0.4607% +2.4127%] (p = 0.77 > 0.05)
+	                          thrpt:  [-2.3558% +0.4629% +3.5543%]
+	                          No change in performance detected.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    1 (1.00%) low mild
+	    1 (1.00%) high mild
+	  read_full/256 KiB       time:   [661.80 us 682.63 us 702.10 us]
+	                          thrpt:  [356.07 MiB/s 366.23 MiB/s 377.76 MiB/s]
+	                   change:
+	                          time:   [+12.137% +15.556% +19.508%] (p = 0.00 < 0.05)
+	                          thrpt:  [-16.323% -13.462% -10.824%]
+	                          Performance has regressed.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    1 (1.00%) low mild
+	    1 (1.00%) high mild
+	  Benchmarking read_full/4.00 MiB: Warming up for 3.0000 s
+	  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.4s, enable flat sampling, or reduce sample count to 50.
+	  read_full/4.00 MiB      time:   [1.6280 ms 1.6425 ms 1.6571 ms]
+	                          thrpt:  [2.3573 GiB/s 2.3782 GiB/s 2.3995 GiB/s]
+	                   change:
+	                          time:   [-4.7335% -3.8071% -2.8355%] (p = 0.00 < 0.05)
+	                          thrpt:  [+2.9183% +3.9578% +4.9686%]
+	                          Performance has improved.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high mild
+	  read_full/16.0 MiB      time:   [5.2822 ms 5.3119 ms 5.3416 ms]
+	                          thrpt:  [2.9251 GiB/s 2.9415 GiB/s 2.9580 GiB/s]
+	                   change:
+	                          time:   [-2.9437% -2.3224% -1.6819%] (p = 0.00 < 0.05)
+	                          thrpt:  [+1.7107% +2.3776% +3.0330%]
+	                          Performance has improved.
+	  
+	  ```
+	- 能更快一点点
+- 为什么比返回一个 BoxedAsyncRead 快呢？又为什么返回一个 BoxedAsyncRead 在小数据量的情况下会更快呢？
+	- ```rust
+	  let mut buf = buf.clone();
+	  let mut r = op.object(path).limited_reader(size.bytes());
+	  r.read_exact(&mut buf).await.unwrap();
+	  ```
+	- ```rust
+	  let mut buf = buf.clone();
+	  op.object(path).read(0, size.bytes(), &mut buf).await;
+	  ```
+- 发出去的请求应该是一样的
+- 之前的实现会重复创建 feature，修复之后
+	- ```rust
+	  ```
