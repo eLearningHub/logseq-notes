@@ -306,4 +306,46 @@
 - 发出去的请求应该是一样的
 - 之前的实现会重复创建 feature，修复之后
 	- ```rust
+	  let mut resp = self.get_object(&p, args.offset, args.size).await?;
+	  let body = resp.body_mut().data();
+	  for bs in body.await {
+	    let bs = bs.map_err(|e| Error::Unexpected(anyhow::Error::from(e)))?;
+	    buf.put_slice(&bs);
+	  }
 	  ```
+	- ```rust
+	  read_full/4.00 KiB      time:   [525.85 us 537.43 us 549.67 us]
+	                          thrpt:  [7.1066 MiB/s 7.2683 MiB/s 7.4285 MiB/s]
+	                   change:
+	                          time:   [-3.0812% -0.5856% +1.9537%] (p = 0.66 > 0.05)
+	                          thrpt:  [-1.9163% +0.5890% +3.1791%]
+	                          No change in performance detected.
+	  read_full/256 KiB       time:   [597.37 us 609.95 us 622.00 us]
+	                          thrpt:  [401.93 MiB/s 409.87 MiB/s 418.50 MiB/s]
+	                   change:
+	                          time:   [-15.918% -13.608% -11.367%] (p = 0.00 < 0.05)
+	                          thrpt:  [+12.825% +15.751% +18.931%]
+	                          Performance has improved.
+	  Found 4 outliers among 100 measurements (4.00%)
+	    3 (3.00%) low mild
+	    1 (1.00%) high mild
+	  Benchmarking read_full/4.00 MiB: Warming up for 3.0000 s
+	  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 7.8s, enable flat sampling, or reduce sample count to 50.
+	  read_full/4.00 MiB      time:   [1.4768 ms 1.4953 ms 1.5162 ms]
+	                          thrpt:  [2.5763 GiB/s 2.6124 GiB/s 2.6451 GiB/s]
+	                   change:
+	                          time:   [-2.4699% -1.1114% +0.3584%] (p = 0.14 > 0.05)
+	                          thrpt:  [-0.3571% +1.1239% +2.5325%]
+	                          No change in performance detected.
+	  read_full/16.0 MiB      time:   [5.3758 ms 5.4023 ms 5.4283 ms]
+	                          thrpt:  [2.8784 GiB/s 2.8923 GiB/s 2.9066 GiB/s]
+	                   change:
+	                          time:   [-0.9170% -0.3260% +0.3198%] (p = 0.30 > 0.05)
+	                          thrpt:  [-0.3188% +0.3270% +0.9255%]
+	                          No change in performance detected.
+	  
+	  ```
+- 还是会慢一点点
+	- 推测是内部重复多次 await 的开销？
+		- 但是 read_exact 也会有一样的 poll_read 开销，展开后应该是一样的
+	-
