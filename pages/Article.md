@@ -1,7 +1,5 @@
 - 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
 -
-- https://github.githistory.xyz/
-- https://seanmonstar.com/post/678179333918097408/hypers-vision
 - https://github.com/Charca/astro-blog-template
 - https://www.yagiz.co/implementing-node-js-url-parser-in-webassembly-with-rust/
 - https://web.dev/interop-2022/
