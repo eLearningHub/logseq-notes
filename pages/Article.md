@@ -11,3 +11,7 @@
 - https://lightstep.com/
 - https://habr.com/en/company/yandex/blog/457612/
 - https://zhuanlan.zhihu.com/p/478486523
+- https://www.lurklurk.org/effective-rust/
+- https://mitchellh.com/writing/contributing-to-complex-projects
+- https://thephd.dev/to-save-c-we-must-save-abi-fixing-c-function-abi
+- https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Directory_Entries
