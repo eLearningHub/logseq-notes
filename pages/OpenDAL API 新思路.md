@@ -161,4 +161,25 @@
 		  ```
 	- 在高并发的情况下看起来还是原来的实现更有优势
 	- 感觉内部的实现好像没有什么搞头？
+- ---
+- Update at [[2022-03-20]]
 -
+- 最底层的实现使用
+	- ```rust
+	  async fn read(&self, args: &OpRead, buf: tokio::io::ReadBuf)
+	  ```
+- 在这个基础上可以实现
+	- ```rust
+	  async fn read(&self, args: &OpRead, w: Box<dyn AsyncWrite>)
+	  ```
+- 以及
+	- ```rust
+	  async fn read(&self, args: &OpRead) -> Result<OwnedReader>
+	  ```
+	- OwnedReader 会提供两个接口
+		- 一个是 async fetch ，另一个是 sync 的 buffer() -> &[u8]
+		- 用户可以将 fetch 调度到 async runtime 上，而真正去读取数据的操作是完全同步的
+	- 作为 AccessorReadExt ？
+- 还是可以在外层包装 reader 的
+-
+- 感觉可以搞一搞
