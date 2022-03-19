@@ -185,4 +185,54 @@
 - 感觉可以搞一搞
 - read (`async fn read(&self, args: &OpRead) -> Result<BoxedAsyncReader>`)
 	- ```rust
+	  read_full/4.00 KiB      time:   [466.21 us 477.49 us 488.19 us]
+	                          thrpt:  [8.0016 MiB/s 8.1808 MiB/s 8.3787 MiB/s]
+	  read_full/256 KiB       time:   [562.30 us 574.96 us 587.29 us]
+	                          thrpt:  [425.68 MiB/s 434.81 MiB/s 444.60 MiB/s]
+	  Found 2 outliers among 100 measurements (2.00%)
+	    1 (1.00%) low mild
+	    1 (1.00%) high severe
+	  read_full/4.00 MiB      time:   [2.8694 ms 2.8994 ms 2.9293 ms]
+	                          thrpt:  [1.3335 GiB/s 1.3473 GiB/s 1.3614 GiB/s]
+	  read_full/16.0 MiB      time:   [11.558 ms 11.634 ms 11.706 ms]
+	                          thrpt:  [1.3348 GiB/s 1.3430 GiB/s 1.3518 GiB/s]
+	  Found 19 outliers among 100 measurements (19.00%)
+	    1 (1.00%) low severe
+	    18 (18.00%) low mild
+	  
 	  ```
+- read2 (`async fn read2(&self, args: &OpRead, buf: &mut tokio::io::ReadBuf)`)
+	- ```rust
+	  read_full/4.00 KiB      time:   [539.70 us 553.03 us 567.10 us]
+	                          thrpt:  [6.8882 MiB/s 7.0633 MiB/s 7.2378 MiB/s]
+	                   change:
+	                          time:   [+13.907% +17.540% +20.795%] (p = 0.00 < 0.05)
+	                          thrpt:  [-17.215% -14.923% -12.209%]
+	                          Performance has regressed.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) low mild
+	  read_full/256 KiB       time:   [601.84 us 613.62 us 625.22 us]
+	                          thrpt:  [399.86 MiB/s 407.42 MiB/s 415.39 MiB/s]
+	                   change:
+	                          time:   [-8.2457% -5.6658% -2.6203%] (p = 0.00 < 0.05)
+	                          thrpt:  [+2.6909% +6.0061% +8.9867%]
+	                          Performance has improved.
+	  Benchmarking read_full/4.00 MiB: Warming up for 3.0000 s
+	  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.4s, enable flat sampling, or reduce sample count to 50.
+	  read_full/4.00 MiB      time:   [1.7123 ms 1.7257 ms 1.7382 ms]
+	                          thrpt:  [2.2473 GiB/s 2.2636 GiB/s 2.2812 GiB/s]
+	                   change:
+	                          time:   [+4.5913% +5.4065% +6.2071%] (p = 0.00 < 0.05)
+	                          thrpt:  [-5.8443% -5.1291% -4.3897%]
+	                          Performance has regressed.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high mild
+	  read_full/16.0 MiB      time:   [5.4221 ms 5.4382 ms 5.4552 ms]
+	                          thrpt:  [2.8642 GiB/s 2.8732 GiB/s 2.8817 GiB/s]
+	                   change:
+	                          time:   [-0.7715% -0.3979% -0.0334%] (p = 0.04 < 0.05)
+	                          thrpt:  [+0.0334% +0.3995% +0.7775%]
+	                          Change within noise threshold.
+	  
+	  ```
+- 4MB 以及 16MB 的 case 上有奇怪的双倍性能提升，怀疑是测试方式有问题导致的
