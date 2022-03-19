@@ -163,7 +163,7 @@
 	- 感觉内部的实现好像没有什么搞头？
 - ---
 - Update at [[2022-03-20]]
--
+	-
 - 最底层的实现使用
 	- ```rust
 	  async fn read(&self, args: &OpRead, buf: tokio::io::ReadBuf)
@@ -183,3 +183,6 @@
 - 还是可以在外层包装 reader 的
 -
 - 感觉可以搞一搞
+- read (`async fn read(&self, args: &OpRead) -> Result<BoxedAsyncReader>`)
+	- ```rust
+	  ```
