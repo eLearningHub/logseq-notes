@@ -1,5 +1,7 @@
 title:: 2022-11: 新轮子 reqsign
 type:: [[Blog]]
+status:: [[DONE]]
+link:: https://xuanwo.io/reports/2022-11/
 
 - 这周主要的时间都在搓新轮子 [reqsign](https://github.com/Xuanwo/reqsign)，用于对用户的请求进行签名，使得用户不再需要依赖完整的 SDK，我将其概括为 `Signing API requests without effort`。今天这期周报就来聊聊为什么要造这个轮子。
 -

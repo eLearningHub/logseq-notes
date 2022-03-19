@@ -1,6 +1,6 @@
 title:: 2022-09: Iteration 8 汇报以及聊聊外卷
 type:: [[Blog]]
-status:: DONE
+status:: [[DONE]]
 link:: https://xuanwo.io/reports/2022-10/
 
 - [[Iteration/8]]
