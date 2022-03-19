@@ -1,7 +1,7 @@
 title:: 2022-11: 新轮子 reqsign
 type:: [[Blog]]
 
-- 这周主要的时间都在搓新轮子 [reqsign](https://github.com/Xuanwo/reqsign)，用于对用户的请求进行签名，使得用户不再需要依赖完整的 SDK，我将其概括为 `Signing API requests without effort`。今天这期周报就主要聊聊为什么要造这个轮子，以及适合使用它的场景。
+- 这周主要的时间都在搓新轮子 [reqsign](https://github.com/Xuanwo/reqsign)，用于对用户的请求进行签名，使得用户不再需要依赖完整的 SDK，我将其概括为 `Signing API requests without effort`。今天这期周报就来聊聊为什么要造这个轮子，以及适合使用它的场景。
 -
 - 背景
 	- 开发云上服务不可避免的会使用 SDK，它帮助用户处理认证，构造请求，解析响应等任务，使得用户不需要关心服务内部的细节。对于绝大多数用户来说，使用 SDK 已经足够满足需求，但是 SDK 也有不小的弊端。
@@ -54,4 +54,50 @@ type:: [[Blog]]
 		  ```
 	- 一切是不是迎刃而解了呢？
 - 实现
-	- 怀揣着这样的思路，我搓出来了 [reqsign](https://github.com/Xuanwo/reqsign)。它的目标就是让简单的 HTTP API 回归简单，专注于搞定请求签名这一件事情：用户传递一个
+	- 怀揣着这样的思路，我搓出来了 [reqsign](https://github.com/Xuanwo/reqsign)。
+	- 它的目标就是让简单的 HTTP API 回归简单，专注于搞定请求签名这一件事情：
+		- 传入一个 Request
+		- reqsign 签名好并返回
+		- 用户用自己的 Client 将它发出去
+	- DONE！就是这么简单，不做多余的事情，没有复杂的抽象，仿佛本来就该如此。
+	-
+	- reqsign 现在已经支持了 AWS SigV4，它能够自动的从环境变量，配置文件，AWS STS 服务中获取必要的签名信息，对用户的请求进行签名：
+		- ```rust
+		  use reqsign::services::aws::v4::Signer;
+		  use reqwest::{Client, Request, Url};
+		  use anyhow::Result;
+		  
+		  #[tokio::main]
+		  async fn main() -> Result<()>{
+		      // Signer will load region and credentials from environment by default.
+		      let signer = Signer::builder().service("s3").build().await?;
+		      // Construct request
+		      let url = Url::parse( "https://s3.amazonaws.com/testbucket")?;
+		      let mut req = reqwest::Request::new(http::Method::GET, url);
+		      // Signing request with Signer
+		      signer.sign(&mut req).await?;
+		      // Sending already signed request.
+		      let resp = Client::new().execute(req).await?;
+		      println!("resp got status: {}", resp.status());
+		      Ok(())
+		  }
+		  ```
+	- reqsign 没有直接依赖任何 AWS 的库，而是选择参考 `aws-sigv4` 的代码自行实现了完整的签名认证逻辑，并在测试中将签名结果与 aws-sigv4 直接对比，并通过直接请求 AWS S3 和 minio 来确保自己的实现正确。
+	- 目前 [opendal](https://github.com/datafuselabs/opendal) 已经彻底切换到了 reqsign 上，在 PR [refactor: Say goodbye to aws-s3-sdk](https://github.com/datafuselabs/opendal/pull/152) 中能看到 opendal 一口气删除了十个依赖：
+		- ```rust
+		  aws-config = "0.8"
+		  aws-endpoint = "0.8"
+		  aws-http = "0.8"
+		  aws-sdk-s3 = "0.8"
+		  aws-sig-auth = "0.8"
+		  aws-sigv4 = "0.8"
+		  aws-smithy-client = "0.38"
+		  aws-smithy-http = "0.38"
+		  aws-smithy-http-tower = "0.38"
+		  aws-types = { version = "0.8", features = ["hardcoded-credentials"] }
+		  ```
+	- 同时还删除了一大堆 AWS SDK Middleware 相关的代码，非常的痛快。
+	-
+- 展望
+	- 社区的小伙伴正在 PR [feat: Add support for azure storage](https://github.com/Xuanwo/reqsign/pull/29) 中尝试实现 Azure Storage 服务的支持，我也计划在 reqsign 中实现 OAuth2 的支持，并完善集成测试，保证 reqsign 生成的签名结果与官方的 SDK 相符。
+	- 希望 reqsign 能够为有同样需求的同学提供帮助，欢迎大家一起来贡献和完善这个项目~
