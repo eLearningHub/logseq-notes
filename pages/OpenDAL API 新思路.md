@@ -348,4 +348,82 @@
 - 还是会慢一点点
 	- 推测是内部重复多次 await 的开销？
 		- 但是 read_exact 也会有一样的 poll_read 开销，展开后应该是一样的
-	-
+	- 在内部转成 ByteStream 之后还真有些差别
+	- 从 IO 上看，差别好像在于每一次 IO 读取多少数据
+- 修改之后便正常了，应该是旧的实现数据就不对
+	- ```rust
+	  read_full/4.00 KiB      time:   [517.37 us 524.37 us 531.52 us]
+	                          thrpt:  [7.3492 MiB/s 7.4494 MiB/s 7.5502 MiB/s]
+	                   change:
+	                          time:   [-3.1914% -0.6270% +1.9972%] (p = 0.64 > 0.05)
+	                          thrpt:  [-1.9581% +0.6310% +3.2966%]
+	                          No change in performance detected.
+	  Found 4 outliers among 100 measurements (4.00%)
+	    3 (3.00%) low mild
+	    1 (1.00%) high mild
+	  read_full/256 KiB       time:   [596.00 us 605.44 us 615.23 us]
+	                          thrpt:  [406.35 MiB/s 412.92 MiB/s 419.46 MiB/s]
+	                   change:
+	                          time:   [-14.017% -11.512% -8.8023%] (p = 0.00 < 0.05)
+	                          thrpt:  [+9.6519% +13.009% +16.302%]
+	                          Performance has improved.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) low mild
+	  read_full/4.00 MiB      time:   [2.7657 ms 2.8093 ms 2.8528 ms]
+	                          thrpt:  [1.3693 GiB/s 1.3905 GiB/s 1.4124 GiB/s]
+	                   change:
+	                          time:   [+79.602% +82.909% +86.378%] (p = 0.00 < 0.05)
+	                          thrpt:  [-46.346% -45.328% -44.321%]
+	                          Performance has regressed.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    2 (2.00%) high mild
+	  read_full/16.0 MiB      time:   [11.433 ms 11.558 ms 11.686 ms]
+	                          thrpt:  [1.3371 GiB/s 1.3518 GiB/s 1.3667 GiB/s]
+	                   change:
+	                          time:   [+110.81% +112.90% +115.31%] (p = 0.00 < 0.05)
+	                          thrpt:  [-53.555% -53.030% -52.564%]
+	                          Performance has regressed.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    2 (2.00%) high mild
+	  
+	  ```
+	- 之前会变快应该只是数据没读对
+		- ![image.png](../assets/image_1647756995249_0.png)
+		- 注意 for bs in x 的行为
+- ---
+- Update at [[2022-03-20]]
+- 新的问题
+	- 为什么返回 BoxedAsyncRead 会比直接 copy 更快一些
+	- ```rust
+	  read_full/4.00 KiB      time:   [514.01 us 525.53 us 536.62 us]
+	                          thrpt:  [7.2794 MiB/s 7.4330 MiB/s 7.5996 MiB/s]
+	                   change:
+	                          time:   [+1.7006% +4.4126% +7.1006%] (p = 0.00 < 0.05)
+	                          thrpt:  [-6.6298% -4.2261% -1.6722%]
+	                          Performance has regressed.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high mild
+	  read_full/256 KiB       time:   [604.70 us 616.86 us 628.85 us]
+	                          thrpt:  [397.55 MiB/s 405.28 MiB/s 413.43 MiB/s]
+	                   change:
+	                          time:   [-0.4380% +1.9726% +4.2706%] (p = 0.10 > 0.05)
+	                          thrpt:  [-4.0957% -1.9345% +0.4399%]
+	                          No change in performance detected.
+	  Found 2 outliers among 100 measurements (2.00%)
+	    2 (2.00%) low mild
+	  read_full/4.00 MiB      time:   [2.8457 ms 2.8776 ms 2.9101 ms]
+	                          thrpt:  [1.3423 GiB/s 1.3575 GiB/s 1.3727 GiB/s]
+	                   change:
+	                          time:   [-0.2818% +2.2479% +4.8378%] (p = 0.08 > 0.05)
+	                          thrpt:  [-4.6145% -2.1985% +0.2826%]
+	                          No change in performance detected.
+	  read_full/16.0 MiB      time:   [11.345 ms 11.561 ms 11.763 ms]
+	                          thrpt:  [1.3283 GiB/s 1.3515 GiB/s 1.3773 GiB/s]
+	                   change:
+	                          time:   [+4.2915% +6.7742% +9.5398%] (p = 0.00 < 0.05)
+	                          thrpt:  [-8.7090% -6.3444% -4.1149%]
+	                          Performance has regressed.
+	  
+	  ```
+- 256KB/4MB 没啥变化，但是 4KB 和 16MB 的场景有微妙的下降
+-
