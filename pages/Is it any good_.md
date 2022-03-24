@@ -1,0 +1,4 @@
+- Yes.
+-
+- Ref: https://news.ycombinator.com/item?id=3067434
+- > Note to self: Starting immediately, all raganwald projects will have a “Is it any good?” section in the readme, and the answer shall be “yes."

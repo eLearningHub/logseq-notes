@@ -1,0 +1,15 @@
+- 这里是我的 Reading List，已读的文章会出现在 [#read]([[read]])
+-
+- https://github.com/Charca/astro-blog-template
+- https://www.yagiz.co/implementing-node-js-url-parser-in-webassembly-with-rust/
+- https://web.dev/interop-2022/
+- https://zh.wikipedia.org/wiki/%E9%94%A1%E7%AE%94%E5%B8%BD
+- https://lightstep.com/
+- https://habr.com/en/company/yandex/blog/457612/
+- https://zhuanlan.zhihu.com/p/478486523
+- https://www.lurklurk.org/effective-rust/
+- https://mitchellh.com/writing/contributing-to-complex-projects
+- https://thephd.dev/to-save-c-we-must-save-abi-fixing-c-function-abi
+- https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Directory_Entries
+	- 兩層的 htree [Ext4 Disk Layout - Ext4](https://ext4.wiki.kernel.org/index.php/Ext4_Disk_Layout#Directory_Entries) 。ls (readdir) 的時候沒有文件名 hash ，所以應該是直接線性遍歷 htree 的子節點，和 htree 的中間節點無關了（直接跳過）。我猜 30w 很快而 100w 很慢這現象的原因是一個 dir_entry 大小 8+文件名長度，粗算一下 100w 文件大概 20M 的葉子節點，可能正巧 30w 文件放在了一個 bg 然後 100w 文件的時候跨 bg seek 了（一個 bg 128M）。
+- https://qiita.com/liubin/items/6c94f0b61f746c08b74c
