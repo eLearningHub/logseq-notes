@@ -426,4 +426,156 @@
 	  
 	  ```
 - 256KB/4MB 没啥变化，但是 4KB 和 16MB 的场景有微妙的下降
+- ---
+- Update at [[2022-03-26]]
+- 看起来 read 内部的实现有关系
+- 使用 buf.put_slice() 没有 mem::replace 来得更高效
+- ```rust
+  while let Some(bs) = body.data().await {
+    let bs = bs.map_err(|e| Error::Unexpected(anyhow::Error::from(e)))?;
+    let (_, rest) = mem::replace(&mut buf, &mut []).split_at_mut(bs.len());
+    buf = rest;
+  }
+  ```
+- 这样处理后性能能比之前更高一些
+	- 等一下，put_slice 好像是错的
+		- 确实- -，理解错语义了
+- 写一个简单的 bench 验证一下
 -
+- read2
+- ```rust
+  read_full/4.00 KiB      time:   [482.54 us 495.20 us 508.40 us]
+                          thrpt:  [7.6834 MiB/s 7.8883 MiB/s 8.0951 MiB/s]
+                   change:
+                          time:   [-7.2198% -4.2442% -1.2601%] (p = 0.01 < 0.05)
+                          thrpt:  [+1.2762% +4.4323% +7.7816%]
+                          Performance has improved.
+  
+  ```
+- read
+- ```rust
+  read_full/4.00 KiB      time:   [485.77 us 494.87 us 503.83 us]
+                          thrpt:  [7.7531 MiB/s 7.8935 MiB/s 8.0413 MiB/s]
+                   change:
+                          time:   [-1.3375% +1.1237% +3.7208%] (p = 0.40 > 0.05)
+                          thrpt:  [-3.5874% -1.1112% +1.3556%]
+                          No change in performance detected.
+  
+  ```
+-
+- 现在基本相差无几，看一下完整的对比
+-
+- read2
+	- ```rust
+	  read_full/4.00 KiB      time:   [484.45 us 494.53 us 504.82 us]
+	                          thrpt:  [7.7379 MiB/s 7.8990 MiB/s 8.0633 MiB/s]
+	                   change:
+	                          time:   [+0.1748% +2.5738% +5.0604%] (p = 0.04 < 0.05)
+	                          thrpt:  [-4.8167% -2.5092% -0.1745%]
+	                          Change within noise threshold.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) low mild
+	  read_full/256 KiB       time:   [551.58 us 563.33 us 574.63 us]
+	                          thrpt:  [435.06 MiB/s 443.79 MiB/s 453.25 MiB/s]
+	                   change:
+	                          time:   [-6.8734% -4.4685% -1.7010%] (p = 0.00 < 0.05)
+	                          thrpt:  [+1.7305% +4.6775% +7.3807%]
+	                          Performance has improved.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high mild
+	  read_full/4.00 MiB      time:   [3.0573 ms 3.1269 ms 3.1980 ms]
+	                          thrpt:  [1.2215 GiB/s 1.2493 GiB/s 1.2777 GiB/s]
+	                   change:
+	                          time:   [+6.0231% +8.6613% +11.294%] (p = 0.00 < 0.05)
+	                          thrpt:  [-10.148% -7.9709% -5.6810%]
+	                          Performance has regressed.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high mild
+	  read_full/16.0 MiB      time:   [10.586 ms 10.702 ms 10.816 ms]
+	                          thrpt:  [1.4446 GiB/s 1.4601 GiB/s 1.4760 GiB/s]
+	                   change:
+	                          time:   [-9.3162% -7.4358% -5.4222%] (p = 0.00 < 0.05)
+	                          thrpt:  [+5.7330% +8.0331% +10.273%]
+	                          Performance has improved.
+	  
+	  ```
+- read
+	- ```rust
+	  read_full/4.00 KiB      time:   [479.46 us 491.29 us 502.39 us]
+	                          thrpt:  [7.7753 MiB/s 7.9510 MiB/s 8.1472 MiB/s]
+	                   change:
+	                          time:   [-6.2505% -3.7468% -0.9420%] (p = 0.01 < 0.05)
+	                          thrpt:  [+0.9510% +3.8926% +6.6672%]
+	                          Change within noise threshold.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) high severe
+	  read_full/256 KiB       time:   [567.36 us 580.33 us 592.66 us]
+	                          thrpt:  [421.83 MiB/s 430.79 MiB/s 440.64 MiB/s]
+	                   change:
+	                          time:   [-4.3792% -1.7178% +1.1756%] (p = 0.25 > 0.05)
+	                          thrpt:  [-1.1619% +1.7478% +4.5798%]
+	                          No change in performance detected.
+	  read_full/4.00 MiB      time:   [2.7542 ms 2.7841 ms 2.8175 ms]
+	                          thrpt:  [1.3864 GiB/s 1.4030 GiB/s 1.4183 GiB/s]
+	                   change:
+	                          time:   [-13.218% -10.960% -8.7006%] (p = 0.00 < 0.05)
+	                          thrpt:  [+9.5298% +12.309% +15.232%]
+	                          Performance has improved.
+	  Found 6 outliers among 100 measurements (6.00%)
+	    1 (1.00%) high mild
+	    5 (5.00%) high severe
+	  read_full/16.0 MiB      time:   [10.543 ms 10.725 ms 10.905 ms]
+	                          thrpt:  [1.4328 GiB/s 1.4569 GiB/s 1.4820 GiB/s]
+	                   change:
+	                          time:   [-1.7209% +0.2149% +2.2074%] (p = 0.83 > 0.05)
+	                          thrpt:  [-2.1597% -0.2144% +1.7510%]
+	                          No change in performance detected.
+	  
+	  ```
+-
+- 不太对，肯定还有哪里有问题- -
+	- 只能理解为 future 的数量问题？
+	- 感觉不应该自己去实现 read_exact 的逻辑
+- 有没有办法不返回 BoxedAsyncReader 呢？
+- 应该返回一个 Read？
+	- 好像没有区别啊，可以去掉中间的状态转换吗？
+- 返回一个 stream？
+	- 返回一个本地的类型，不使用 BoxedAsyncRead
+	- 可以不用 async 吗？避免需要使用 BoxedFuture？
+	- 可以实现对称的 API 吗？
+		- write 返回一个 sink？
+- read 输入一个 sink 如何？
+	- 用户用起来会怎么样呢？
+- 如何能够封装出底层的接口？
+-
+- 研究一下 Sink
+	- ```rust
+	  pub trait Sink<Item> {
+	      type Error;
+	      fn poll_ready(
+	          self: Pin<&mut Self>, 
+	          cx: &mut Context<'_>
+	      ) -> Poll<Result<(), Self::Error>>;
+	      fn start_send(self: Pin<&mut Self>, item: Item) -> Result<(), Self::Error>;
+	      fn poll_flush(
+	          self: Pin<&mut Self>, 
+	          cx: &mut Context<'_>
+	      ) -> Poll<Result<(), Self::Error>>;
+	      fn poll_close(
+	          self: Pin<&mut Self>, 
+	          cx: &mut Context<'_>
+	      ) -> Poll<Result<(), Self::Error>>;
+	  }
+	  ```
+- 如何从 put_object 响应中返回 Sink 呢？
+	- 需要创建一个 channel？
+-
+- 返回 Sink 感觉不如接受一个 Stream？
+- 返回 stream 也是需要自己 box 的，不如直接返回 reader 了？
+	- channel？
+-
+- s3 里面如果需要返回一个 Sink 的话，应该需要自己创建一个 channel？
+	- 看起来需要另外开一个 future 来执行请求？
+	- 可以构造一个 future 然后在 sink 中返回
+- 好，那再回到最开始的问题，需要使用 Stream/Sink 吗？还是用 Reader/Writer？
+	- 看起来 Stream 更底层一些，更好控制？
