@@ -1,5 +1,4 @@
 - 复现方式
-  collapsed:: true
 	- https://github.com/TCeason/test
 	- 使用如下语句建表
 	  collapsed:: true
@@ -65,7 +64,6 @@
 		  
 		  ```
 - 初步分析
-  collapsed:: true
 	- hyper 跨 runtime 运行时会出现 dispatch dropped 这样的问题
 	- ```rust
 	      pub(crate) fn try_send(&mut self, val: T) -> Result<RetryPromise<T, U>, T> {
