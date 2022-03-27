@@ -579,3 +579,164 @@
 	- 可以构造一个 future 然后在 sink 中返回
 - 好，那再回到最开始的问题，需要使用 Stream/Sink 吗？还是用 Reader/Writer？
 	- 看起来 Stream 更底层一些，更好控制？
+- ---
+- Update at [[2022-03-27]]
+-
+- 测试一下写入的性能
+-
+- write
+- ```rust
+  write_once/4.00 KiB     time:   [477.46 us 491.22 us 504.11 us]
+                          thrpt:  [7.7488 MiB/s 7.9522 MiB/s 8.1813 MiB/s]
+  Found 1 outliers among 100 measurements (1.00%)
+    1 (1.00%) high mild
+  Benchmarking write_once/256 KiB: Warming up for 3.0000 s
+  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 7.7s, enable flat sampling, or reduce sample count to 50.
+  write_once/256 KiB      time:   [1.3107 ms 1.3327 ms 1.3566 ms]
+                          thrpt:  [184.29 MiB/s 187.59 MiB/s 190.74 MiB/s]
+  write_once/4.00 MiB     time:   [10.348 ms 10.507 ms 10.665 ms]
+                          thrpt:  [375.04 MiB/s 380.71 MiB/s 386.56 MiB/s]
+  Found 2 outliers among 100 measurements (2.00%)
+    2 (2.00%) high mild
+  write_once/16.0 MiB     time:   [40.975 ms 41.644 ms 42.295 ms]
+                          thrpt:  [378.29 MiB/s 384.21 MiB/s 390.49 MiB/s]
+  Found 6 outliers among 100 measurements (6.00%)
+    4 (4.00%) low mild
+    2 (2.00%) high mild
+  
+  ```
+- write2
+- ```rust
+  write_once/4.00 KiB     time:   [40.901 us 62.797 us 90.246 us]
+                          thrpt:  [43.284 MiB/s 62.205 MiB/s 95.504 MiB/s]
+                   change:
+                          time:   [-91.088% -87.400% -82.823%] (p = 0.00 < 0.05)
+                          thrpt:  [+482.16% +693.62% +1022.1%]
+                          Performance has improved.
+  Found 13 outliers among 100 measurements (13.00%)
+    13 (13.00%) high severe
+  write_once/256 KiB      time:   [92.563 us 93.165 us 93.674 us]
+                          thrpt:  [2.6063 GiB/s 2.6205 GiB/s 2.6375 GiB/s]
+                   change:
+                          time:   [-93.336% -93.237% -93.135%] (p = 0.00 < 0.05)
+                          thrpt:  [+1356.6% +1378.7% +1400.5%]
+                          Performance has improved.
+  Found 24 outliers among 100 measurements (24.00%)
+    24 (24.00%) high mild
+  Benchmarking write_once/4.00 MiB: Warming up for 3.0000 s
+  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 5.4s, enable flat sampling, or reduce sample count to 60.
+  write_once/4.00 MiB     time:   [1.0500 ms 1.0547 ms 1.0600 ms]
+                          thrpt:  [3.6852 GiB/s 3.7036 GiB/s 3.7203 GiB/s]
+                   change:
+                          time:   [-90.050% -89.893% -89.731%] (p = 0.00 < 0.05)
+                          thrpt:  [+873.78% +889.45% +905.01%]
+                          Performance has improved.
+  write_once/16.0 MiB     time:   [4.4549 ms 4.4694 ms 4.4848 ms]
+                          thrpt:  [3.4840 GiB/s 3.4960 GiB/s 3.5074 GiB/s]
+                   change:
+                          time:   [-89.437% -89.268% -89.088%] (p = 0.00 < 0.05)
+                          thrpt:  [+816.43% +831.76% +846.74%]
+                          Performance has improved.
+  
+  ```
+- 啊？这么不科学吗？
+	- 效果太好了，感觉是不是啥地方写的有问题
+	- 确实，sink 没有 close，导致 put 的 future 没有 poll 结束
+- 真实的结果
+- ```rust
+  write_once/4.00 KiB     time:   [571.06 us 580.52 us 589.16 us]
+                          thrpt:  [6.6302 MiB/s 6.7289 MiB/s 6.8403 MiB/s]
+                   change:
+                          time:   [+635.01% +863.72% +1211.4%] (p = 0.00 < 0.05)
+                          thrpt:  [-92.374% -89.624% -86.395%]
+                          Performance has regressed.
+  Found 1 outliers among 100 measurements (1.00%)
+    1 (1.00%) high mild
+  Benchmarking write_once/256 KiB: Warming up for 3.0000 s
+  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.8s, enable flat sampling, or reduce sample count to 60.
+  write_once/256 KiB      time:   [1.3663 ms 1.3902 ms 1.4120 ms]
+                          thrpt:  [177.05 MiB/s 179.83 MiB/s 182.98 MiB/s]
+                   change:
+                          time:   [+1367.9% +1389.8% +1409.2%] (p = 0.00 < 0.05)
+                          thrpt:  [-93.374% -93.288% -93.188%]
+                          Performance has regressed.
+  Found 1 outliers among 100 measurements (1.00%)
+    1 (1.00%) high mild
+  write_once/4.00 MiB     time:   [11.688 ms 11.831 ms 11.975 ms]
+                          thrpt:  [334.04 MiB/s 338.08 MiB/s 342.24 MiB/s]
+                   change:
+                          time:   [+965.41% +978.90% +992.51%] (p = 0.00 < 0.05)
+                          thrpt:  [-90.847% -90.731% -90.614%]
+                          Performance has regressed.
+  write_once/16.0 MiB     time:   [41.340 ms 42.183 ms 43.024 ms]
+                          thrpt:  [371.88 MiB/s 379.30 MiB/s 387.03 MiB/s]
+                   change:
+                          time:   [+813.42% +831.64% +850.65%] (p = 0.00 < 0.05)
+                          thrpt:  [-89.481% -89.266% -89.052%]
+                          Performance has regressed.
+  ```
+-
+- 调整后的 benchmark (开启了 minio 的 tracing，所以会慢一些)
+- write
+	- ```rust
+	  write_once/4.00 KiB     time:   [564.11 us 575.17 us 586.15 us]
+	                          thrpt:  [6.6642 MiB/s 6.7914 MiB/s 6.9246 MiB/s]
+	                   change:
+	                          time:   [-3.2407% -0.5168% +2.0431%] (p = 0.71 > 0.05)
+	                          thrpt:  [-2.0022% +0.5195% +3.3493%]
+	                          No change in performance detected.
+	  Benchmarking write_once/256 KiB: Warming up for 3.0000 s
+	  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.7s, enable flat sampling, or reduce sample count to 60.
+	  write_once/256 KiB      time:   [1.3600 ms 1.3896 ms 1.4168 ms]
+	                          thrpt:  [176.46 MiB/s 179.90 MiB/s 183.82 MiB/s]
+	                   change:
+	                          time:   [-0.0579% +2.1649% +4.4846%] (p = 0.07 > 0.05)
+	                          thrpt:  [-4.2921% -2.1190% +0.0579%]
+	                          No change in performance detected.
+	  write_once/4.00 MiB     time:   [11.394 ms 11.555 ms 11.717 ms]
+	                          thrpt:  [341.39 MiB/s 346.18 MiB/s 351.07 MiB/s]
+	                   change:
+	                          time:   [+2.4176% +4.6672% +7.0833%] (p = 0.00 < 0.05)
+	                          thrpt:  [-6.6147% -4.4591% -2.3605%]
+	                          Performance has regressed.
+	  write_once/16.0 MiB     time:   [41.829 ms 42.645 ms 43.454 ms]
+	                          thrpt:  [368.20 MiB/s 375.19 MiB/s 382.51 MiB/s]
+	                   change:
+	                          time:   [+4.5159% +7.7506% +10.934%] (p = 0.00 < 0.05)
+	                          thrpt:  [-9.8559% -7.1931% -4.3208%]
+	                          Performance has regressed.
+	  
+	  ```
+- write2
+	- ```rust
+	  write_once/4.00 KiB     time:   [572.20 us 583.62 us 595.21 us]
+	                          thrpt:  [6.5628 MiB/s 6.6932 MiB/s 6.8267 MiB/s]
+	                   change:
+	                          time:   [-6.3126% -3.8179% -1.0733%] (p = 0.00 < 0.05)
+	                          thrpt:  [+1.0849% +3.9695% +6.7380%]
+	                          Performance has improved.
+	  Found 1 outliers among 100 measurements (1.00%)
+	    1 (1.00%) low mild
+	  Benchmarking write_once/256 KiB: Warming up for 3.0000 s
+	  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.4s, enable flat sampling, or reduce sample count to 60.
+	  write_once/256 KiB      time:   [1.3192 ms 1.3456 ms 1.3738 ms]
+	                          thrpt:  [181.98 MiB/s 185.79 MiB/s 189.50 MiB/s]
+	                   change:
+	                          time:   [-0.5899% +1.7476% +4.1037%] (p = 0.15 > 0.05)
+	                          thrpt:  [-3.9420% -1.7176% +0.5934%]
+	                          No change in performance detected.
+	  write_once/4.00 MiB     time:   [10.855 ms 11.039 ms 11.228 ms]
+	                          thrpt:  [356.25 MiB/s 362.34 MiB/s 368.51 MiB/s]
+	                   change:
+	                          time:   [-6.9651% -4.8176% -2.5681%] (p = 0.00 < 0.05)
+	                          thrpt:  [+2.6358% +5.0614% +7.4866%]
+	                          Performance has improved.
+	  write_once/16.0 MiB     time:   [38.706 ms 39.577 ms 40.457 ms]
+	                          thrpt:  [395.48 MiB/s 404.27 MiB/s 413.37 MiB/s]
+	                   change:
+	                          time:   [-10.829% -8.3611% -5.8702%] (p = 0.00 < 0.05)
+	                          thrpt:  [+6.2363% +9.1240% +12.145%]
+	                          Performance has improved.
+	  
+	  ```
+- 感觉两种实现差别不是很大
