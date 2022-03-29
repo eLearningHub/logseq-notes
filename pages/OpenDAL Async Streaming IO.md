@@ -325,3 +325,86 @@
 	      }
 	  }
 	  ```
+-
+- ---
+- [[2022-03-29]]
+- 同时支持返回 Stream 和 Reader 如何？
+	- 如何保持面向服务实现者的零开销抽象？
+	- 还是本地文件系统就稍微妥协一点？
+	- 毕竟大部分服务还是要走网络的
+- write 的 benchmark
+	- write
+		- ```rust
+		  rite_once/4.00 KiB     time:   [529.22 us 536.83 us 544.12 us]
+		                          thrpt:  [7.1790 MiB/s 7.2765 MiB/s 7.3811 MiB/s]
+		                   change:
+		                          time:   [-9.3810% -7.0569% -4.6339%] (p = 0.00 < 0.05)
+		                          thrpt:  [+4.8591% +7.5927% +10.352%]
+		                          Performance has improved.
+		  Benchmarking write_once/256 KiB: Warming up for 3.0000 s
+		  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.4s, enable flat sampling, or reduce sample count to 60.
+		  write_once/256 KiB      time:   [1.1969 ms 1.2290 ms 1.2612 ms]
+		                          thrpt:  [198.22 MiB/s 203.42 MiB/s 208.88 MiB/s]
+		                   change:
+		                          time:   [-12.702% -10.491% -8.1839%] (p = 0.00 < 0.05)
+		                          thrpt:  [+8.9134% +11.720% +14.551%]
+		                          Performance has improved.
+		  write_once/4.00 MiB     time:   [11.281 ms 11.390 ms 11.504 ms]
+		                          thrpt:  [347.72 MiB/s 351.19 MiB/s 354.58 MiB/s]
+		                   change:
+		                          time:   [-3.1198% -1.4245% +0.2954%] (p = 0.10 > 0.05)
+		                          thrpt:  [-0.2945% +1.4451% +3.2203%]
+		                          No change in performance detected.
+		  Found 2 outliers among 100 measurements (2.00%)
+		    2 (2.00%) high mild
+		  write_once/16.0 MiB     time:   [42.197 ms 42.873 ms 43.518 ms]
+		                          thrpt:  [367.66 MiB/s 373.19 MiB/s 379.17 MiB/s]
+		                   change:
+		                          time:   [-1.9646% +0.5363% +3.0966%] (p = 0.66 > 0.05)
+		                          thrpt:  [-3.0036% -0.5334% +2.0039%]
+		                          No change in performance detected.
+		  Found 4 outliers among 100 measurements (4.00%)
+		    4 (4.00%) low mild
+		  
+		  ```
+	- write2
+		- ```rust
+		  write_once/4.00 KiB     time:   [541.23 us 549.21 us 556.74 us]
+		                          thrpt:  [7.0162 MiB/s 7.1125 MiB/s 7.2173 MiB/s]
+		                   change:
+		                          time:   [-0.1558% +1.9535% +4.0942%] (p = 0.07 > 0.05)
+		                          thrpt:  [-3.9332% -1.9160% +0.1561%]
+		                          No change in performance detected.
+		  Found 2 outliers among 100 measurements (2.00%)
+		    1 (1.00%) low mild
+		    1 (1.00%) high mild
+		  Benchmarking write_once/256 KiB: Warming up for 3.0000 s
+		  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.2s, enable flat sampling, or reduce sample count to 60.
+		  write_once/256 KiB      time:   [1.2194 ms 1.2365 ms 1.2545 ms]
+		                          thrpt:  [199.28 MiB/s 202.18 MiB/s 205.02 MiB/s]
+		                   change:
+		                          time:   [-2.3582% +0.0130% +2.5438%] (p = 1.00 > 0.05)
+		                          thrpt:  [-2.4807% -0.0130% +2.4152%]
+		                          No change in performance detected.
+		  write_once/4.00 MiB     time:   [10.218 ms 10.367 ms 10.521 ms]
+		                          thrpt:  [380.18 MiB/s 385.86 MiB/s 391.47 MiB/s]
+		                   change:
+		                          time:   [-10.596% -8.9852% -7.3440%] (p = 0.00 < 0.05)
+		                          thrpt:  [+7.9261% +9.8722% +11.851%]
+		                          Performance has improved.
+		  Found 1 outliers among 100 measurements (1.00%)
+		    1 (1.00%) high mild
+		  write_once/16.0 MiB     time:   [42.636 ms 43.546 ms 44.430 ms]
+		                          thrpt:  [360.12 MiB/s 367.42 MiB/s 375.27 MiB/s]
+		                   change:
+		                          time:   [-1.2533% +1.5698% +4.1321%] (p = 0.24 > 0.05)
+		                          thrpt:  [-3.9681% -1.5455% +1.2692%]
+		                          No change in performance detected.
+		  Found 1 outliers among 100 measurements (1.00%)
+		    1 (1.00%) low mild
+		  
+		  
+		  ```
+- 突然想到，要是 read 返回一个 reader，但是 write 返回一个 sink 呢？
+	- 是不是也有意思的？
+	- Writer？
