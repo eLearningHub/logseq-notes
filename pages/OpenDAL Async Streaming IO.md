@@ -408,3 +408,119 @@
 - 突然想到，要是 read 返回一个 reader，但是 write 返回一个 sink 呢？
 	- 是不是也有意思的？
 	- Writer？
+- ---
+- [[2022-03-30]]
+-
+- Stream/Sink 和 Reader/Writer 到底谁更底层一些？
+-
+- Stream => Reader，零开销
+- Reader => Stream，需要内部的 buffer
+- Sink => Writer，需要内部的 buffer？
+	- 需要吗？是不是每次 poll_write 都发送一个 send 就行？
+		- 虽然不需要额外的 buffering，但是每次 send 的时候需要 clone 一遍输入的数据
+- Writer => Sink，零开销
+-
+- 所以
+	- 如果 Read 返回一个 Stream，可以零开销的转换成 Reader
+	- 如果 Write 返回一个 Writer，同样可以零开销的转换成 Sink
+- 反过来的话都需要额外的 buffering
+-
+- 再考虑一下内部实现
+	- s3 write 能返回一个 writer 嘛？
+	- 感觉不太行，这样就需要额外的再复制一遍
+-
+- 这么看返回 Stream/Sink 已经是比较好的做法了
+-
+- 要不要把 BytesStream 包装成结构体？
+	- 在里面内嵌一个 Stream？并在这个基础上实现 AsyncRead？
+	- 感觉没有什么帮助
+-
+- 实现一组 IntoStream/IntoSink/IntoRead/IntoWrite 会好一些吗？
+-
+- 如果全都改成输入呢？是不是 wrap 不太好做？
+	- 想象一下解压缩的场景
+		- 没啥问题
+-
+- 考虑一下性能
+	- read
+		- ```rust
+		  read_full/4.00 KiB      time:   [488.29 us 497.35 us 506.04 us]
+		                          thrpt:  [7.7192 MiB/s 7.8541 MiB/s 7.9998 MiB/s]
+		                   change:
+		                          time:   [-1.7935% +0.8526% +3.5562%] (p = 0.54 > 0.05)
+		                          thrpt:  [-3.4341% -0.8454% +1.8262%]
+		                          No change in performance detected.
+		  read_full/256 KiB       time:   [588.54 us 599.71 us 610.25 us]
+		                          thrpt:  [409.67 MiB/s 416.87 MiB/s 424.78 MiB/s]
+		                   change:
+		                          time:   [+1.9739% +5.2233% +8.6033%] (p = 0.00 < 0.05)
+		                          thrpt:  [-7.9218% -4.9641% -1.9357%]
+		                          Performance has regressed.
+		  Found 4 outliers among 100 measurements (4.00%)
+		    4 (4.00%) low mild
+		  Benchmarking read_full/4.00 MiB: Warming up for 3.0000 s
+		  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.5s, enable flat sampling, or reduce sample count to 50.
+		  read_full/4.00 MiB      time:   [1.6788 ms 1.7353 ms 1.7939 ms]
+		                          thrpt:  [2.1776 GiB/s 2.2510 GiB/s 2.3268 GiB/s]
+		                   change:
+		                          time:   [-1.1007% +2.4261% +6.2212%] (p = 0.18 > 0.05)
+		                          thrpt:  [-5.8568% -2.3686% +1.1129%]
+		                          No change in performance detected.
+		  read_full/16.0 MiB      time:   [5.7554 ms 5.9106 ms 6.0651 ms]
+		                          thrpt:  [2.5762 GiB/s 2.6436 GiB/s 2.7148 GiB/s]
+		                   change:
+		                          time:   [+9.0729% +13.626% +18.539%] (p = 0.00 < 0.05)
+		                          thrpt:  [-15.639% -11.992% -8.3182%]
+		                          Performance has regressed.
+		  
+		  
+		  ```
+	- read2
+		- ```rust
+		  read_full/4.00 KiB      time:   [490.62 us 500.73 us 510.57 us]
+		                          thrpt:  [7.6508 MiB/s 7.8011 MiB/s 7.9618 MiB/s]
+		                   change:
+		                          time:   [-50.327% -49.240% -48.158%] (p = 0.00 < 0.05)
+		                          thrpt:  [+92.896% +97.004% +101.32%]
+		                          Performance has improved.
+		  Found 1 outliers among 100 measurements (1.00%)
+		    1 (1.00%) high mild
+		  read_full/256 KiB       time:   [558.01 us 570.02 us 581.53 us]
+		                          thrpt:  [429.90 MiB/s 438.58 MiB/s 448.02 MiB/s]
+		                   change:
+		                          time:   [-98.044% -97.998% -97.953%] (p = 0.00 < 0.05)
+		                          thrpt:  [+4784.3% +4894.5% +5011.9%]
+		                          Performance has improved.
+		  Benchmarking read_full/4.00 MiB: Warming up for 3.0000 s
+		  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 9.1s, enable flat sampling, or reduce sample count to 50.
+		  read_full/4.00 MiB      time:   [1.8975 ms 1.9268 ms 1.9523 ms]
+		                          thrpt:  [2.0008 GiB/s 2.0273 GiB/s 2.0586 GiB/s]
+		                   change:
+		                          time:   [-3.6129% -0.2662% +3.0626%] (p = 0.88 > 0.05)
+		                          thrpt:  [-2.9716% +0.2669% +3.7483%]
+		                          No change in performance detected.
+		  read_full/16.0 MiB      time:   [5.5291 ms 5.6769 ms 5.8211 ms]
+		                          thrpt:  [2.6842 GiB/s 2.7524 GiB/s 2.8260 GiB/s]
+		                   change:
+		                          time:   [-7.4639% -3.9542% -0.5695%] (p = 0.04 < 0.05)
+		                          thrpt:  [+0.5728% +4.1170% +8.0659%]
+		                          Change within noise threshold.
+		  ```
+-
+- 看着没什么问题，现在需要考虑要暴露怎么样的 API 出去
+	- read/write
+	- 包装成 Reader 和 Writer？
+		- 不支持 AsyncRead，只支持 AsyncBufRead
+	- 可以先把 Reader / Writer 之类的抽象先删除
+- 需要 bench 一下 pipe 的库
+	- https://github.com/yskszk63/tokio-pipe
+	- https://github.com/routerify/async-pipe-rs
+	- https://docs.rs/tokio/1.17.0/tokio/io/fn.duplex.html
+- 考虑到纯内存操作，是不是不需要 async ？
+-
+- 发现了一个比较大的问题
+	- 如果 read 接受一个 Writer 进去的话，用户没法拿到写完之后的结果
+	- 但如果接受一个 &mut Writer 的话，又会出现生命周期的问题
+-
+- channel 也不太行，不是很能工作
+-
