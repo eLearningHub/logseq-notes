@@ -1,0 +1,84 @@
+- [[OpenDAL]] 需要为压缩文件提供一个比较友好的支持
+-
+- 压缩文件分成两个部分，归档和压缩
+-
+- 压缩是针对单个文件的，比如 gzip，zstd
+- 归档是针对多个文件的，比如 tar，zip
+-
+- 对 OpenDAL 来说，应该要暴露怎样的接口呢？
+-
+- 用户场景
+	- S3 上存了一组 tar / zip / gz / zstd 文件，怎么样读取数据？
+	- 可以细分为
+		- 一个 x.csv.gz
+		- 一个 x.tar.gz
+	- 期望的目标是 [[OpenDAL]] 能够提供某种支持，让应用在读取的时候不需要考虑压缩文件的问题
+		- 先解决读的问题
+-
+- 现在 o.reader() 能拿到一个 BytesReader
+	- 压缩相关的库一般需要一个 AsyncBufRead
+		- 比如 [ZstdDecoder](https://docs.rs/async-compression/latest/async_compression/futures/bufread/struct.ZstdDecoder.html)
+-
+- decompress layer？
+	- gzip_decompress_layer?
+	- zstd_decompress_layer?
+	- stat 得到的 size 就不对了，需要考虑一下如何处理
+		- 直接不处理？
+-
+- 如何处理 zip/tar 呢？
+	- 独立实现一个 tar service？
+		- 实现 read / stat / list 接口
+		- 在初始化的时候就把所有的 meta 信息都加载完
+	- 要求传入一个 object？
+		- 应该要求传入一个 operator 和 path
+			- 还是要一个 Arc<accessor> 呢？
+		- 然后开始操作就行了
+	-
+-
+- 压缩文件好像处理起来没什么问题，归档文件怎么处理呢？
+	- stat 到的时候返回 Dir？
+	- 卧槽，这个思路骚啊
+	- 那也不用维护成独立的 Service 了，只要实现了一个 ObjectStream 就行
+		- 那怎么实现 stat 和 read 呢？感觉需要引入额外的语法
+			- get `x.tar.gz#abc/dddd/ddd`
+		- 想象一下，用户先调用 list x.tar.gz 得到了一个 objectstream
+			- 然后如何去 get？
+	- list 返回一个 service？
+		- 有点反常规，用户接受起来可能比较困难
+		- 用户 stat 一个 object，得知它是一个 service，然后呢？
+			- 然后直接 new 一个 compress service？
+			- 有点诡异
+		- 除了压缩文件的 case 还有什么吗？
+		- 光盘？镜像？
+			- 等等，docker image！
+		- 给定一个 object，要怎么才能知道这是一个 backend 呢？
+			- 以及怎么才能用于初始化呢？
+			- 此外，还需要考虑用户可能就是朴素的想 read 它，要怎么同时存在呢？
+		- 有没有什么不需要侵入 opendal 的方案？
+-
+- 一个统一的 archive service？
+	- 如果套了一层压缩的话，没法 seek 了，怎么处理呢？
+	- 而且得到的 offset 也是压缩前的 offset
+		- https://github.com/golang/go/issues/17087
+	- 不太行，根本就没有办法建立起一个 index 用来 read/stat
+	- archive 只能按照顺序一个一个的读取里面的文件，没法支持其他的方式
+		- 看一下 ark 是怎么实现的
+			- https://github.com/KDE/ark
+		- python 的实现
+			- https://github.com/python/cpython/blob/3.10/Lib/zipfile.py
+			- https://github.com/python/cpython/commit/066df4fd454d6ff9be66e80b2a65995b10af174f
+				- ```python
+				  while read_offset > 0:
+				    read_len = min(self.MAX_SEEK_READ, read_offset)
+				    self.read(read_len)
+				    read_offset -= read_len
+				  ```
+				- 读取并丢弃掉这部分数据，看起来并不适合网络 IO
+	- 所以 archive 不应该实现成 service 或者 ObjectStream 这种形式
+	- archive 应该接收一个 BytesStream，然后实现成 FileStream，读完一个才能有下一个
+		- 如果调用 next，那也要等到当前的 readerstream 读完
+		- 那就应该跟 opendal 没有什么关系了？
+		-
+-
+- objects 要不要成为 object 的 list 操作？
+	- 感觉没什么歧义
