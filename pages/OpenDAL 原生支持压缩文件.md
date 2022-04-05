@@ -98,4 +98,14 @@
 		- `decompress() -> impl BytesReader`
 		- `unarchive() -> xxxx`
 - 要不就叫 Actions
+	- 怎么解决不正交的问题呢？好像不能是一个 enum
+		- FileType 就不是一个 enum
+-
+- 那支持压缩/归档文件需要做的事情就包括
+	- 引入 object actions 的概念
+	- 完善 dir (非 dir 禁止 list 返回 not a dir 错误，dir 禁止 read/write)
+	- 增加 decompress 的 action (可能需要是一个 feature)
+	- 增加 unarchive 的 action (同样需要是一个 feature)
+		- unarchive 与 decompress 的关系还需要再考虑一下
+		- unarchive 可能需要默认 decompress ？
 -
