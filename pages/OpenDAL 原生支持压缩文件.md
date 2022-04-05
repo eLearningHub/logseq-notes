@@ -82,3 +82,20 @@
 -
 - objects 要不要成为 object 的 list 操作？
 	- 感觉没什么歧义
+-
+- ---
+- [[2022-04-05]]
+- 考虑一下 `AccessorExt::decompress()`
+	- 不需要 accessor 直接支持，对 backend 来说是透明的
+- object 可以支持 actions 操作，根据 object 的 mode (和 content type？) 返回可用的操作
+	- metadata 总是可用的？
+	- read/write/list/delete/decompress/link？
+- 如果 object 是 decompress 的，那就可以调用 decompress 函数
+-
+- 听起来感觉不错
+	- 用户可以自己根据 mode 判断想要进行的操作
+	- 也可以在开启的对应的 feature 之后，根据 action 来判断想采取的操作
+		- `decompress() -> impl BytesReader`
+		- `unarchive() -> xxxx`
+- 要不就叫 Actions
+-
