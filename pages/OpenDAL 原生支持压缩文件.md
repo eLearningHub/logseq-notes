@@ -110,3 +110,17 @@
 		- unarchive 可能需要默认 decompress ？
 - 感觉没啥问题，搞
 -
+- ---
+- [[2022-04-06]]
+- 如何支持用户显式指定压缩格式呢？
+-
+- o.auto_decompress()
+- o.decompress(algo)
+-
+- 解压缩和自动探测是应该是分开的两个功能？
+-
+- 这样的 API 如何
+-
+- o.decompress() -> BytesReader
+- o.decompress_with(xxx) -> BytesReader
+-
