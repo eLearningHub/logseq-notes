@@ -16,6 +16,8 @@ title:: Rust/Cargo/Features
 		  ```
 	- 在依赖中启用可选依赖
 		- ```toml
+		  [dependencies]
+		  gif = { version = "0.6.3", optional = true }
 		  ```
 		- 在启用可选依赖之后，这个依赖就会变成一个同名的 feature
 		- 可以通过条件编译的形式来控制：
