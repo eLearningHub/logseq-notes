@@ -1,0 +1,23 @@
+- 首先需要做调研，看看 mysql，pg，clickhouse 都是怎么设计的
+-
+- 调研
+	- [[PostgreSQL]]
+		- > All messages emitted by the PostgreSQL server are assigned five-character error codes that follow the SQL standard's conventions for “SQLSTATE” codes.
+		- > According to the standard, the first two characters of an error code denote a class of errors, while the last three characters indicate a specific condition within that class. Thus, an application that does not recognize the specific error code might still be able to infer what to do from the error class.
+		- 比如说
+			- Class 00 — Successful Completion
+			- Class 01 — Warning
+			- Class 02 — No Data (this is also a warning class per the SQL standard)
+			- Class 03 — SQL Statement Not Yet Complete
+			- Class 22 — Data Exception
+				- 2201E	invalid_argument_for_logarithm
+				- 2200D	invalid_escape_octet
+		- 参考资料
+			- [Appendix A. PostgreSQL Error Codes](https://www.postgresql.org/docs/current/errcodes-appendix.html)
+	- [[MariaDB]]
+		- 参考资料
+			- [SQLSTATE](https://mariadb.com/kb/en/sqlstate)
+	- [[ClickHouse]]
+		-
+		- 参考资料
+			- [ClickHouse/src/Common/ErrorCodes.cpp](https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp)
