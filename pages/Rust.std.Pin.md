@@ -68,6 +68,50 @@
 		      )* }
 		  }
 		  ```
+	- `pin_project`
+		- 显然的，从 pin 中取出数据是 unsafe 的操作(除非 Target 实现了 Unpin)
+		- ```rust
+		  // Putting data into Pin
+		  pub        fn new          <P: Deref<Target:Unpin>>(pointer: P) -> Pin<P>;
+		  pub unsafe fn new_unchecked<P>                     (pointer: P) -> Pin<P>;
+		  
+		  // Getting data from Pin
+		  pub        fn into_inner          <P: Deref<Target: Unpin>>(pin: Pin<P>) -> P;
+		  pub unsafe fn into_inner_unchecked<P>                      (pin: Pin<P>) -> P;
+		  ```
+		- 为了能够安全的做这些操作，社区发展出了 project 的概念
+			- 通过 project，我们可以安全的从 Pinned 结构体中获取字段的 `&mut T` 或 `Pin<&mut T>`
+		- ```rust
+		  #[pin_project::pin_project] // This generates a `project` method
+		  pub struct TimedWrapper<Fut: Future> {
+		      // For each field, we need to choose whether `project` returns an
+		      // unpinned (&mut T) or pinned (Pin<&mut T>) reference to the field.
+		      // By default, it assumes unpinned:
+		      start: Option<Instant>,
+		      // Opt into pinned references with this attribute:
+		      #[pin]
+		      future: Fut,
+		  }
+		  
+		  fn poll(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Self::Output> {
+		      // This returns a type with all the same fields, with all the same types,
+		      // except that the fields defined with #[pin] will be pinned.
+		      let mut this = self.project();
+		  
+		      // Call the inner poll, measuring how long it took.
+		      let start = this.start.get_or_insert_with(Instant::now);
+		      let inner_poll = this.future.as_mut().poll(cx);
+		      let elapsed = start.elapsed();
+		  
+		      match inner_poll {
+		          // The inner future needs more time, so this future needs more time too
+		          Poll::Pending => Poll::Pending,
+		          // Success!
+		          Poll::Ready(output) => Poll::Ready((output, elapsed)),
+		      }
+		  }
+		  ```
+		-
 -
 - 关于 Pin 的黄金八条 (来自 Rust Async Book，简要翻译如下)
 	- 如果 `T: Unpin` (默认行为)，那么 `Pin<'a, T>` 完全等价于 `&'a mut T`。
@@ -85,6 +129,7 @@
 		- 这是 pin 语义最重要的部分
 - 参考资料
 	- [Rust Async Book: Pinning](https://rust-lang.github.io/async-book/04_pinning/01_chapter.html)
-	- [Pin, Unpin, and why Rust needs them](https://blog.cloudflare.com/pin-and-unpin-in-rust/)
+	- [Cloudflare: Pin, Unpin, and why Rust needs them](https://blog.cloudflare.com/pin-and-unpin-in-rust/)
 	- [Rust 的 Pin 与 Unpin](https://folyd.com/blog/rust-pin-unpin/)  *通俗易懂，推荐！*
 	- [Without boats: pinning 相关文章](https://without.boats/tags/pinning/)
+	- [A Less Mad March: Pin, Unpin, and why Rust needs them](https://blog.adamchalmers.com/pin-unpin/)
