@@ -69,6 +69,7 @@
 		  }
 		  ```
 	- `pin_project`
+	  id:: 6237e146-77ff-446a-8e94-3b61880bf7e1
 		- 显然的，从 pin 中取出数据是 unsafe 的操作(除非 Target 实现了 Unpin)
 		- ```rust
 		  // Putting data into Pin
@@ -132,4 +133,3 @@
 	- [Cloudflare: Pin, Unpin, and why Rust needs them](https://blog.cloudflare.com/pin-and-unpin-in-rust/)
 	- [Rust 的 Pin 与 Unpin](https://folyd.com/blog/rust-pin-unpin/)  *通俗易懂，推荐！*
 	- [Without boats: pinning 相关文章](https://without.boats/tags/pinning/)
-	- [A Less Mad March: Pin, Unpin, and why Rust needs them](https://blog.adamchalmers.com/pin-unpin/)
