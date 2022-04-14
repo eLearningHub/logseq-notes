@@ -22,7 +22,7 @@ jobs:
         uses: pengx17/logseq-publish@main
         with:
           dest: www
-          version: 3beb46261ec17da0ee6bea25e73537b0e384ead9
+          version: sha256:e6f98c923385fb8207abb3ce313f63cf3ff9c87d8a626cd8d00c322cb2eafe10
       - name: Deploy to vercel
         env:
           VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
