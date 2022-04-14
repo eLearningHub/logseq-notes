@@ -19,7 +19,7 @@ jobs:
       - name: Logseq Publish
         # Using main branch to reproduce https://github.com/pengx17/logseq-publish/issues/8
         # Should switch back to stable release after this issue fixed.
-        uses: pengx17/logseq-publish@main
+        uses: pengx17/logseq-publish@2fe889e4a18af669b565f8aadc480572fb97a9e6
         with:
           dest: www
       - name: Deploy to vercel
