@@ -112,7 +112,40 @@
 		      }
 		  }
 		  ```
-		-
+	- 修改被 Pin 住的数据
+	  id:: 6256aec8-0e1b-4110-a71b-866dbd94ee12
+		- 一个常见的需求是要修改被 Pin 住的数据，比如说在实现 `Future` 的时候，我们希望能够转移 state 中的状态，更新成新创建的 future 或者修改为 Idle 状态等等。
+			- 支持 `DerefMut` 的结构体可以使用 `*this.state` 的方式更新，但是其他的结构体就比较麻烦了
+			- 有两种可行的方案
+		- [Pin::set](https://doc.rust-lang.org/std/pin/struct.Pin.html#method.set)
+			- ```rust
+			  pub fn set(&mut self, value: <P as Deref>::Target)
+			  where
+			      <P as Deref>::Target: Sized, 
+			  ```
+			- 如果 Target 是 Sized，则可以使用 set 来直接修改对象
+		- `project_replace`
+			- pin_project 也提供了类似的功能支持，区别在于 `project_replace` 会把 `unpinned` 字段 move 走并返回，而不是直接 drop，适合用在结构体中的其他字段的数据仍然需要保留的情况 (同样只适用于 Sized 类型)
+				- ```rust
+				  use std::{marker::PhantomData, pin::Pin};
+				  
+				  use pin_project::pin_project;
+				  
+				  #[pin_project(project_replace)]
+				  struct Struct<T, U> {
+				      #[pin]
+				      pinned_field: T,
+				      unpinned_field: U,
+				  }
+				  
+				  impl<T, U> Struct<T, U> {
+				      fn method(self: Pin<&mut Self>, other: Self) {
+				          let this = self.project_replace(other);
+				          let _: U = this.unpinned_field;
+				          let _: PhantomData<T> = this.pinned_field;
+				      }
+				  }
+				  ```
 -
 - 关于 Pin 的黄金八条 (来自 Rust Async Book，简要翻译如下)
 	- 如果 `T: Unpin` (默认行为)，那么 `Pin<'a, T>` 完全等价于 `&'a mut T`。
