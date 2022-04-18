@@ -11,17 +11,25 @@ I'm focused on **Automation**, **Distributed Systems** and **Storage**.
   
 I'm trying to **learn**, **work** and **think** in an open-source way.
 
-## Learn publicly in an open-source way!
+## Learn publicly in an open-source way
 
 - discuss with all my friends publicly at [discussions](https://github.com/Xuanwo/Xuanwo/discussions).
 - public all my notes at [Xuanwo's Note](https://note.xuanwo.io)
 
-## Work publicly and report to the community!
+## Work publicly and report to the community
 
 - I get paid for my work in open source projects. (For now, I'm backed by [@datafuselabs](https://github.com/datafuselabs))
 - I publicly track all my works at [Xuanwo's Work](https://work.xuanwo.io)
 
-## Think publicly and export to blog posts!
+Projects that I'm working on
+
+- [databend](https://github.com/datafuselabs/databend): A modern Elasticity and Performance cloud data warehouse, activate your object storage for real-time analytics.
+- [opendal](https://github.com/datafuselabs/opendal): Open Data Access Layer that connect the whole world together.
+- [reqsign](https://github.com/Xuanwo/reqsign): Signing HTTP requests without heavy SDKs.
+- [backon](https://github.com/Xuanwo/backon): Another implementation of backoff via Iterator.
+- [serde-bridge](https://github.com/Xuanwo/serde-bridge): A bridge between different serde implemantations.
+
+## Think publicly and export to blog posts
 
 - I will write at [Xuanwo's Blog](https://xuanwo.io) if there are any thought I think is meaningful to report.
   
