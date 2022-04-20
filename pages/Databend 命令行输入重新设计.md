@@ -76,4 +76,54 @@
 - 所以问题出在 config-rs 实现是错的，没必要给 Value 实现 Deserialize
 	- 有了 serde-bridge 之后是不是就不需要 config-rs 自己的那套抽象了？
 	- Clap -> Config -> value -> map
-	-
+-
+- ---
+- [[2022-04-20]]
+-
+- serfig 已经基本上能用了，下面考虑一下如何用到 databend 里面
+- ```rust
+  pub struct Config {
+      #[clap(long, short = 'c', env = CONFIG_FILE, default_value = "")]
+      pub config_file: String,
+  
+      // Query engine config.
+      #[clap(flatten)]
+      pub query: QueryConfig,
+  
+      #[clap(flatten)]
+      pub log: LogConfig,
+  
+      // Meta Service config.
+      #[clap(flatten)]
+      pub meta: MetaConfig,
+  
+      // Storage backend config.
+      #[clap(flatten)]
+      pub storage: StorageConfig,
+  }
+  ```
+- ```rust
+  pub struct StorageConfig {
+      /// Current storage type: fs|s3
+      #[clap(long, env = STORAGE_TYPE, default_value = "fs")]
+      pub storage_type: String,
+  
+      #[clap(long, env = STORAGE_NUM_CPUS, default_value = "0")]
+      pub storage_num_cpus: u64,
+  
+      // Fs storage backend config.
+      #[clap(flatten)]
+      pub fs: FsStorageConfig,
+  
+      // S3 storage backend config.
+      #[clap(flatten)]
+      pub s3: S3StorageConfig,
+  
+      // azure storage blob config.
+      #[clap(flatten)]
+      pub azure_storage_blob: AzureStorageBlobConfig,
+  }
+  ```
+- 考虑一下如何同时支持 clap & load_from_file
+	- 先解析 env，然后解析 file，最后 load via clap
+-
