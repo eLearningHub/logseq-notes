@@ -127,3 +127,49 @@
 - 考虑一下如何同时支持 clap & load_from_file
 	- 先解析 env，然后解析 file，最后 load via clap
 -
+- 考虑使用
+	- https://docs.rs/serde_with/latest/serde_with/macro.with_prefix.html
+-
+- env 现在比较好处理，但是 rename 之后，在 toml 上是不是不太好工作？
+-
+- ---
+- [[2022-04-22]]
+-
+- 有点僵硬，clap 带过来的 default value 会导致 env 的值被覆盖
+	- 看来需要使用 serde 的 default 机制，让 clap 不要带任何默认值过来
+-
+- merge 怎么解决呢- -
+	- 如果用户的 Default 里面返回一个非空的值，现在就判断不了了
+-
+- default value，empty value，real value
+	- 现在有点没法判断这个 real value 是不是用户输入的
+- previous value, current value，empty value
+-
+- if cur != pre
+	- 取当前值和 empty value 都不太合适
+- pre  == empty => cur
+- pre != empty
+	- cur == empty => empty
+	- cur != empty => ?
+- 本质问题还是 value 区分不了是否已经 set
+	- 在 ser 的时候应该要忽略 default value？
+- 有没有可能是不该使用 ENABLE 还默认 true？
+	- 等一下，我好像知道问题了，应该每一次都去跟 default 对比？
+		- 好像还是没解决问题，我拿到一个 xxx = false，我怎么知道这个 false 是不是用户自己传的呢？
+	- 要把 merge default 和 merge value 分开？
+- 好像应该是一个 three way 对比
+	- d，x,y
+	- x == d, y == d => d
+	- x !=d, y==d => x
+	- x ==d, y!=d => y
+	- x!=d, y!=d => y
+	-
+- 我知道了，应该是 merge(d, merge(d, y), merge(d, x)), merge(d, y)
+-
+- 我好像明白了，是最后的 args 总是会传递空值进来
+-
+- ---
+- [[2022-04-23]]
+-
+- 现在已经完全可以用了，需要清理一下 serfig 的实现
+-
