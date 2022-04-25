@@ -14,3 +14,9 @@
 		- https://github.com/giovanniberti/robusta
 		- https://github.com/astonbitecode/j4rs
 		- jni 感觉好麻烦了，翻了半天文档，没搞懂怎么搞
+-
+- 关于 HDFS
+	- https://hadoop.apache.org/docs/current/api/org/apache/hadoop/fs/FileContext.html
+	- > The Hadoop file system supports a URI namespace and URI names. This enables multiple types of file systems to be referenced using fully-qualified URIs. Two common Hadoop file system implementations are
+		- > the local file system: file:///path
+		- > the HDFS file system: hdfs://nnAddress:nnPort/path
