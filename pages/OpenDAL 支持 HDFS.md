@@ -1,0 +1,16 @@
+- 可行的几个选择
+	- webhdfs
+	- [hdfs-rs](https://github.com/hyunsik/hdfs-rs)
+		- libhdfs binding library
+		- 而 libhdfs 是 hadoop 提供的 C API (基于 JNI 实现)
+	- libhdfs
+		- https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-hdfs/LibHdfs.html
+	- libhdfs3
+		- https://github.com/ClickHouse/libhdfs3
+		- DataFusion 选择了 wrap libhdfs3
+			- https://github.com/datafusion-contrib/datafusion-hdfs-native
+	- JNI
+		- https://docs.rs/jni/latest/jni/
+		- https://github.com/giovanniberti/robusta
+		- https://github.com/astonbitecode/j4rs
+		- jni 感觉好麻烦了，翻了半天文档，没搞懂怎么搞
