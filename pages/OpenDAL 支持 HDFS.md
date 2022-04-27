@@ -53,3 +53,19 @@
 - ```shell
   HADOOP_HOME=/tmp/hadoop-3.2.3/hadoop-3.2.3 LD_LIBRARY_PATH=${HADOOP_HOME}/lib/native:${JAVA_HOME}/lib/server CLASSPATH=${HADOOP_HOME}/share/hadoop/common/*:${HADOOP_HOME}/share/hadoop/common/lib/*:${HADOOP_HOME}/share/hadoop/hdfs/*:${HADOOP_HOME}/share/hadoop/hdfs/lib/*:${HADOOP_HOME}/etc/hadoop/* cargo test test_x
   ```
+-
+- ---
+- [[2022-04-26]]
+-
+- hdfs-sys 在编译的时候根据 so name 来选择对应的 header？
+-
+- 参考一下
+	- winapi 的做法
+		- https://github.com/retep998/winapi-rs
+-
+- 现在遇到的问题是怎么去支持多种版本的 hdfs api 呢？
+- 特别是运行遇到的不同版本的 api？
+	- 发布不同 hdfs 的 crate？
+	- hdfs-sys-3-3-2
+		- 链接 3-3-2？但是 runtime 怎么自动适配？
+	-
