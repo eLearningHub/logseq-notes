@@ -28,6 +28,9 @@ Projects that I'm working on
 - [reqsign](https://github.com/Xuanwo/reqsign): Signing HTTP requests without heavy SDKs.
 - [backon](https://github.com/Xuanwo/backon): Another implementation of backoff via Iterator.
 - [serde-bridge](https://github.com/Xuanwo/serde-bridge): A bridge between different serde implemantations.
+- [serde-env](https://github.com/Xuanwo/serde-env): Deserialize env into structs via serde.
+- [serfig](https://github.com/Xuanwo/serfig): Layered configuration system built upon serde.
+- [hdfs-sys](https://github.com/Xuanwo/hdfs-sys): Bindings to `HDFS` Native C API.
 
 ## Think publicly and export to blog posts
 
