@@ -69,3 +69,8 @@
 	- hdfs-sys-3-3-2
 		- 链接 3-3-2？但是 runtime 怎么自动适配？
 	-
+- ---
+- [[2022-04-27]]
+-
+- hadoop 历史文件下载地址
+	- https://archive.apache.org/dist/hadoop/common/

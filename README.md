@@ -31,6 +31,7 @@ Projects that I'm working on
 - [serde-env](https://github.com/Xuanwo/serde-env): Deserialize env into structs via serde.
 - [serfig](https://github.com/Xuanwo/serfig): Layered configuration system built upon serde.
 - [hdfs-sys](https://github.com/Xuanwo/hdfs-sys): Bindings to `HDFS` Native C API.
+- [hdrs](https://github.com/Xuanwo/hdrs): HDFS Native Client in Rust based on [hdfs-sys](https://github.com/Xuanwo/hdfs-sys).
 
 ## Think publicly and export to blog posts
 
