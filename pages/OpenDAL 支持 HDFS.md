@@ -74,3 +74,10 @@
 -
 - hadoop 历史文件下载地址
 	- https://archive.apache.org/dist/hadoop/common/
+-
+- ---
+- [[2022-04-29]]
+-
+- 如何实现动态加载？
+-
+- 看起来需要把现在 extern C 改写成 其他的形式
