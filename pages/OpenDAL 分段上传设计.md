@@ -1,0 +1,28 @@
+- https://github.com/datafuselabs/opendal/issues/256
+-
+- 需要考虑 OpenDAL 如何支持分段上传
+-
+- 问题
+	- 需要设计 feature flag 吗？
+	- 如何抹平各个服务之间的差异？
+	- 朴素的暴露分段的 API 还是某种更复杂的设计？
+	- 没有分段的服务怎么办？
+	- 使用独立的 Trait 还是在原来的 trait 中增加新 API？
+- 可能的命名
+	- `multipart_write() -> MultipartWriter`
+	- `page_write() -> PageWriter`
+	- `block_write() -> BlockWriter()`
+	-
+	- `create_multipart() -> MultipartWriter`
+	- `create_page()`
+	-
+	- `start_multipart()`
+	-
+	- `build_multipart() -> MultipartBuilder`
+	- `build_page() -> PageBuilder`
+	-
+	- `write_multipart() -> MultipartWriter`
+	-
+	- `write_via_multipart() -> MultipartWriter`
+-
+-

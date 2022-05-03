@@ -1,0 +1,3 @@
+- 是否需要统一的 path 处理逻辑
+- 比如说在 object 这一层，就把 path 都处理好，这样 service 拿到的一定是标准的 path
+	- 可以在 object new 的时候做一些检查

@@ -1,0 +1,53 @@
+type:: [[Database]]
+language:: [[C]]
+category:: [[OLTP]], [[SQL]]
+
+-
+- 生产级 btree 的实现
+	- 如何存储变长数据？
+	- 如何存储数据大小超过一个物理页面的数据？
+	- 如何利用被回收的空间？
+	- 如何处理崩溃恢复？
+	- 读写并发如何处理？
+-
+- 系统 API
+	- 文件 IO
+	- Mutex
+	- ...
+- 页面管理
+	- 页面缓存
+		- 页面缓存管理器
+			- 维护脏页面链表
+		- 页面缓存算法
+			- > 默认实现是 LRU
+			- 缓存页面
+			- 淘汰不常用页面
+			- 查询页面
+	- 页面备份
+		- rollback journal 文件
+			- 在修改数据库文件中的数据之前，先将修改所在分页中的数据备份在另外一个地方，然后才将修改写入到数据库文件中；如果事务失败，则将备份数据拷贝回来，撤销修改；如果事务成功，则删除备份数据，提交修改。
+		- WAL 文件
+			- 修改并不直接写入到数据库文件中，而是写入到另外一个称为 WAL 的文件中；如果事务失败，WAL 中的记录会被忽略，撤销修改；如果事务成功，它将在随后的某个时间被写回到数据库文件中，提交修改。
+			- 优势
+				- 支持读写并发
+					- rollback journal 方式在写的时候不允许读取
+				- 性能更好，fsync 的次数更少
+	- 事务
+-
+- 并发控制
+	- 参考 [Atomic Commit In SQLite](https://sqlite.com/atomiccommit.html)
+-
+- 应用
+	- SQLite 可以作为一个 embed db 有很多独特的应用场景
+	- 比如存储在 [[Cloudflare/Durable Objects]] 中
+		- 文章 [Store SQLite in Cloudflare Durable Objects](https://ma.rkusa.st/store-sqlite-in-cloudflare-durable-objects) 中有介绍
+			- > A custom SQLite virtual file system and some WASM/WASI compilation magic allow to run SQLite on a Cloudflare Worker and persist it into a Durable Object.
+			- > POC source can be found at github.com/rkusa/do-sqlite.
+-
+- 推荐读物
+	- Wesley Aptekar-Cassels: [Consider SQLite](https://blog.wesleyac.com/posts/consider-sqlite)
+	- [Atomic Commit In SQLite](https://sqlite.com/atomiccommit.html)
+	- [我们常听到的WAL到底是什么](https://segmentfault.com/a/1190000022512468)
+	- [Write-Ahead Logging](https://sqlite.org/wal.html)
+	- codedump: [sqlite3.36版本 btree实现](https://www.codedump.info/post/20211217-sqlite-btree-0/) *推荐*
+-

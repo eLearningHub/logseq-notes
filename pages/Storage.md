@@ -1,0 +1,38 @@
+---
+alias: 存储
+---
+
+- 内容
+	- [[从应用接口看存储]]
+	- [[从逻辑接口看存储]] ?
+		- 或许能分成控制平面与数据平面
+		- 从数据平面看存储
+		- 从控制平面看存储
+	- [[从传输接口看存储]] ?
+	- [[从物理接口看存储]] ?
+	- [[从介质看存储]] ?
+- 议题
+	- [[Block Storage]]
+	- [[File Storage]]
+	- [[Object Storage]]
+	- [[Content Hash Storage]]
+	- [[Key-Value Storage]]
+	- [[Database]]
+	- [[Linux/io/aio]]
+	- [[Linux/io/io_uring]]
+	- [[btrfs]]
+	- [[zfs]]
+	- [[ext4]]
+	- [[APFS]]
+	- [[NTFS]]
+	- [[Ceph]]
+	- [[DPDK]]
+	- [[SPDK]]
+	- [[NAS]]
+	- [[NFS]]
+	- [[DAS]]
+	- [[SAN]]
+	- [[SCSI]] / [[iSCSI]]
+	- [[纠删码]]
+	- [[NVMe]]
+	- [[Optane]]

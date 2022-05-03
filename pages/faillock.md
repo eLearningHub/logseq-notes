@@ -1,0 +1,8 @@
+- 在 [[Archlinux]] 上，从 [[pambase]] 20200721.1-2 开始就自动启用了 `pam_faillock.so`。
+	- 十五分钟内输错密码三次就会锁定十分钟
+	- 对 root 不生效(避免 DoS 攻击)
+	- 可以通过 `/etc/security/faillock.conf` 进行配置
+- 相关问题
+	- [[密码输入正确，但 sudo 提示 Sorry, try again]]
+- 参考资料
+	- [ArchWiki Security: Lock out user after three failed login attempts](https://wiki.archlinux.org/title/security#Lock_out_user_after_three_failed_login_attempts)

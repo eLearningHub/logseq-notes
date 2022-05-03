@@ -1,0 +1,31 @@
+alias:: azblob
+
+-
+- 底层的实现
+	- [[Windows Azure Storage: A Highly Available Cloud Storage Service with Strong Consistency]]
+-
+- API 设计
+	- 参考资料： https://docs.microsoft.com/en-us/rest/api/storageservices/blob-service-rest-api
+- Version 机制
+	- Azure Storage 对所有 API 都引入了 Version 的概念
+	- 从 2009-04-14 到最新的 2021-02-12，azure 已经引入了很多版本，其中有不少是破坏性的变更，比如减少/改名字段
+	- 完整的历史可以参见 [Previous Azure Storage service versions](https://docs.microsoft.com/en-us/rest/api/storageservices/previous-azure-storage-service-versions)
+- Blob 类型
+  id:: 62432ada-2793-46aa-b0a7-b40f440446e8
+	- 跟 [[s3]] 只有统一的 Object 类型不同，azblob 将 blob 根据 IO 形态分为三种
+	- Block Blobs
+		- 对标 S3 的 Object，每个 blob 由 blocks 组成
+		- 最新的版本中 block 最大为 4000MiB，单个 block blob 最大允许有 50000 个 blocks
+			- 也就是单个 blob 最大约为 190.7 TiB
+		- 注意跟 AWS S3 分段上传不同，put block 最大允许 4000MiB，但是 put blob 是允许 5000 MiB，不知道是不是有兼容性考虑的需求 (S3 PutObject 最大为 5GiB)
+	- Append Blobs
+		- 支持追加写的 Blob
+		- 每次追加写会创建一个新的 block，最大 4MiB，最多允许创建 50000 个 blocks
+		- 也就是说 Append Blob 最大允许为 195 GiB
+			- 与常见的对象存储实现一样，Append 只能支持特定的 object 类型，对 block blob 调用 append block 会返回 412 错误
+	- Page Blobs
+		- 支持 512B 对齐随机读写的 Blob
+		- 单个 page blob 最大允许 8 TiB，创建时就需要指定好
+		- 每次写可以写单个/多个 page，最大允许 4MiB
+		- Azure 上的虚拟机磁盘就是基于 Page Blob 实现的
+-
