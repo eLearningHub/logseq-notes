@@ -1,5 +1,5 @@
 - 核心思路
-	-
+	- 还没定好
 - 优势
 	- 还没想到(
 -
@@ -8,10 +8,14 @@
 		- dit init 以初始化 dit
 		- dit  status
 		- dit  add 能够将本地的数据添加到 staging
+			- link?
+			- 还是直接 copy 过来？
 		- dit  commit 能够 commit staging 中所有的 metadata？
 		- dit  push 能够将数据上传到指定 remote？
+			- push 的时候出错怎么办？
+			- `.dit` 的 index？
 	- 配置已有的目录双向同步到远端
-		- dit  init 以初始化 ourobox
+		- dit  init 以初始化 dit
 		- dit  pull 能够从远端拉取 metadata？
 	- 导出/接收共享
 		- dit  export
@@ -20,18 +24,37 @@
 		- dit  sync？
 	- 从远端拉取 metadata 并挂载为 fs
 		- `dit  mount <commit-id>`
+		- readonly fs
+-
 - v0
-	- 功能
-		- dit  init
-		- dit  add
-		- dit  commit
-		- dit  push
-		- dit  pull
-	- 索引设计暂时不考虑，直接朴素的塞进 sqlite
-		- virtual inode？
-			- 还是每次都直接存储完整的 path？
-			- 可能需要参考一下 immutable-fs 相关的设计
+	- v0 做一个最简单的 demo，跑通一个最简单的流程：从创建 repo 到上传数据
+		- dit init
+		- dit add
+		- dit commit
+		- dit remote add
+		- dit push
+	- .git 目录结构
+		- config
+		- description
+		- index
+		- info/
+		- logs
+			- HEAD
+		- objects
+		- refs
+			- heads
+			- remotes
+			- tags
+	- Ideas
+		- 需要完全模仿吗？
+			- 还是把大部分数据都存在 db 里面？
+		- 存在 storage 里的数据需要 human-readable 吗？
+			- 感觉上去重之类的就不好做了
+	- v0.1
+		- 感觉可以先不做 push，先把本地的 init，add，commit 流程跑通
+		- 理论上可以完全不依赖本地的 fs ？
 - Random Ideas
+  collapsed:: true
 	- 外部更新目录？
 		- 如果是 remote 发生了更新有点不太好搞
 	- 需要拆分 block 吗？
@@ -69,52 +92,60 @@
 		- 冲突需要手动处理
 	- 如何处理链接？
 		-
-- 归档
-	- 需要拆分成两个项目吗？
-		- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
-			- 一个专门提供 git alike utils
-			- 一个负责执行自动 commi 之类的逻辑？
-		- 好像不是很有必要
-	- 如果把 backup 的思路加进来会怎么样？
-		- self-contained fuse？
-			- 使用 [[litestream]]?
-			- 可能需要一个 [[Ouroflow]] ?
-		- 效果是怎么样？
-		- 先同步 index，然后根据 index 来获取相应的文件？
-			- 本地有写入怎么办？
-				- 创建新的 snapshot？
-					- 好像有点用哎
-			- 更进一步的，remote index？
-				- 这就是 [[JuiceFS]]
-					- 哎，不对，实际上这个功能是有意义的
-					- 比如说只分发 index，实际的数据从 ipfs 读取等等
-	- 可能的应用场景
-		- 增量备份 / 实时备份 / 指定时间戳恢复？
-			- 可能需要调研一下 [[restic]] 的设计
-				- 感觉在备份 / 安全这一块干不过 restic 啊- -
-		- 朴素的 fuse 功能
-		- 双向同步？
-	- 对标 [[Dropbox]] 的 Smart Sync？
-		- 改成 Ourobox -> 衔尾蛇
-	- 模仿 [[IPFS]] 来构建索引？
-		- 这个索引感觉不好扩展
-		- 而且也不 self contain
-	- 支持集群吗？
-	- 索引怎么维护？
-		- 写 [[SQLite]]，然后创建 snapshot？
-			- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
-				- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
-		- 可能直接写 k-v 来的更简单一些？
-			- 依赖 db 的 snapshot 功能？
-			- 还是直接 close db 之后导出数据？
-				- 这样可能就要分成两部分
-					- 一个是 config
-					- 另一个是 db
-	- 要有任务的概念吗？
-		- 或者叫做 connection？
-		- 如何支持增量更新？
-			- 索引本身可以增量更新吗？
-				- 本来的设计是要支持多种 db 作为索引，现在看起来好像意义不是很大
-					- 毕竟是一个直接面向用户的应用？
+	- 归档
+		- 需要拆分成两个项目吗？
+			- 好像 ourofs 就是 ourobox 啊，还需要做别的吗？
+				- 一个专门提供 git alike utils
+				- 一个负责执行自动 commi 之类的逻辑？
+			- 好像不是很有必要
+		- 如果把 backup 的思路加进来会怎么样？
+			- self-contained fuse？
+				- 使用 [[litestream]]?
+				- 可能需要一个 [[Ouroflow]] ?
+			- 效果是怎么样？
+			- 先同步 index，然后根据 index 来获取相应的文件？
+				- 本地有写入怎么办？
+					- 创建新的 snapshot？
+						- 好像有点用哎
+				- 更进一步的，remote index？
+					- 这就是 [[JuiceFS]]
+						- 哎，不对，实际上这个功能是有意义的
+						- 比如说只分发 index，实际的数据从 ipfs 读取等等
+		- 可能的应用场景
+			- 增量备份 / 实时备份 / 指定时间戳恢复？
+				- 可能需要调研一下 [[restic]] 的设计
+					- 感觉在备份 / 安全这一块干不过 restic 啊- -
+			- 朴素的 fuse 功能
+			- 双向同步？
+		- 对标 [[Dropbox]] 的 Smart Sync？
+			- 改成 Ourobox -> 衔尾蛇
+		- 模仿 [[IPFS]] 来构建索引？
+			- 这个索引感觉不好扩展
+			- 而且也不 self contain
+		- 支持集群吗？
+		- 索引怎么维护？
+			- 写 [[SQLite]]，然后创建 snapshot？
+				- [Verneuil: streaming replication for sqlite](https://github.com/backtrace-labs/verneuil)
+					- https://github.com/backtrace-labs/verneuil/blob/main/src/snapshot.rs
+			- 可能直接写 k-v 来的更简单一些？
+				- 依赖 db 的 snapshot 功能？
+				- 还是直接 close db 之后导出数据？
+					- 这样可能就要分成两部分
+						- 一个是 config
+						- 另一个是 db
+		- 要有任务的概念吗？
+			- 或者叫做 connection？
+			- 如何支持增量更新？
+				- 索引本身可以增量更新吗？
+					- 本来的设计是要支持多种 db 作为索引，现在看起来好像意义不是很大
+						- 毕竟是一个直接面向用户的应用？
+		- 需要先理解一下 git 的底层工作原理
+			- HEAD
+			- branch
+			- commit
+			- tag
+		- 如何处理 merge？
+		-
+-
 - 参考资料
 	- [When to use a CRDT-based database](https://www.infoworld.com/article/3305321/when-to-use-a-crdt-based-database.html)
