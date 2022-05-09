@@ -1,0 +1,26 @@
+- 当执行 `read_dir` 的时候，hdfs 会在 name 中返回如下信息
+	- `file:/xxxx/xxx`
+	- `hdfs://127.0.0.1:9000/4f607808-c05f-44c1-b247-423c51d9bcc1/b91d079e-17c0-4d84-b317-2cc1466514ec`
+- 这会导致客户端在解析 name 的时候遇到不少困难，hdrs 需要自行解析
+-
+- HDFS Path Names 的一些要求
+	- A Path is comprised of Path elements separated by "/".
+	- A path element is a unicode string of 1 or more characters.
+		- 必须是合法的 utf-8
+	- Path element MUST NOT include the characters ":" or "/".
+	- Path element SHOULD NOT include characters of ASCII/UTF-8 value 0-31 .
+	- Path element MUST NOT be "." or ".."
+	- Note also that the Azure blob store documents say that paths SHOULD NOT use a trailing "." (as their .NET URI class strips it).
+	- Paths are compared based on unicode code-points.
+	- Case-insensitive and locale-specific comparisons MUST NOT not be used.
+-
+- 涉及到我们设计的要点
+	- hdfs path 必须是 utf-8
+	- path 里面使用 / 来分割路径
+	- path 中不能出现 :
+-
+- HDFS 中的 workdir 概念
+	- /xx 和 xx 是不同的
+-
+- 参考资料
+	- [Apache Hadoop 3.3.2 > Introduction](https://hadoop.apache.org/docs/stable/hadoop-project-dist/hadoop-common/filesystem/introduction.html)
