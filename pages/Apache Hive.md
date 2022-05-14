@@ -1,4 +1,7 @@
-alias:: Hive
+alias:: [[Hive]]
+type:: [[Database]]
+language:: [[Java]]
+category:: [[OLAP]], [[SQL]]
 
 - Apache Hive 是可实现大规模分析的分布式容错数据仓库系统。该数据仓库集中存储信息，您可以轻松对此类信息进行分析，从而做出明智的数据驱动决策。Hive 让用户可以利用 SQL 读取、写入和管理 PB 级数据。
 -
