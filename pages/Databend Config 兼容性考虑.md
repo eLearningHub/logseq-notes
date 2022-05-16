@@ -1,3 +1,5 @@
+- [[Databend]] 已经合并了 RFC：[Config Backward Compatibility](https://github.com/datafuselabs/databend/pull/5324)
+-
 - 需要考虑的地方
 	- config 格式兼容
 	- env 变量兼容
@@ -56,4 +58,27 @@
 - 然后 outer config 会怎么实现呢
 	- 一个独立的 version 字段
 	- 先读取 version，然后根据 version 选择加载的结构体，最后再转换成 inner config
-	-
+-
+- ## 具体实现
+-
+- [[2022-05-16]]
+- ```rust
+  let mut storage_config = config.storage;
+  storage_config.s3.access_key_id = mask_string(&storage_config.s3.access_key_id, 3);
+  storage_config.s3.secret_access_key = mask_string(&storage_config.s3.secret_access_key, 3);
+  storage_config.azblob.account_name = mask_string(&storage_config.azblob.account_name, 3);
+  storage_config.azblob.account_key = mask_string(&storage_config.azblob.account_key, 3);
+  let storage_config_value = serde_json::to_value(storage_config)?;
+  ConfigsTable::extract_config(
+    &mut names,
+    &mut values,
+    &mut groups,
+    &mut descs,
+    "storage".to_string(),
+    storage_config_value,
+  );
+  ```
+	- config tables 会依赖内部的 config 结构，按照目前的设计，config layout 可能会有变化
+	- 可能需要 into outer？
+-
+-
