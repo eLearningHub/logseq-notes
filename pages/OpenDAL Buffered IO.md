@@ -1,8 +1,5 @@
 - [[OpenDAL]] 可以考虑返回一个 buffered reader
 -
-- fill_buf?
-- get_buf?
--
 - 如果 [[OpenDAL]] 支持了这个，能不能用来对接已有的压缩算法呢？
 -
 - 以 [[gzip]] 为例
@@ -23,9 +20,8 @@
 	  }
 	  ```
 	- 可以使用 `Decompress`： https://docs.rs/flate2/latest/flate2/struct.Decompress.html
-	-
 -
-- aysnc-compression 做法是自己维护了 header (只有 gzip 做了这样的处理)
+- aysnc-compression 做法是自己维护了 header (只有 [[gzip]] 做了这样的处理)
 	- ```rust
 	  impl Header {
 	      fn parse(input: &[u8; 10]) -> Result<Self> {
@@ -47,4 +43,5 @@
 	      }
 	  }
 	  ```
+-
 -

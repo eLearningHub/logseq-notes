@@ -1,6 +1,40 @@
-- Databend 整体架构
-- 存储层需要做什么
-- 存储层设计
-- 功能：COPY/STAGE
-- 未来规划
+- 确定一下主题？要分享什么呢？听众会有什么样的收获？
+	- 如何基于对象存储来开发数据库？好处与坏处？踩坑？
 -
+- 先罗列一下可能可以讲的主题，然后再选择主干吧
+	- 数据仓库介绍？
+		- 要不要介绍 [[Hive]]？
+		- Lambda？Kappa？
+		- Delta Lake？
+		- Apache Hudi?
+		- Apache [[Iceberg]]？
+		- [[Snowflake]]
+			- 可能需要再读一读 snowflake 的 paper
+		- AWS Redshift
+		- Azure Data Warehouse
+			- Azure Databricks
+		- Google BigQuery
+	- [[Databend]] 整体架构
+		- meta + query
+		- ![image.png](../assets/image_1652967714977_0.png)
+	- 存储层需要做什么
+		- 数据压缩
+	- 技术选型考虑
+		- 为什么没有自研存储？
+		- 为什么没有使用 [[Rocksdb]] 等方案？
+		- 存算分离？
+		- 对象存储的简单介绍
+	- 存储层设计
+		- FUSE Engine
+		- 存储层支持
+		- 自动分区/分片
+		- time travel / data sharing
+	- 功能：COPY/STAGE
+	- 未来规划
+-
+- 参考资料
+	- [Snowflake：数据仓库的终极形态？](https://zhuanlan.zhihu.com/p/54439354)
+		- > 关于微软对snowflake的支持，我觉得可以从三个方面细谈。
+			- > 第一，云服务商业模式很简单，就是靠scale来吸引consumption。所以对微软来说，提供对snowflake的支持虽然从某种意义上在“打击”自家的数据服务，但是反过来想，snowflake的客户可以把数据放在Azure上了。这个逻辑就是，不管你用什么解决方案，只要你的数据在我手里，我就支持。
+			- > 第二，未来趋势是multi-cloud，也就是说尽量不把鸡蛋放一个篮子里，用来分摊技术和商业的风险。Multi-cloud solution关键就是要easy to migrate，如果微软只想着防守，那客户就永远不能从AWS转到Azure上，相反，提供Snowflake on Azure，就是给AWS客户转化的机会。有机会可以看一下上周snowflake的新一轮融资，Salesforce领投，更是坚定了data sharing的战略路线。
+			- > 第三，从战略上讲不仅要培养好的伙伴，更要培养好的竞争对手。Snowflake还不明显，Azure Databricks才是最有意思的案例。Azure Databricks已经是Azure first tier service 很多人甚至以为Databricks就是微软的。云计算就是让客户怎么舒服怎么来，如果有好的技术，平台就应该吸引。
