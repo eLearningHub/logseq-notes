@@ -18,7 +18,7 @@
 	- influxdata DedicatedExecutor
 		- https://github.com/influxdata/influxdb_iox/blob/main/executor/src/lib.rs
 	- hyper 支持外部的 executor
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  #[derive(Clone)]
 		  pub enum Exec {
@@ -53,7 +53,7 @@ collapsed:: true
 		  }
 		  ```
 	- 跨线程 IO 投递任务
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  for field in &fields {
 		    if let Some(meta) = col_map.get(field.name.as_str()) {
@@ -80,7 +80,7 @@ collapsed:: true
 		  ```
 -
 - 大致的实现
-collapsed:: true
+  collapsed:: true
 	- ```rust
 	  pub static GLOBAL_EXECUTOR: Lazy<tokio::runtime::Runtime> =
 	      Lazy::new(|| tokio::runtime::Runtime::new().unwrap());
@@ -120,7 +120,7 @@ collapsed:: true
 -
 - 目前存在的问题
 	- 只是在 accessor 中使用 `self.exec.spawn` 的话好像并不会保证返回的 Reader 也运行在这个 runtime 中
-collapsed:: true
+	  collapsed:: true
 		- 返回的 Reader 需要额外包装一下，确保所有的 poll_read call 都在自己的 runtime 上运行？
 			- 这样是不是有额外的开销？
 				- 每次 poll_read 下去都会创建一个新的 future，然后要再等待
@@ -207,7 +207,7 @@ collapsed:: true
 -
 - Benchmark 测试结果
 	- blocking bench
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 8.0s, enable flat sampling, or reduce sample count to 50.
 		  fs/read                 time:   [2.1549 ms 2.2474 ms 2.3194 ms]
@@ -275,7 +275,7 @@ collapsed:: true
 		  
 		  ```
 	- tokio 跟测试共享 同一个 tokio runtime
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  fs/read                 time:   [1.8692 ms 1.9521 ms 2.0349 ms]
 		                          thrpt:  [7.6785 GiB/s 8.0044 GiB/s 8.3591 GiB/s]
@@ -343,7 +343,7 @@ collapsed:: true
 		  
 		  ```
 	- pure sync io on tokio runtime
-collapsed:: true
+	  collapsed:: true
 		- 这个结果应该是有问题的，没有把数据完整的读完
 		- ```rust
 		  fs/read                 time:   [833.42 us 845.03 us 858.12 us]
@@ -416,7 +416,7 @@ collapsed:: true
 		-
 	-
 	- unsafe async read
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  fs/read                 time:   [17.743 ms 17.951 ms 18.136 ms]
 		                          thrpt:  [882.23 MiB/s 891.32 MiB/s 901.78 MiB/s]
@@ -513,7 +513,7 @@ collapsed:: true
 		    1 (1.00%) high mild
 		  ```
 	- 稍微做了一些优化
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  fs/read                 time:   [15.221 ms 15.288 ms 15.362 ms]
 		                          thrpt:  [1.0171 GiB/s 1.0220 GiB/s 1.0266 GiB/s]
@@ -560,7 +560,7 @@ collapsed:: true
 		  
 		  ```
 	- 使用 unsafe set_len (on global)
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  fs/read                 time:   [8.3752 ms 8.4022 ms 8.4306 ms]
 		                          thrpt:  [1.8534 GiB/s 1.8596 GiB/s 1.8656 GiB/s]
@@ -606,7 +606,7 @@ collapsed:: true
 		  
 		  ```
 	- 使用 unsafe set_len (on external)
-collapsed:: true
+	  collapsed:: true
 		- ```rust
 		  fs/read                 time:   [13.979 ms 15.384 ms 16.768 ms]
 		                          thrpt:  [954.18 MiB/s 1.0157 GiB/s 1.1178 GiB/s]
@@ -657,7 +657,7 @@ collapsed:: true
 - 感觉效果其实还可以，可以认真实现一把看看
 -
 - 实现需要考虑的问题
-collapsed:: true
+  collapsed:: true
 	- 可以去掉 `async_trait` 了？
 		- 其实没啥变化，所有的 future 还是需要包上 Box？
 	- 对用户的 API 可以尽可能不变化吗？
@@ -677,11 +677,11 @@ collapsed:: true
 			- `op.create(path) -> Result<File>`
 			-
 			- 本质上还是 fs 和 对象的抽象很难统一到一起
-collapsed:: true
+			  collapsed:: true
 				- 要不要放弃对 file 侧的优化？
 					- 每次 read 都重新打开文件和 take offset？
 					- 打开一个文件和进行 offset 的开销其实很小，本地这边测试都在 ns 级别
-collapsed:: true
+					  collapsed:: true
 						- 跟 IO 相比不算是大头，感觉没有必要针对文件进行优化？
 						- ```rust
 						  file/open_file          time:   [804.53 ns 806.59 ns 808.92 ns]

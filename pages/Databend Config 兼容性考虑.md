@@ -81,4 +81,25 @@
 	- config tables 会依赖内部的 config 结构，按照目前的设计，config layout 可能会有变化
 	- 可能需要 into outer？
 -
+- [[2022-05-18]]
+-
+- 蛋疼，太蛋疼了
+- ![image.png](../assets/image_1652842122332_0.png)
+- 想要兼容的话感觉非常麻烦
+-
+- 以 log_level 为例
+- log_level 是一个顶级的字段，命令行参数是 --log-level ，但是环境变量名叫做 metasrv_log_dir
+- 只能一个一个处理？
+-
+- 卧槽，我咋没想到 [[serfig]] 还有这用途呢。。
+	- ```rust
+	          // Then, load from env.
+	          let cfg_via_env: ConfigViaEnv = serfig::Builder::default()
+	              .collect(from_env())
+	              .build()
+	              .map_err(|e| MetaError::InvalidConfig(e.to_string()))?;
+	          println!("config_via_env: {:?}", cfg_via_env);
+	          builder = builder.collect(from_self(cfg_via_env.into()));
+	  ```
+	- 可以创建一个独立的 wrapper，从 env loading 之后再使用 from_self 转化回来
 -
