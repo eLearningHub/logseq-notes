@@ -129,4 +129,20 @@
 			- 去 fetch bytes，处理数据，并 fetch 新的数据
 			- 这一套逻辑可以与之前的共存，用户如果不 case 这些开销的话，可以直接使用 async 的 decompress
 				- 如果用户需要自己处理调度逻辑，可以使用 sync 的 compress
-			-
+	- async fill_buf ?
+	- 然后提供一个同步的 advance
+		- advance 本来就是同步的
+	- 好像不需要额外做什么，只需要封装一下，变成 AsyncBuf
+	- 但是这样的话 object 遇到一些组合问题
+		- range_buf_reader?
+	- 感觉直接暴露成 object 的 API 不太合适
+	- 当作 trait 处理？
+		- into_decompress_reader()
+		- into_buf_reader()
+		- 这个感觉不错
+	- 然后就是考虑一下怎么用
+		- 可以直接调用 into_decompress_reader，读取被解压缩的数据
+		- 也可以调用 into_buf_reader()，手动解压
+			- fill_buffer().await 拿到 buffer 调用 decompress
+		- 还需要自己封装吗？
+	-
