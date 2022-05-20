@@ -4,7 +4,7 @@
 -
 - 以 [[gzip]] 为例
 	- https://docs.rs/flate2/latest/flate2/bufread/struct.GzDecoder.html
-	- ```[[Rust]]
+	- ```Rust
 	  use std::io::prelude::*;
 	  use std::io;
 	  use flate2::bufread::GzDecoder;
@@ -44,4 +44,89 @@
 	  }
 	  ```
 -
+- 所以 decompress 这个函数需要维护一个 input/output buffer
+	- 这两个 buffer 都是有状态的，保证只消费到有效的数据
+- 所以 API 要怎么设计？怎么跟其他的用法保持同步呢？
+	- 仍然暴露一个 AsyncRead？
+	- 听起来需要一个 `AsyncBufRead<F>`
+- ```rust
+  pub trait AsyncBufRead: AsyncRead {
+      fn poll_fill_buf(
+          self: Pin<&mut Self>, 
+          cx: &mut Context<'_>
+      ) -> Poll<Result<&[u8]>>;
+      fn consume(self: Pin<&mut Self>, amt: usize);
+  }
+  ```
 -
+- aysnc-compression 的做法
+	- ```rust
+	  #[derive(Debug, Default)]
+	  pub struct PartialBuffer<B: AsRef<[u8]>> {
+	      buffer: B,
+	      index: usize,
+	  }
+	  
+	  pub trait Decode {
+	      /// Reinitializes this decoder ready to decode a new member/frame of data.
+	      fn reinit(&mut self) -> Result<()>;
+	  
+	      /// Returns whether the end of the stream has been read
+	      fn decode(
+	          &mut self,
+	          input: &mut PartialBuffer<impl AsRef<[u8]>>,
+	          output: &mut PartialBuffer<impl AsRef<[u8]> + AsMut<[u8]>>,
+	      ) -> Result<bool>;
+	  
+	      /// Returns whether the internal buffers are flushed
+	      fn flush(&mut self, output: &mut PartialBuffer<impl AsRef<[u8]> + AsMut<[u8]>>)
+	          -> Result<bool>;
+	  
+	      /// Returns whether the internal buffers are flushed
+	      fn finish(
+	          &mut self,
+	          output: &mut PartialBuffer<impl AsRef<[u8]> + AsMut<[u8]>>,
+	      ) -> Result<bool>;
+	  }
+	  ```
+	- 在读取 IO 的时候从 Reader 中取出数据并进行同步的 decode
+		- ```rust
+		  State::Decoding => {
+		    let input = ready!(this.reader.as_mut().poll_fill_buf(cx))?;
+		    if input.is_empty() {
+		      // Avoid attempting to reinitialise the decoder if the reader
+		      // has returned EOF.
+		      *this.multiple_members = false;
+		      State::Flushing
+		    } else {
+		      let mut input = PartialBuffer::new(input);
+		      let done = this.decoder.decode(&mut input, output)?;
+		      let len = input.written().len();
+		      this.reader.as_mut().consume(len);
+		      if done {
+		        State::Flushing
+		      } else {
+		        State::Decoding
+		      }
+		    }
+		  }
+		  ```
+		- 感觉好像跟 opendal 没啥关系啊
+-
+- [[2022-05-20]]
+	- 维护一个库，能够支持 async read / sync decompress
+	- 然后 opendal 跟这个库做对接，支持 stage 的时候也这样做
+		- stage 也是在调用 format 这一套逻辑
+		- ```rust
+		  async fn csv_source(
+		    ctx: Arc<QueryContext>,
+		    schema: DataSchemaRef,
+		    stage_info: &UserStageInfo,
+		    reader: BytesReader,
+		  ) -> Result<Box<dyn Source>> {}
+		  ```
+		- opendal 需要提供一个新的 Reader，让用户可以
+			- 去 fetch bytes，处理数据，并 fetch 新的数据
+			- 这一套逻辑可以与之前的共存，用户如果不 case 这些开销的话，可以直接使用 async 的 decompress
+				- 如果用户需要自己处理调度逻辑，可以使用 sync 的 compress
+			-
