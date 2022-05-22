@@ -65,7 +65,6 @@
 			- [[OLAP]]
 			- Cloud-Native
 		-
-	-
 -
 - 参考资料
 	- [Snowflake：数据仓库的终极形态？](https://zhuanlan.zhihu.com/p/54439354)
