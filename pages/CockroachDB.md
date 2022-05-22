@@ -1,5 +1,6 @@
 type:: [[Database]]
 language:: [[Go]]
+category:: [[OLTP]], [[SQL]]
 
 - https://github.com/cockroachdb/cockroach
 -

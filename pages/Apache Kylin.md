@@ -1,4 +1,7 @@
 alias:: [[Kylin]]
+type:: [[Database]]
+language:: [[Java]]
+category:: [[OTAP]], [[SQL]], [[HTTP]]
 
 - https://kylin.apache.org/
 -

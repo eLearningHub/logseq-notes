@@ -1,6 +1,6 @@
 type:: [[Database]]
 language:: [[CPP]]
-category:: [[Grpah]]
+category:: [[Graph]]
 
 - Nebula Graph 是一个开源的图数据库，
 -

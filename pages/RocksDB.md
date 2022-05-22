@@ -1,5 +1,10 @@
 type:: [[Database]]
+language:: [[CPP]] 
+category:: [[Key-Value]], [[Embed]]
 
+- homepage: https://rocksdb.org
+- repo: https://github.com/facebook/rocksdb
+-
 -
 - SST Format
 	- [Block-based table](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)
