@@ -82,10 +82,12 @@
 	- 好，前面聊了不少 Databend 的设计思路，下面聊聊存储层的具体实现，今天主要会聊聊三个模块
 		- 首先是 FUSE Engine，这是 Databend 默认的存储引擎；然后聊一下 Databend 的 Stage 功能，最后聊聊驱动 Databend 存储底层的模块 OpenDAL。
 	- 先看 FUSE Engine
+		- (对比 Git，介绍具体的实现)
 	- Stage 是借鉴自 Snowflake 的功能
+		- (讲解 Stage 的具体功能)
 	- OpenDAL 是驱动 Databend 存储底层的模块，所有对存储的请求和访问最后都会交由 OpenDAL 来负责
-	-
-	-
+		- (介绍 OpenDAL)
+	- Q & A
 -
 - 归档
 	- [[Databend]] 介绍？
