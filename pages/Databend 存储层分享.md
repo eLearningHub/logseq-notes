@@ -34,12 +34,10 @@
 	- 未来规划
 -
 - 分享内容
-	- [[Databend]] 介绍？
-		- 大多数人对数仓和 [[Databend]] 可能没有概念，需要展开介绍
-			- 需要再介绍一下 [[Databend]] 的特性和差异
-		- 还需要介绍 [[Snowflake]]？
-			- 可能首先介绍 [[Snowflake]]？
-	- How we build [[Databend]]？
+	- How we build [[Databend]] ([[Storage]] Part)？
+	  collapsed:: true
+		- 感觉这个主题不是非常适合这次的 Meetup
+		-
 		- 2021 年，[[OLAP]] 领域有哪些选择？
 			- [[Snowflake]] / [[Google BigQuery]] / [[AWS Redshift]]
 				- 商业产品，付费高昂，供应商锁定
@@ -64,7 +62,45 @@
 			- Real-Time
 			- [[OLAP]]
 			- Cloud-Native
+		- How？
+			- 这个部分可能需要收窄到 [[Storage]] ？
+				- 不需要将具体的开发
 		-
+	- [[Databend]] [[存储]]层分享
+		- 主题
+			- 感觉主要还是围绕功能做一些介绍
+			- 首先介绍一下 [[Databend]] / [[Snowflake]]，然后介绍[[存储]]层的一些特性
+				- 首先是 [[Databend]] 的 [[Storage]] Backend
+				- 然后是 Stage: InternalStage / ExternalStage
+		- 大纲
+			- [[Databend]] 介绍
+				- Modern
+				- Cloud Native
+				- Open Source
+			- 设计
+				- Day One Open Source
+					- 与闭源 DBMS 的异同
+				- Column Based [[Storage]]
+					- [[Arrow]] / [[Parquet]]
+					- 与传统列存的对比
+				- Cloud First ([[OpenDAL]])
+					- 单个 Query 延迟上升，总体吞吐大幅度上升
+					- 成本低廉
+					- 与  [[TIDB]] / [[TiFlash]] 的异同
+					  collapsed:: true
+						- ![image.png](../assets/image_1653279558237_0.png)
+				- DBMS instead of Query Engine
+					- 与 [[Presto]] 的异同
+					- 性能，对[[存储]]的感知
+					- micro partition，compaction
+	-
+- 归档
+	- [[Databend]] 介绍？
+	  collapsed:: true
+		- 大多数人对数仓和 [[Databend]] 可能没有概念，需要展开介绍
+			- 需要再介绍一下 [[Databend]] 的特性和差异
+		- 还需要介绍 [[Snowflake]]？
+			- 可能首先介绍 [[Snowflake]]？
 -
 - 参考资料
 	- [Snowflake：数据仓库的终极形态？](https://zhuanlan.zhihu.com/p/54439354)
@@ -78,3 +114,4 @@
 	- [Presto 优缺点](https://zhuanlan.zhihu.com/p/93711386)
 	- [即席查询引擎对比：我为什么选择Presto](https://cloud.tencent.com/developer/article/1877751)
 	- [How we build TiDB](https://en.pingcap.com/blog/how-we-build-tidb/)
+	- [[[TiFlash]] 架构与原理](https://book.tidb.io/session1/chapter9/tiflash-architecture.html)
