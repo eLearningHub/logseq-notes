@@ -33,97 +33,20 @@
 	- 功能：COPY/STAGE
 	- 未来规划
 -
-- 分享内容
-  collapsed:: true
-	- How we build [[Databend]] ([[Storage]] Part)？
-		- 感觉这个主题不是非常适合这次的 Meetup
-		-
-		- 2021 年，[[OLAP]] 领域有哪些选择？
-			- [[Snowflake]] / [[Google BigQuery]] / [[AWS Redshift]]
-				- 商业产品，付费高昂，供应商锁定
-			- [[ClickHouse]]
-				- 单机引擎，需要改造以适应大规模数据场景
-			- [[Hadoop]] 生态
-				- [[Hive]] / [[Hudi]]  / [[Iceberg]] / [[Impala]] / [[Spark SQL]] / [[Flink SQL]] / [[Druid]]
-				- 臃肿，复杂，笨重，部署难，维护麻烦
-				- 现在系统对时效性要求高，更新困难
-			- [[Presto]] / [[Trino]]
-				- 并不是一个真正的 DBMS，只是一个 Query Engine，纯内存？
-					- 需要补充更多的资料
-		- 在 2021 年，我们有什么？
-			- [[Rust]]
-			- Cloud Serivces： [[AWS]]，GCP，[[Azure]]，Aliyun
-			- [[Arrow]] / [[Parquet]]
-		- 愿景
-			- A Modern Real-Time Data Processing & Analytics DBMS with Cloud-Native Architecture
-			- ![image.png](../assets/image_1652967714977_0.png)
-		- Goal
-			- Modern
-			- Real-Time
-			- [[OLAP]]
-			- Cloud-Native
-		- How？
-			- 这个部分可能需要收窄到 [[Storage]] ？
-				- 不需要将具体的开发
-		-
-	- [[Databend]] [[存储]]层分享
-		- 主题
-			- 感觉主要还是围绕功能做一些介绍
-			- 首先介绍一下 [[Databend]] / [[Snowflake]]，然后介绍[[存储]]层的一些特性
-				- 首先是 [[Databend]] 的 [[Storage]] Backend
-				- 然后是 Stage: InternalStage / ExternalStage
-		- 大纲
-			- [[Databend]] 介绍
-				- Modern
-				- Cloud Native
-				- Open Source
-			- 设计
-				- Day One Open Source
-					- 与闭源 DBMS 的异同
-				- Column Based [[Storage]]
-					- [[Arrow]] / [[Parquet]]
-					- 与传统列存的对比
-				- Cloud First ([[OpenDAL]])
-					- 单个 Query 延迟上升，总体吞吐大幅度上升
-					- 成本低廉
-					- 与  [[TIDB]] / [[TiFlash]] 的异同
-						- ![image.png](../assets/image_1653279558237_0.png)
-				- DBMS instead of Query Engine
-					- 与 [[Presto]] 的异同
-					- 性能，对[[存储]]的感知
-					- micro partition，compaction
-			- 存储底层实现
-				- FUSE Engine
-					- Git inspired storage engine
-					- Git
-						- HEAD
-						- Commit
-						- Tree
-						- Block
-					- Fuse
-						- HEAD
-						- Snapshot
-						- Segment
-						- Block -> Parquet
-				- [[OpenDAL]]
-					- https://github.com/datafuselabs/opendal
-					- Open Data Access Layer that connect the whole world together.
-					- services
-						- azblob
-						- fs
-						- hdfs
-						- memory
-						- s3
-			- Q&A
-				-
-		-
 -
 - 大纲
 	- 标题: Databend: The Storage Layer
 	- 内容
 		- Databend 简介
 		- Databend 设计思路
+			- Day One Open Source
+			- Column Based Storage
+			- Cloud Native by OpenDAL
+			- DBMS instead of Query Engine
 		- Databend 存储层实现
+-
+- 内容
+	-
 -
 - 归档
 	- [[Databend]] 介绍？
@@ -132,6 +55,90 @@
 			- 需要再介绍一下 [[Databend]] 的特性和差异
 		- 还需要介绍 [[Snowflake]]？
 			- 可能首先介绍 [[Snowflake]]？
+	- 分享内容
+	  collapsed:: true
+		- How we build [[Databend]] ([[Storage]] Part)？
+			- 感觉这个主题不是非常适合这次的 Meetup
+			-
+			- 2021 年，[[OLAP]] 领域有哪些选择？
+				- [[Snowflake]] / [[Google BigQuery]] / [[AWS Redshift]]
+					- 商业产品，付费高昂，供应商锁定
+				- [[ClickHouse]]
+					- 单机引擎，需要改造以适应大规模数据场景
+				- [[Hadoop]] 生态
+					- [[Hive]] / [[Hudi]]  / [[Iceberg]] / [[Impala]] / [[Spark SQL]] / [[Flink SQL]] / [[Druid]]
+					- 臃肿，复杂，笨重，部署难，维护麻烦
+					- 现在系统对时效性要求高，更新困难
+				- [[Presto]] / [[Trino]]
+					- 并不是一个真正的 DBMS，只是一个 Query Engine，纯内存？
+						- 需要补充更多的资料
+			- 在 2021 年，我们有什么？
+				- [[Rust]]
+				- Cloud Serivces： [[AWS]]，GCP，[[Azure]]，Aliyun
+				- [[Arrow]] / [[Parquet]]
+			- 愿景
+				- A Modern Real-Time Data Processing & Analytics DBMS with Cloud-Native Architecture
+				- ![image.png](../assets/image_1652967714977_0.png)
+			- Goal
+				- Modern
+				- Real-Time
+				- [[OLAP]]
+				- Cloud-Native
+			- How？
+				- 这个部分可能需要收窄到 [[Storage]] ？
+					- 不需要将具体的开发
+			-
+		- [[Databend]] [[存储]]层分享
+			- 主题
+				- 感觉主要还是围绕功能做一些介绍
+				- 首先介绍一下 [[Databend]] / [[Snowflake]]，然后介绍[[存储]]层的一些特性
+					- 首先是 [[Databend]] 的 [[Storage]] Backend
+					- 然后是 Stage: InternalStage / ExternalStage
+			- 大纲
+				- [[Databend]] 介绍
+					- Modern
+					- Cloud Native
+					- Open Source
+				- 设计
+					- Day One Open Source
+						- 与闭源 DBMS 的异同
+					- Column Based [[Storage]]
+						- [[Arrow]] / [[Parquet]]
+						- 与传统列存的对比
+					- Cloud First ([[OpenDAL]])
+						- 单个 Query 延迟上升，总体吞吐大幅度上升
+						- 成本低廉
+						- 与  [[TIDB]] / [[TiFlash]] 的异同
+							- ![image.png](../assets/image_1653279558237_0.png)
+					- DBMS instead of Query Engine
+						- 与 [[Presto]] 的异同
+						- 性能，对[[存储]]的感知
+						- micro partition，compaction
+				- 存储底层实现
+					- FUSE Engine
+						- Git inspired storage engine
+						- Git
+							- HEAD
+							- Commit
+							- Tree
+							- Block
+						- Fuse
+							- HEAD
+							- Snapshot
+							- Segment
+							- Block -> Parquet
+					- [[OpenDAL]]
+						- https://github.com/datafuselabs/opendal
+						- Open Data Access Layer that connect the whole world together.
+						- services
+							- azblob
+							- fs
+							- hdfs
+							- memory
+							- s3
+				- Q&A
+					-
+			-
 -
 - 参考资料
 	- [Snowflake：数据仓库的终极形态？](https://zhuanlan.zhihu.com/p/54439354)
