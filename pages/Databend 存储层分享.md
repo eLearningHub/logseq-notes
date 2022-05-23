@@ -46,6 +46,45 @@
 		- Databend 存储层实现
 -
 - 内容
+	- Hi，大家好，我是漩涡。今天想要跟大家分享的是开源云上数仓的 Databend 的存储层设计及其实现。
+	- 首先做个自我介绍，我是漩涡，漩涡鸣人的漩涡。我是一个彻底的开源主义者：
+		- 我公开地进行学习，所有我学到的东西都会记录在 note.xuanwo.io
+		- 我公开地进行工作，所有的工作内容都通过 Github Projects 跟踪，参见 work.xuanwo.io
+		- 最后我会公开地输出我的思考，所有的产出都会发布在个人博客 xuanwo.io
+	- 在背后支持我的团队叫做 Datafuse Labs，目前我在这家团队从事 Databend 存储层相关的全职开源工作。
+		- Datafuse Labs 的愿景是构建全新的云上数据平台，易用，简单，低成本
+		- 目前 Datafuse Labs 旗下的开源项目包括 Databend，Openraft，OpenDAL，OpenSrv 等多个项目
+		- 今天要介绍的就是 Databend：一个由 Rust 开发的云上数仓
+	- 当我们聊到数仓的时候我们都会想到 Hive，Hudi，Impala 之类的服务，但是在 Snowflake 横空出世后，大家发现大数据也可以很简单。
+		- 不需要部署，不需要运维，按量计费
+		- 不需要担心 Shared-disk 架构下性能不足，数据难以复制和迁移的问题
+		- 也不需要担心 Shared-nothing 架构下难以升级和扩容的问题。
+		- 只需要给 Snowflake 不断充钱，就可以不断地扩展存储和计算能力
+	- Databend 就是看到了这样趋势和机会而诞生的。
+		- (需要想一下怎么过渡)
+	- 接下来我们聊聊 Databend 背后的设计理念。我把 Databend 的设计思路概括为这样几个点
+		- Day One Open Source
+		- Column Based Storage
+		- Cloud Native by OpenDAL
+		- DBMS instead of Query Engine
+	- 伴随着 PingCAP 的探索和试错，Day One Open Source 已经不是什么稀奇的事情了。
+		- Databend 开源的逻辑很简单：
+			- 首先 Infra Open Source 已经成了业界的基本共识，一家初创公司开发一个全新的闭源数据仓库基本上必死，只有走开源路线才有成功的机会。
+			- 其次，Databend 的核心团队都是开源老兵，BohuTANG，sundy-li，zhang2014 都是 ClickHouse Too 100 的贡献者，走开源路线是一个非常自然的选择。
+			- 这里还有一个跟 TiFlash 有关的 Fun Fact：由于 TiFlash fork 自 ClickHouse，所以 Databend 的核心团队也都是 TiFlash 的贡献者，有趣的开源世界。
+	- Databend 采用 Arrow 作为内存结构，Parquet 作为存储格式
+		- (先介绍 Arrow，然后介绍一下 Parquet)
+	- 云原生
+		- 可能需要介绍三种不同架构的区别？
+		- 对比一下 TiFlash
+	- Full DBMS
+		- 跟 Query Engine 的区别
+	- 好，前面聊了不少 Databend 的设计思路，下面聊聊存储层的具体实现，今天主要会聊聊三个模块
+		- 首先是 FUSE Engine，这是 Databend 默认的存储引擎；然后聊一下 Databend 的 Stage 功能，最后聊聊驱动 Databend 存储底层的模块 OpenDAL。
+	- 先看 FUSE Engine
+	- Stage 是借鉴自 Snowflake 的功能
+	- OpenDAL 是驱动 Databend 存储底层的模块，所有对存储的请求和访问最后都会交由 OpenDAL 来负责
+	-
 	-
 -
 - 归档
@@ -56,7 +95,6 @@
 		- 还需要介绍 [[Snowflake]]？
 			- 可能首先介绍 [[Snowflake]]？
 	- 分享内容
-	  collapsed:: true
 		- How we build [[Databend]] ([[Storage]] Part)？
 			- 感觉这个主题不是非常适合这次的 Meetup
 			-
