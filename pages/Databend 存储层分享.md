@@ -34,8 +34,8 @@
 	- 未来规划
 -
 - 分享内容
+  collapsed:: true
 	- How we build [[Databend]] ([[Storage]] Part)？
-	  collapsed:: true
 		- 感觉这个主题不是非常适合这次的 Meetup
 		-
 		- 2021 年，[[OLAP]] 领域有哪些选择？
@@ -87,13 +87,44 @@
 					- 单个 Query 延迟上升，总体吞吐大幅度上升
 					- 成本低廉
 					- 与  [[TIDB]] / [[TiFlash]] 的异同
-					  collapsed:: true
 						- ![image.png](../assets/image_1653279558237_0.png)
 				- DBMS instead of Query Engine
 					- 与 [[Presto]] 的异同
 					- 性能，对[[存储]]的感知
 					- micro partition，compaction
-	-
+			- 存储底层实现
+				- FUSE Engine
+					- Git inspired storage engine
+					- Git
+						- HEAD
+						- Commit
+						- Tree
+						- Block
+					- Fuse
+						- HEAD
+						- Snapshot
+						- Segment
+						- Block -> Parquet
+				- [[OpenDAL]]
+					- https://github.com/datafuselabs/opendal
+					- Open Data Access Layer that connect the whole world together.
+					- services
+						- azblob
+						- fs
+						- hdfs
+						- memory
+						- s3
+			- Q&A
+				-
+		-
+-
+- 大纲
+	- 标题: Databend: The Storage Layer
+	- 内容
+		- Databend 简介
+		- Databend 设计思路
+		- Databend 存储层实现
+-
 - 归档
 	- [[Databend]] 介绍？
 	  collapsed:: true
@@ -114,4 +145,7 @@
 	- [Presto 优缺点](https://zhuanlan.zhihu.com/p/93711386)
 	- [即席查询引擎对比：我为什么选择Presto](https://cloud.tencent.com/developer/article/1877751)
 	- [How we build TiDB](https://en.pingcap.com/blog/how-we-build-tidb/)
-	- [[[TiFlash]] 架构与原理](https://book.tidb.io/session1/chapter9/tiflash-architecture.html)
+	- [TiFlash 架构与原理](https://book.tidb.io/session1/chapter9/tiflash-architecture.html)
+	- [Rust, Databend and the Cloud Warehouse（5）从 Git 到 Fuse Engine 存储引擎](https://bohutang.me/2022/05/06/databend-cloud-warehouse-fuse-engine/)
+	- [Apache Arrow简介](https://zhuanlan.zhihu.com/p/339132159)
+-
