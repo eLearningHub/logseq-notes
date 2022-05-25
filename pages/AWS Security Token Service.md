@@ -3,6 +3,7 @@
 - STS 一般是用来跟 IAM 配合使用，用来生成一个临时的，有限制的 Token 给应用使用。
 -
 - 比较常用的是 `AssumeRoleWithWebIdentity`
+  collapsed:: true
 	- 通过 [[AWS IAM]] 分配的 WenIdentityToken 来向 STS 换取 Token
 	- Sample Request
 		- STS 服务使用 Query 签名，认证信息都在 query 中
@@ -83,5 +84,31 @@
 			  ```
 			-
 -
+- 如何测试
+	- AssumeRoleWithWebIdentity 看起来依赖一个 OIDC 来提供一个 token？
+		- 可能要走一个 OAuth 的流程来拿 token？
+			- [Using web identity federation API operations for mobile apps](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_oidc_manual.html)
+			- 最后选择了注册 [[Auth0]] - -
+		- 我可以开一个服务？
+			- <AssumeRoleWithWebIdentityResponse xmlns="https://sts.amazonaws.com/doc/2011-06-15/">
+			    <AssumeRoleWithWebIdentityResult>
+			      <Audience>test_audience</Audience>
+			      <AssumedRoleUser>
+			        <AssumedRoleId>role_id:reqsign</AssumedRoleId>
+			        <Arn>arn:aws:sts::123:assumed-role/reqsign/reqsign</Arn>
+			      </AssumedRoleUser>
+			      <Provider>arn:aws:iam::123:oidc-provider/example.com/</Provider>
+			      <Credentials>
+			        <AccessKeyId>access_key_id</AccessKeyId>
+			        <SecretAccessKey>sceret_access_ket</SecretAccessKey>
+			        <SessionToken>session_token</SessionToken>
+			        <Expiration>2022-05-25T11:45:17Z</Expiration>
+			      </Credentials>
+			      <SubjectFromWebIdentityToken>subject</SubjectFromWebIdentityToken>
+			    </AssumeRoleWithWebIdentityResult>
+			    <ResponseMetadata>
+			      <RequestId>b1663ad1-23ab-45e9-b465-9af30b202eba</RequestId>
+			    </ResponseMetadata>
+			  </AssumeRoleWithWebIdentityResponse>
 - 参考资料
 	- [Introducing fine-grained IAM roles for service accounts](https://aws.amazon.com/blogs/opensource/introducing-fine-grained-iam-roles-service-accounts/)
