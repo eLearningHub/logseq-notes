@@ -22,10 +22,11 @@ jobs:
         uses: pengx17/logseq-publish@main
         with:
           dest: www
-      - name: Deploy to vercel
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: www
         env:
-          VERCEL_ORG_ID: ${{secrets.VERCEL_ORG_ID}}
-          VERCEL_PROJECT_ID: ${{secrets.VERCEL_PROJECT_ID}}
-        run: |
-          npm i -g vercel
-          vercel --token=${{ secrets.VERCEL_TOKEN }} --prod --scope xuanwo www
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
