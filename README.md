@@ -1,44 +1,15 @@
-# Hi, I'm Xuanwo 👋
+# Logseq will change your life!
 
-I'm focused on **Automation**, **Distributed Systems** and **Storage**.
+Logseq is awesome! You can manage your knowledge in [Markdown](https://www.markdownguide.org/) files and [Logseq](https://logseq.com/) will make an interactive graph and flash cards for you!
 
-- To read more about me: [Blog](https://xuanwo.io)
-- To know what I'm doing: [Work](https://work.xuanwo.io)
-- To find what I'm learning: [Note](https://note.xuanwo.io)
-- Also, follow me on [Twitter](https://twitter.com/OnlyXuanwo)
-  
----
-  
-I'm trying to **learn**, **work** and **think** in an open-source way.
+# Getting started
 
-## Learn publicly in an open-source way
+* Fork this repository
+* Add a secret with the name `GH_PAGES_DEPLOY` to your repository (or organization). The value should be a GitHub token with write access to your repository.
+* Enable GitHub Actions for your repository.
+* Make a change to one of the Markdown pages under the pages folder.
+* A GitHub Action will run automatically and publish your notes as a website (GitHub Page).
 
-- discuss with all my friends publicly at [discussions](https://github.com/Xuanwo/Xuanwo/discussions).
-- public all my notes at [Xuanwo's Note](https://note.xuanwo.io)
+# References
 
-## Work publicly and report to the community
-
-- I get paid for my work in open source projects. (For now, I'm backed by [@datafuselabs](https://github.com/datafuselabs))
-- I publicly track all my works at [Xuanwo's Work](https://work.xuanwo.io)
-
-Projects that I'm working on
-
-- [databend](https://github.com/datafuselabs/databend): A modern Elasticity and Performance cloud data warehouse, activate your object storage for real-time analytics.
-- [opendal](https://github.com/datafuselabs/opendal): Open Data Access Layer that connect the whole world together.
-- [reqsign](https://github.com/Xuanwo/reqsign): Signing HTTP requests without heavy SDKs.
-- [backon](https://github.com/Xuanwo/backon): Another implementation of backoff via Iterator.
-- [serde-bridge](https://github.com/Xuanwo/serde-bridge): A bridge between different serde implemantations.
-- [serde-env](https://github.com/Xuanwo/serde-env): Deserialize env into structs via serde.
-- [serfig](https://github.com/Xuanwo/serfig): Layered configuration system built upon serde.
-- [hdfs-sys](https://github.com/Xuanwo/hdfs-sys): Bindings to `HDFS` Native C API.
-- [hdrs](https://github.com/Xuanwo/hdrs): HDFS Native Client in Rust based on [hdfs-sys](https://github.com/Xuanwo/hdfs-sys).
-
-## Think publicly and export to blog posts
-
-- I will write at [Xuanwo's Blog](https://xuanwo.io) if there are any thought I think is meaningful to report.
-  
----
-  
-I think it's a reproducible way for learning, working and thinking. Anyone with a similar background to mine can start learning incrementally with this repo. Also, It will be very interesting to see how this project will develop in the end. Whether the end result is good or bad, I believe it will be an interesting journey.
-  
-**Let's rock!**
+* This repository started from a fork of [Xuanwo's blog](https://github.com/Xuanwo/Xuanwo).
