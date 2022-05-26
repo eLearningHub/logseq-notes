@@ -1,6 +1,0 @@
-- 常见的商业服务
-	- [[AWS S3]]
-	- [[Azure Blobs]]
-	- [[Google Cloud Storage]]
-- 开源服务
-	- [[minio]]

@@ -1,7 +1,0 @@
--
--
-- 参考资料
-	- The Rustonomicon: [Variance](https://doc.rust-lang.org/nomicon/subtyping.html#variance)
-	- 知乎 SmellCoder: [Rust Variance](https://zhuanlan.zhihu.com/p/379728364) *推荐*
-	- 南寨小子: [Rust Subtyping and Variance](https://kangxiaoning.github.io/post/2021/03/rust-subtyping-and-variance/)
-	- [Variance of type and lifetime parameters](https://rustc-dev-guide.rust-lang.org/variance.html)

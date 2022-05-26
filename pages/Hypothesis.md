@@ -1,3 +1,0 @@
-- https://hypothes.is/ 是一个在线页面批注服务，任何人都可以公开的对任何页面进行批注
--
-- ![image.png](../assets/image_1642170615014_0.png)

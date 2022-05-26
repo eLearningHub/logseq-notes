@@ -1,1 +1,0 @@
-- https://orc.apache.org/

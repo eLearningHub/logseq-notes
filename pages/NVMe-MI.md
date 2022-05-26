@@ -1,3 +1,0 @@
-- Specification
-	- The NVMe® Management Interface (NVMe-MI™) specification was created to define a command set and architecture for managing NVMe storage, making it possible to discover, monitor, configure, and update NVMe devices in multiple operating environments. NVMe-MI technology provides an industry standard for management of NVMe devices in-band (through an operating system) and out-of-band (usually through a BMC, or baseboard management controller).
-	- https://nvmexpress.org/developers/nvme-mi-specification/

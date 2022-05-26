@@ -1,4 +1,0 @@
-type:: [[Project]]
-language:: [[Rust]]
-
--

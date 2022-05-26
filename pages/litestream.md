@@ -1,7 +1,0 @@
-- https://litestream.io
--
-- How it works
-	- https://litestream.io/how-it-works/
-	- > However, the WAL continually grows so eventually pages have to be moved back to the database file so the WAL can be restarted. This process is called checkpointing and can only be done when no transactions are active. That is the crux of what lets Litestream replicate SQLite.
-	- > Litestream works by effectively taking over the checkpointing process. It starts a long-running read transaction to prevent any other process from checkpointing and restarting the WAL file. Instead, it continually copies over new WAL pages to a staging area called the shadow WAL and manually calls out to SQLite to perform checkpoints as necessary.
--

@@ -1,9 +1,0 @@
-- [TiExec](https://github.com/hnes/tiexec/blob/main/RFC.md) 是 [[TiDB]] Hackathon  2021 上很有意思的一个项目
--
-- TiExec 会尝试缓解其所加载应用程序在未来执行时可能面临的 iTLB-Cache-Miss 问题，因此会为那些正在遭受 iTLB-Cache-Miss 惩罚的应用程序带来一定的直接性能提升，比如，在 TiDB 的某 OLTP 场景下对部分组件通过 TiExec 优化之后的测试显示能带来约 6-11% 的整体性能提升。
--
-- 要理解这个项目，首先我们要搞明白 iTLB-Cache-Miss 是在说什么
-	- {{embed [[TLB]]}}
-	- iTLB-Cache-Miss 就是在描述 [[iTLB]] cache 没有命中的情形，这个参数主要来自 [[perf]]。通常发生在程序二进制的 .text 段比较大的时候，CPU 无法一次性将所有的页表载入到 [[iTLB]]。
-- TiExec 想做的事情就是尽可能的将程序的 .text 段放到 [[HugePages]] 中，从而减少页表数量，进而降低了 iTLB-Cache-Miss  出现的概率。
-- 根据初步测试的结果，应用 TiExec 能够为整体带来 6-11% 的性能提升。

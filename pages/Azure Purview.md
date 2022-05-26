@@ -1,4 +1,0 @@
-- [[Azure]] 旗下的数据治理平台
-- https://azure.microsoft.com/en-us/services/purview
-- A unified data governance solution that maximizes the business value of your data
-- Azure Purview is a unified data governance solution that helps you manage and govern your on-premises, multicloud, and software-as-a-service (SaaS) data. Easily create a holistic, up-to-date map of your data landscape with automated data discovery, sensitive data classification, and end-to-end data lineage. Enable data consumers to find valuable, trustworthy data.

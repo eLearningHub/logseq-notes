@@ -1,2 +1,0 @@
-- https://cloud.google.com/bigquery
--

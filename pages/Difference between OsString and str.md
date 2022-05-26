@@ -1,9 +1,0 @@
-- [[Rust]] 中的 [[OsString]] 和 str 底层表述是不一样的
-- > See the documentation of OsString::with_capacity: https://doc.rust-lang.org/1.57.0/std/ffi/struct.OsString.html#method.with_capacity — the capacity (which has the same units as `additional` here) is measured in "length units of other OS strings".
-- > OsStr::len explains more about what "length units of an OS string" means: https://doc.rust-lang.org/1.57.0/std/ffi/struct.OsStr.html#method.len.
-- > > The length returned is that of the underlying storage used by `OsStr`. As discussed in the `OsString` introduction, `OsString` and `OsStr` store strings in a **form best suited for cheap inter-conversion between native-platform and Rust string forms, which may differ significantly from both of them, including in storage size and encoding**.
-- > This is saying that the **"storage size"** of an OS string (which is the size that `len` returns) **"may differ significantly"** from the storage size of the **"Rust string form"** of the same data, i.e. that `os_str.len()` and `os_str.to_str().unwrap().len()` may differ significantly.
--
-- `os_str.len()` 返回的是底层存储的大小，而 `os_str.to_str().unwrap().len()` 返回的是 utf-8 size 的大小
--
-- From https://github.com/rust-lang/rust/pull/92338#discussion_r776059679
